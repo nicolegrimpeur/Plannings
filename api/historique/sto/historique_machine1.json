@@ -1,1 +1,38 @@
-{}
+{
+  "function Date() { [native code] }": {
+    "modification": "Suppression du créneau",
+    "nom": "Barrat",
+    "prenom": "Nicolas",
+    "chambre": "T404"
+  },
+  "Sun Aug 22 2021 19:13:04 GMT+0200 (heure d’été d’Europe centrale)": {
+    "modification": "Inscription sur le créneau",
+    "nom": "Barrat",
+    "prenom": "Nicolas",
+    "chambre": "T404"
+  },
+  "Sun Aug 22 2021 19:16:17 GMT+0200 (heure d’été d’Europe centrale)": {
+    "modification": "Inscription sur le créneau",
+    "nom": "Barrat",
+    "prenom": "Nicolas",
+    "chambre": "T404"
+  },
+  "Sun Aug 22 2021 19:16:21 GMT+0200 (heure d’été d’Europe centrale)": {
+    "modification": "Suppression du créneau",
+    "nom": "Barrat",
+    "prenom": "Nicolas",
+    "chambre": "T404"
+  },
+  "Sun Aug 22 2021 19:16:33 GMT+0200 (heure d’été d’Europe centrale)": {
+    "modification": "Inscription sur le créneau",
+    "nom": "Barrat",
+    "prenom": "Nicolas",
+    "chambre": "T404"
+  },
+  "Sun Aug 22 2021 19:16:46 GMT+0200 (heure d’été d’Europe centrale)": {
+    "modification": "Inscription sur le créneau",
+    "nom": "Barrat",
+    "prenom": "Nicolas",
+    "chambre": "T404"
+  }
+}
