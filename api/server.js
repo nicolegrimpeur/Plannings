@@ -1,7 +1,7 @@
 const portHTTPS = 1080;
 
 const express = require('express');
-let fs = require('fs');
+const fs = require('fs');
 const app = express();
 const serverHTTPS = require('http').createServer(app);
 
@@ -17,11 +17,22 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.get('/', function (req, res) {
+const Gestion = require('./gestion');
+const gestion = new Gestion();
+gestion.addFS(fs);
+
+app.get('/', (req, res) => {
   res.status(200).json('coucou');
 });
 
-app.get('/plannings/:id', function (req, res) {
+app.get('/plannings/add/:id', (req, res) => {
+  const informations = String(req.params.id);
+
+  gestion.addCreneau(informations, res);
+});
+
+app.get('/plannings/:id', (req, res) => {
+  console.log('infos');
   const informations = String(req.params.id);
 
   let id, nom, prenom, residence, chambre;
@@ -32,6 +43,22 @@ app.get('/plannings/:id', function (req, res) {
   // res.status(200).json(textes);
   res.status(200).json(planning);
 
+});
+
+// initialisation du json d'un planning
+app.get('/plannings/init/:name/:id', (req, res) => {
+  const id = String(req.params.id);
+  const residence = String(req.params.name);
+
+  gestion.initFile(id, residence, res);
+});
+
+// remise à zéro du planning
+app.get('/plannings/zero/:name/:id', (req, res) => {
+  const id = String(req.params.id);
+  const residence = String(req.params.name);
+
+  gestion.remiseZero(id, residence, res);
 });
 
 serverHTTPS.listen(portHTTPS);
