@@ -40,6 +40,8 @@ module.exports = class Gestion {
 
     fs.writeFileSync('./plannings/' + residence + '/' + id + '.json', JSON.stringify(jours, null, 2));
 
+    this.initHistorique(id, residence);
+
     if (res !== undefined) res.status(200).json('ok');
   }
 
@@ -58,6 +60,9 @@ module.exports = class Gestion {
           planning[jour][heure].prenom = prenom;
           planning[jour][heure].chambre = chambre;
           this.fs.writeFileSync('./plannings/' + residence + '/' + id + '.json', JSON.stringify(planning, null, 2));
+
+          this.addHistorique('Inscription sur le créneau', id, residence, nom, prenom, chambre);
+
           res.status(200).send('Inscription réussi');
         }
         else {
@@ -89,6 +94,9 @@ module.exports = class Gestion {
           planning[jour][heure].prenom = '';
           planning[jour][heure].chambre = '';
           this.fs.writeFileSync('./plannings/' + residence + '/' + id + '.json', JSON.stringify(planning, null, 2));
+
+          this.addHistorique('Suppression du créneau', id, residence, nom, prenom, chambre);
+
           res.status(200).send('Suppression réussi');
         }
         else {
@@ -119,6 +127,27 @@ module.exports = class Gestion {
 
     fs.writeFileSync('./plannings/' + residence + '/' + id + '.json', JSON.stringify(planning, null, 2));
 
+    this.initHistorique(id, residence);
+
     if (res !== undefined) res.status(200).send('zero');
+  }
+
+  initHistorique(id, residence) {
+    const historique = {};
+    fs.writeFileSync('./historique/' + residence + '/' + 'historique_' + id + '.json', JSON.stringify(historique, null, 2));
+  }
+
+  addHistorique(modification, id, residence, nom, prenom, chambre) {
+    const time = Date();
+
+    const historique = require('./historique/' + residence + '/' + 'historique_' + id + '.json');
+    historique[time] = {
+      modification: modification,
+      nom: nom,
+      prenom: prenom,
+      chambre: chambre
+    };
+
+    fs.writeFileSync('./historique/' + residence + '/' + 'historique_' + id + '.json', JSON.stringify(historique, null, 2));
   }
 }
