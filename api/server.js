@@ -31,6 +31,12 @@ app.get('/plannings/add/:id', (req, res) => {
   gestion.addCreneau(informations, res);
 });
 
+app.get('/plannings/remove/:id', (req, res) => {
+  const informations = String(req.params.id);
+
+  gestion.removeCreneau(informations, res);
+});
+
 app.get('/plannings/:id', (req, res) => {
   console.log('infos');
   const informations = String(req.params.id);

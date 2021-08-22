@@ -74,6 +74,36 @@ module.exports = class Gestion {
     }
   }
 
+  removeCreneau(informations, res) {
+    let id, nom, prenom, residence, chambre, jour, heure;
+    [id, residence, jour, heure, nom, prenom, chambre] = informations.split('+');
+
+    // on vérifie que l'on a toutes les infos nécessaires
+    if (id !== undefined && residence !== undefined && jour !== undefined && heure !== undefined && nom !== undefined && prenom !== undefined && chambre !== undefined) {
+      try {
+        const planning = require('./plannings/' + residence + '/' + id + '.json');
+
+        // on vérifie qu'il n'y a pas déjà quelqu'un sur ce créneau
+        if (planning[jour][heure].nom !== '') {
+          planning[jour][heure].nom = '';
+          planning[jour][heure].prenom = '';
+          planning[jour][heure].chambre = '';
+          this.fs.writeFileSync('./plannings/' + residence + '/' + id + '.json', JSON.stringify(planning, null, 2));
+          res.status(200).send('Suppression réussi');
+        }
+        else {
+          res.status(404).send('Il n\'y a pas d\'inscription sur ce créneau');
+        }
+      }
+      catch (err) {
+        res.status(404).send('Erreur dans les informations fournies')
+      }
+    }
+    else {
+      res.status(404).send('Erreur dans les informations fournies');
+    }
+  }
+
   remiseZero(id, residence, res) {
     const planning = require('./plannings/' + residence + '/' + id + '.json');
 
