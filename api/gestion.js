@@ -61,7 +61,7 @@ module.exports = class Gestion {
           planning[jour][heure].chambre = chambre;
           this.fs.writeFileSync('./plannings/' + residence + '/' + id + '.json', JSON.stringify(planning, null, 2));
 
-          this.addHistorique('Inscription sur le créneau', id, residence, nom, prenom, chambre);
+          this.addHistorique('Inscription sur le créneau', id, residence, nom, prenom, chambre, jour, heure);
 
           res.status(200).send('Inscription réussi');
         }
@@ -95,7 +95,7 @@ module.exports = class Gestion {
           planning[jour][heure].chambre = '';
           this.fs.writeFileSync('./plannings/' + residence + '/' + id + '.json', JSON.stringify(planning, null, 2));
 
-          this.addHistorique('Suppression du créneau', id, residence, nom, prenom, chambre);
+          this.addHistorique('Suppression du créneau', id, residence, nom, prenom, chambre, jour, heure);
 
           res.status(200).send('Suppression réussi');
         }
@@ -137,15 +137,18 @@ module.exports = class Gestion {
     fs.writeFileSync('./historique/' + residence + '/' + 'historique_' + id + '.json', JSON.stringify(historique, null, 2));
   }
 
-  addHistorique(modification, id, residence, nom, prenom, chambre) {
+  addHistorique(modification, id, residence, nom, prenom, chambre, jour, heure) {
     const time = Date();
 
-    const historique = require('./historique/' + residence + '/' + 'historique_' + id + '.json');
+    const historique = JSON.parse(fs.readFileSync('./historique/' + residence + '/' + 'historique_' + id + '.json'));
+
     historique[time] = {
       modification: modification,
       nom: nom,
       prenom: prenom,
-      chambre: chambre
+      chambre: chambre,
+      jour: jour,
+      heure: heure
     };
 
     fs.writeFileSync('./historique/' + residence + '/' + 'historique_' + id + '.json', JSON.stringify(historique, null, 2));
