@@ -1,10 +1,22 @@
 {
-  "Mon Aug 23 2021 21:35:20 GMT+0200 (heure d’été d’Europe centrale)": {
-    "modification": "Inscription sur le créneau",
-    "nom": "Barrat",
-    "prenom": "Nicolas",
-    "chambre": "T404",
-    "jour": "dimanche1",
-    "heyre": "7H"
-  }
+  "historique": [
+    {
+      "modification": "Inscription sur le créneau",
+      "dateModif": "lundi 23 août 2021, 22:13:33",
+      "nom": "Barrat",
+      "prenom": "Nicolas",
+      "chambre": "T404",
+      "jour": "dimanche1",
+      "heure": "7H"
+    },
+    {
+      "modification": "Suppression du créneau",
+      "dateModif": "lundi 23 août 2021, 22:16:28",
+      "nom": "Barrat",
+      "prenom": "Nicolas",
+      "chambre": "T404",
+      "jour": "dimanche1",
+      "heure": "7H"
+    }
+  ]
 }

@@ -52,7 +52,7 @@ module.exports = class Gestion {
     // on vérifie que l'on a toutes les infos nécessaires
     if (id !== undefined && residence !== undefined && jour !== undefined && heure !== undefined && nom !== undefined && prenom !== undefined && chambre !== undefined) {
       try {
-        const planning = require('./plannings/' + residence + '/' + id + '.json');
+        const planning = JSON.parse(fs.readFileSync('./plannings/' + residence + '/' + id + '.json'));
 
         // on vérifie qu'il n'y a pas déjà quelqu'un sur ce créneau
         if (planning[jour][heure].nom === '') {
@@ -86,7 +86,7 @@ module.exports = class Gestion {
     // on vérifie que l'on a toutes les infos nécessaires
     if (id !== undefined && residence !== undefined && jour !== undefined && heure !== undefined && nom !== undefined && prenom !== undefined && chambre !== undefined) {
       try {
-        const planning = require('./plannings/' + residence + '/' + id + '.json');
+        const planning = JSON.parse(fs.readFileSync('./plannings/' + residence + '/' + id + '.json'));
 
         // on vérifie qu'il n'y a pas déjà quelqu'un sur ce créneau
         if (planning[jour][heure].nom !== '') {
@@ -113,7 +113,7 @@ module.exports = class Gestion {
   }
 
   remiseZero(id, residence, res) {
-    const planning = require('./plannings/' + residence + '/' + id + '.json');
+    const planning = JSON.parse(fs.readFileSync('./plannings/' + residence + '/' + id + '.json'));
 
     planning.dimanche1 = JSON.parse(JSON.stringify(planning.dimanche2));
 
@@ -133,23 +133,25 @@ module.exports = class Gestion {
   }
 
   initHistorique(id, residence) {
-    const historique = {};
+    const historique = {historique: []};
     fs.writeFileSync('./historique/' + residence + '/' + 'historique_' + id + '.json', JSON.stringify(historique, null, 2));
   }
 
   addHistorique(modification, id, residence, nom, prenom, chambre, jour, heure) {
-    const time = Date();
+    const time = new Date(Date());
 
     const historique = JSON.parse(fs.readFileSync('./historique/' + residence + '/' + 'historique_' + id + '.json'));
 
-    historique[time] = {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+    historique.historique.push({
       modification: modification,
+      dateModif: time.toLocaleDateString('fr-FR', options),
       nom: nom,
       prenom: prenom,
       chambre: chambre,
       jour: jour,
       heure: heure
-    };
+    });
 
     fs.writeFileSync('./historique/' + residence + '/' + 'historique_' + id + '.json', JSON.stringify(historique, null, 2));
   }

@@ -37,19 +37,19 @@ app.get('/plannings/remove/:id', (req, res) => {
   gestion.removeCreneau(informations, res);
 });
 
-app.get('plannings/getHistorique/:id/:name', (req, res) => {
+app.get('/plannings/getHistorique/:id/:name', (req, res) => {
   const id = String(req.params.id);
   const residence = String(req.params.name);
 
-  const historique = require('./historique/' + residence + '/' + 'historique_' + id + '.json');
+  const historique = JSON.parse(fs.readFileSync('./historique/' + residence + '/' + 'historique_' + id + '.json'));
   res.status(200).json(historique);
 });
 
-app.get('plannings/getPlanning/:id/:name', (req, res) => {
+app.get('/plannings/getPlanning/:id/:name', (req, res) => {
   const id = String(req.params.id);
   const residence = String(req.params.name);
 
-  const planning = require('./plannings/' + residence + '/' + id + '.json');
+  const planning = JSON.parse(fs.readFileSync('./plannings/' + residence + '/' + id + '.json'));
   res.status(200).json(planning);
 });
 
