@@ -7,6 +7,11 @@ const gestion = new Gestion();
 
 gestion.addFS(fs);
 
+const paths = [
+  {residence: 'sto', id: 'machine1'},
+  // {residence: 'sto', id: 'machine2'},
+];
+
 // options pour l'enregistrement de la date
 const options = {
   weekday: 'long',
@@ -15,12 +20,8 @@ const options = {
   day: 'numeric'
 };
 
+// remet à 0 les plannings dans paths
 reset = () => {
-  const paths = [
-    {residence: 'sto', id: 'machine1'},
-    // {residence: 'sto', id: 'machine2'},
-  ];
-
   // on récupère le fichier de log
   const log = JSON.parse(fs.readFileSync('./log/log.json'));
 
@@ -63,4 +64,5 @@ checkDate = () => {
   }
 }
 
+// lance la fonction toutes les 12 heures
 setInterval(checkDate, 43200000);
