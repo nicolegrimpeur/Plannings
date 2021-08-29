@@ -5,7 +5,12 @@ import {User} from './shared/class/user';
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
+  providers: [User]
 })
 export class AppComponent {
-  constructor() {}
+  constructor(
+    public user: User
+  ) {
+    this.user.redirection();
+  }
 }

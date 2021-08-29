@@ -3,8 +3,9 @@ import {Router} from '@angular/router';
 import {AngularFireAuth} from '@angular/fire/compat/auth';
 import {Platform} from '@ionic/angular';
 import {Display} from './display';
-import firebase from 'firebase/compat';
-import {firebaseConfig} from '../../app.module';
+// import firebase from 'firebase';
+// import firebase from 'firebase';
+// import {firebaseConfig} from '../../app.module';
 
 @Injectable({
   providedIn: 'platform'
@@ -30,13 +31,14 @@ export class User {
     this.connexion();
 
     // on initialise la base de donnée SDK JS
-    firebase.initializeApp(firebaseConfig);
+    // firebase.initializeApp(firebaseConfig);
     this.initCurrentUser();
   }
 
   // initialise le currentUser
   initCurrentUser() {
-    this.currentUser = firebase.auth().currentUser;
+    this.currentUser = this.afAuth.currentUser;
+    console.log(this.currentUser);
   }
 
   initInfos() {
