@@ -34,10 +34,12 @@ export class LoginPage implements OnInit {
   // connecte l'utilisateur avec email et mot de passe
   login() {
     const mail =
-      this.loginData.nom + '.' +
-      this.loginData.prenom + '@' +
-      this.loginData.residence + '.' +
-      this.loginData.chambre + '.fr';
+      this.loginData.nom + '+' +
+      this.loginData.prenom + '+' +
+      this.loginData.residence + '+' +
+      this.loginData.chambre + '+' +
+      ((this.loginData.mdpRp === 'Hell0Rps') ? 'true' : 'false') +
+      '+planning@all.fr';
 
     const password = 'f355bcd8af0541b815c00eda1360a30024c2ae8bfc53ead1073bf29b7589cc64';
 
@@ -57,14 +59,6 @@ export class LoginPage implements OnInit {
             .then(auth => {
               // on redirige l'utilisateur sur la page d'accueil
               this.router.navigateByUrl('/').then();
-              // on enregistre ensuite le nom d'utilisateur
-              this.user.addDisplayName(
-                this.loginData.nom + '+' +
-                this.loginData.prenom + '+' +
-                this.loginData.residence + '+' +
-                this.loginData.chambre + '+' +
-                ((this.loginData.mdpRp === 'Hell0Rps') ? 'true' : 'false')
-              );
             })
             .catch(err => {
               // sinon on affiche une erreur

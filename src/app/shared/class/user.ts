@@ -33,19 +33,19 @@ export class User {
     // on initialise la base de donnée SDK JS
     // firebase.initializeApp(firebaseConfig);
     this.initCurrentUser();
+    this.initInfos();
   }
 
   // initialise le currentUser
   initCurrentUser() {
     this.currentUser = this.afAuth.currentUser;
-    console.log(this.currentUser);
   }
 
   initInfos() {
-    if (this.userData.displayName !== undefined) {
-      console.log(this.userData.displayName);
+    console.log(this.userData.mail);
+    if (this.userData.mail !== undefined && this.userData.mail !== null) {
       [this.userData.nom, this.userData.prenom, this.userData.residence, this.userData.chambre, this.userData.isRp] =
-        this.userData.displayName.split('+');
+        this.userData.mail.split('+');
     }
   }
 
@@ -95,17 +95,5 @@ export class User {
       mail: undefined,
       displayName: undefined
     };
-  }
-
-  // ajoute au compte un nom d'utilisateur
-  addDisplayName(name) {
-    this.initCurrentUser();
-    this.currentUser.updateProfile({ displayName: name })
-      .then(res => {
-        console.log('ayez', res);
-      })
-      .catch(err => {
-        this.display.display('Erreur lors de l\'ajout du nom d\'utilisateur').then();
-      });
   }
 }

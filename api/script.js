@@ -58,6 +58,14 @@ checkDate = () => {
   // on récupère le log
   const log = JSON.parse(fs.readFileSync('./log/log.json'));
 
+  log.log.push({
+    dateModif: time.toLocaleDateString('fr-FR', options),
+    modification: 'check'
+  });
+
+  // on enregistre les modifications
+  fs.writeFileSync('./log/log.json', JSON.stringify(log, null, 2));
+
   // si l'on est un dimanche et que la remise à 0 n'a pas encore été faite ou si la dernière exécution a été une erreur
   if ((time.getDay() === 0 && log.log[log.log.length - 1].dateModif !== time.toLocaleDateString('fr-FR', options)) || log.log[log.log.length - 1].modification === 'erreur') {
     reset();

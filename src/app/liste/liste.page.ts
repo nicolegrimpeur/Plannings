@@ -10,7 +10,9 @@ export class ListePage implements OnInit {
 
   constructor(
     public user: User
-  ) { }
+  ) {
+    console.log(user.userData);
+  }
 
   ngOnInit() {
   }
