@@ -1,3 +1,5 @@
+// noinspection JSCheckFunctionSignatures
+
 const portHTTPS = 1080;
 
 const express = require('express');
