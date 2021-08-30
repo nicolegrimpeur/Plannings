@@ -1,77 +1,59 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title></ion-title>
+    <ion-title>Qui es-tu ?</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-card>
-    <ion-card-header>
-      <ion-card-title>Qui es-tu ?</ion-card-title>
-    </ion-card-header>
-
     <ion-card-content>
       <ion-item>
         <ion-label><b>Nom</b></ion-label>
-        <ion-input [(ngModel)]="loginData.nom" type="text"
+        <ion-input [(ngModel)]="loginData.nom" type="text" autocomplete="family-name" required="true"
                    placeholder="Entrez votre nom"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label><b>Prénom</b></ion-label>
-        <ion-input [(ngModel)]="loginData.prenom" type="text"
+        <ion-input [(ngModel)]="loginData.prenom" type="text" autocomplete="name" required="true"
                    placeholder="Entrez votre prénom"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label><b>Résidence</b></ion-label>
-        <ion-input [(ngModel)]="loginData.residence" type="text"
-                   placeholder="Entrez nom d'utilisateur"></ion-input>
+        <ion-select [(ngModel)]="loginData.residence" required="true">
+          <ion-select-option value="sto">Saint-Omer</ion-select-option>
+          <ion-select-option value="dr">Denis Reille</ion-select-option>
+        </ion-select>
       </ion-item>
 
       <ion-item>
         <ion-label><b>Chambre</b></ion-label>
-        <ion-input [(ngModel)]="loginData.chambre" type="text"
-                   placeholder="Entrez votre numéro de chambre (n'oubliez pas la lettre en fonction des résidences"></ion-input>
+        <ion-input [(ngModel)]="loginData.chambre" type="text" required="true"
+                   placeholder="Entrez votre numéro de chambre (n'oubliez pas la lettre en fonction des résidences)"></ion-input>
       </ion-item>
 
-      <ion-list>
-        <ion-radio-group value="false" [(ngModel)]="loginData.isRp">
-          <ion-list-header>
-            <ion-label><b>Es-tu un responsable de ta résidence ?</b></ion-label>
-          </ion-list-header>
 
-          <ion-item>
-            <ion-label>Oui</ion-label>
-            <ion-radio slot="start" value="true"></ion-radio>
-          </ion-item>
-
-          <ion-item>
-            <ion-label>Non</ion-label>
-            <ion-radio slot="start" value="false"></ion-radio>
-          </ion-item>
-        </ion-radio-group>
-      </ion-list>
-
-<!--      <ion-item>-->
-<!--        <ion-label><b>Es-tu un responsable de ta résidence ?</b></ion-label>-->
-<!--        <ion-input [(ngModel)]="loginData.isRp" type="text"-->
-<!--                   placeholder="Entrez nom d'utilisateur"></ion-input>-->
-<!--      </ion-item>-->
+      <ion-item>
+        <ion-label><b>Es-tu un responsable de ta résidence ?</b></ion-label>
+        <ion-select [(ngModel)]="loginData.isRp">
+          <ion-select-option value="true">Oui</ion-select-option>
+          <ion-select-option value="false">Non</ion-select-option>
+        </ion-select>
+      </ion-item>
 
       <ion-item *ngIf="loginData.isRp === 'true'">
         <ion-label><b>Mot de passe RP</b></ion-label>
-        <ion-input [(ngModel)]="loginData.mdpRp" type="password"
-                   placeholder="Entrez nom d'utilisateur"></ion-input>
+        <ion-input [(ngModel)]="loginData.mdpRp" type="password" autocomplete="current-password" required="true"
+                   placeholder="Mot de passe"></ion-input>
       </ion-item>
 
-      <!--      <ion-item>-->
-      <!--        <ion-label><b>Confirmez mot de passe</b></ion-label>-->
-      <!--        <ion-input [(ngModel)]="registerData.confirmPassword" type="password" minlength="6" maxlength="32" placeholder="Entrez votre mot de passe"></ion-input>-->
-      <!--      </ion-item>-->
-
       <div class="ion-padding">
-        <ion-button (click)="login()" expand="block" color="tertiary">Inscription</ion-button>
+        <ion-button
+          disabled="{{!(loginData.nom !== '' && loginData.prenom !== '' && loginData.residence !== '' && loginData.chambre !== '')}}"
+          type="submit" (click)="login()" expand="block" color="tertiary">
+          OK
+        </ion-button>
       </div>
     </ion-card-content>
 

@@ -16,7 +16,7 @@ export class LoginPage implements OnInit {
     prenom: '',
     residence: '',
     chambre: '',
-    isRp: '',
+    isRp: 'false',
     mdpRp: '',
   };
 
@@ -69,7 +69,8 @@ export class LoginPage implements OnInit {
             .catch(err => {
               // sinon on affiche une erreur
               this.display.display(err).then();
-            });        }
+            });
+        }
       })
       .catch(err => {
         this.display.display(err).then();

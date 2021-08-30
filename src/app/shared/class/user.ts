@@ -43,6 +43,7 @@ export class User {
 
   initInfos() {
     if (this.userData.displayName !== undefined) {
+      console.log(this.userData.displayName);
       [this.userData.nom, this.userData.prenom, this.userData.residence, this.userData.chambre, this.userData.isRp] =
         this.userData.displayName.split('+');
     }
