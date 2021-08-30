@@ -60,19 +60,6 @@ app.get('/plannings/getListPlannings', (req, res) => {
   res.status(200).json(liste);
 });
 
-app.get('/plannings/:id', (req, res) => {
-  console.log('infos');
-  const informations = String(req.params.id);
-
-  let id, nom, prenom, residence, chambre;
-  [id, nom, prenom, residence, chambre] = informations.split('+');
-
-  const planning = require('./plannings/' + residence + '/' + id + '.json');
-  // const textes = require('/home/rps/infosApp/' + id + '.json');
-  // res.status(200).json(textes);
-  res.status(200).json(planning);
-});
-
 // initialisation du json d'un planning
 app.get('/plannings/init/:name/:id', (req, res) => {
   const id = String(req.params.id);

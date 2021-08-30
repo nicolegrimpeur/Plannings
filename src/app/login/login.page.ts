@@ -69,6 +69,5 @@ export class LoginPage implements OnInit {
       .catch(err => {
         this.display.display(err).then();
       });
-
   }
 }
