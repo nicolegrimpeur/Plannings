@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {User} from '../shared/class/user';
 
 @Component({
   selector: 'app-liste',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListePage implements OnInit {
 
-  constructor() { }
+  constructor(
+    public user: User
+  ) { }
 
   ngOnInit() {
   }
