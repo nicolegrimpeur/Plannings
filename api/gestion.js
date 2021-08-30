@@ -50,8 +50,23 @@ module.exports = class Gestion {
     // on initialise le système d'historique correspondant à ce planning
     this.initHistorique(id, residence);
 
+    this.addListe(id, residence);
+
     // si la fonction a été appelé via requête http
-    if (res !== undefined) res.status(200).json('ok');
+    if (res !== undefined) res.status(200).send('ok');
+  }
+
+  // ajoute le planning à la liste de planning
+  addListe(id, residence) {
+    const liste = JSON.parse(fs.readFileSync('./listPlannings.json'));
+
+    if (liste['residences'][residence] === undefined) {
+      liste['residences'][residence] = [];
+    }
+
+    liste['residences'][residence].push(id);
+
+    fs.writeFileSync('./listPlannings.json', JSON.stringify(liste, null, 2));
   }
 
   // ajoute un créneau

@@ -7,6 +7,7 @@ const gestion = new Gestion();
 
 gestion.addFS(fs);
 
+
 const paths = [
   {residence: 'sto', id: 'machine1'},
   // {residence: 'sto', id: 'machine2'},
@@ -25,12 +26,17 @@ reset = () => {
   // on récupère le fichier de log
   const log = JSON.parse(fs.readFileSync('./log/log.json'));
 
+  // on récupère la liste des résidences
+  const liste = JSON.parse(fs.readFileSync('./listPlannings.json'));
+
   // on récupère la date actuelle
   const time = new Date(Date());
 
   try {
-    // on parcours le tableau pour remettre à 0 les plannings inscrits dans paths
-    for (let path of paths) gestion.remiseZero(path.id, path.residence);
+    // on parcours le tableau pour remettre à 0 les plannings inscrits
+    for (let residence in liste['residences'])
+      for (let nomPlanning of liste['residences'][residence])
+        gestion.remiseZero(nomPlanning, residence);
 
     // on ajoute au log le succès
     log.log.push({

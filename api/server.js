@@ -53,6 +53,11 @@ app.get('/plannings/getPlanning/:id/:name', (req, res) => {
   res.status(200).json(planning);
 });
 
+app.get('/plannings/getListPlannings', (req, res) => {
+  const liste = JSON.parse(fs.readFileSync('./listPlannings.json'));
+  res.status(200).json(liste);
+});
+
 app.get('/plannings/:id', (req, res) => {
   console.log('infos');
   const informations = String(req.params.id);
@@ -84,4 +89,4 @@ app.get('/plannings/zero/:name/:id', (req, res) => {
 
 serverHTTPS.listen(portHTTPS);
 
-console.log("let's go https port : " + portHTTPS);
+console.log("let's go http port : " + portHTTPS);
