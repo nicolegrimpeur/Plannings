@@ -35,7 +35,7 @@ reset = () => {
   try {
     // on parcours le tableau pour remettre à 0 les plannings inscrits
     for (let residence in liste['residences'])
-      for (let nomPlanning of liste['residences'][residence])
+      for (let nomPlanning of liste['residences'][residence]['liste'])
         gestion.remiseZero(nomPlanning, residence);
 
     // on ajoute au log le succès

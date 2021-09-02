@@ -61,10 +61,13 @@ module.exports = class Gestion {
     const liste = JSON.parse(fs.readFileSync('./listPlannings.json'));
 
     if (liste['residences'][residence] === undefined) {
-      liste['residences'][residence] = [];
+      liste['residences'][residence] = {
+        'name': residence,
+        'liste': []
+      };
     }
 
-    liste['residences'][residence].push(id);
+    liste['residences'][residence]['liste'].push(id);
 
     fs.writeFileSync('./listPlannings.json', JSON.stringify(liste, null, 2));
   }

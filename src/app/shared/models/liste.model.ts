@@ -1,7 +1,12 @@
-class ListResidence {
-  residence: Array<string>;
+class Infos {
+  nom: string;
+  liste: Array<string>;
+}
+
+class Residence {
+  residence: Infos;
 }
 
 export class ListeModel {
-  residences: Array<ListResidence>;
+  residences: Array<Residence>;
 }

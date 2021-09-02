@@ -1,8 +1,11 @@
 {
   "residences": {
-    "sto": [
-      "machine1",
-      "machine2"
-    ]
+    "sto": {
+      "name": "Saint-Omer",
+      "liste": [
+        "machine1",
+        "machine2"
+      ]
+    }
   }
 }
