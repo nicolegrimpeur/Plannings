@@ -18,7 +18,8 @@ export class User {
     residence: '',
     isRp: '',
     mail: '',
-    displayName: ''
+    displayName: '',
+    currentPage: ''
   };
   private currentUser: any;
 
@@ -80,6 +81,14 @@ export class User {
     });
   }
 
+  addCurrentPage(page) {
+    this.userData.currentPage = page;
+  }
+
+  deleteCurrentPage() {
+    this.userData.currentPage = '';
+  }
+
   // déconnecte l'utilisateur
   logout() {
     this.afAuth.signOut().then();
@@ -87,13 +96,14 @@ export class User {
     this.display.display({code: 'Vous êtes déconnecté', color: 'success'}).then();
 
     this.userData = {
-      nom: undefined,
-      prenom: undefined,
-      chambre: undefined,
-      residence: undefined,
-      isRp: undefined,
-      mail: undefined,
-      displayName: undefined
+      nom: '',
+      prenom: '',
+      chambre: '',
+      residence: '',
+      isRp: '',
+      mail: '',
+      displayName: '',
+      currentPage: ''
     };
   }
 }

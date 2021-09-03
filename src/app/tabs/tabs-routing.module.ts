@@ -5,6 +5,10 @@ import { TabsPage } from './tabs.page';
 
 const routes: Routes = [
   {
+    path: 'planning',
+    loadChildren: () => import('../planning/planning.module').then( m => m.PlanningPageModule)
+  },
+  {
     path: '',
     component: TabsPage,
     children: [

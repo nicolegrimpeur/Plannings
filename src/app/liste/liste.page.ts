@@ -16,7 +16,6 @@ export class ListePage implements OnInit {
     public user: User,
     public httpService: HttpService
   ) {
-    console.log(user.userData);
     this.recupListe().then();
   }
 

@@ -30,8 +30,8 @@
         <ion-grid>
           <ion-row>
             <ion-col *ngFor="let planning of residence.liste">
-              <ion-button  expand="block" color="medium"
-                           routerLink="/planning">{{planning}}</ion-button>
+              <ion-button expand="block" color="medium" routerLink="/planning"
+                          (click)="user.addCurrentPage(planning)">{{planning}}</ion-button>
             </ion-col>
           </ion-row>
         </ion-grid>

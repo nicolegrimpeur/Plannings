@@ -17,4 +17,14 @@ export class HttpService {
     const url = this.baseLink + 'getListPlannings';
     return this.http.get<ListeModel>(url);
   }
+
+  addCreneau(id, residence, jour, heure, nom, prenom, chambre): Observable<any> {
+    const url = this.baseLink + 'add/' + id + '+' + residence + '+' + jour + '+' + heure + '+' + nom + '+' + prenom + '+' + chambre;
+    return this.http.get<ListeModel>(url);
+  }
+
+  removeCreneau(id, residence, jour, heure, nom, prenom, chambre): Observable<any> {
+    const url = this.baseLink + 'remove/' + id + '+' + residence + '+' + jour + '+' + heure + '+' + nom + '+' + prenom + '+' + chambre;
+  return this.http.get<ListeModel>(url);
+}
 }
