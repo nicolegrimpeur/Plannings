@@ -1,12 +1,8 @@
 class Infos {
-  nom: string;
+  name: string;
   liste: Array<string>;
 }
 
-class Residence {
-  residence: Infos;
-}
-
 export class ListeModel {
-  residences: Array<Residence>;
+  residences: Array<Infos>;
 }

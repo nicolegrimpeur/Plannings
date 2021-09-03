@@ -21,7 +21,21 @@
     isRp : {{user.userData.isRp}}
   </ion-item>
 
-  <
+  <div *ngFor="let residence of liste.residences">
+    <ion-item-divider></ion-item-divider>
+
+    <section></section>
+    <ion-label><b>{{residence.name + ' :'}}</b></ion-label>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col *ngFor="let planning of residence.liste">
+          <ion-button  expand="block" color="medium"
+                       routerLink="/planning">{{planning}}</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 
   <ion-button expand="block" color="danger" (click)="user.logout()">
     <ion-icon slot="start" name="log-out-outline"></ion-icon>

@@ -60,15 +60,25 @@ module.exports = class Gestion {
   addListe(id, residence) {
     const liste = JSON.parse(fs.readFileSync('./listPlannings.json'));
 
-    if (liste['residences'][residence] === undefined) {
-      liste['residences'][residence] = {
+    // on récupère l'index de la position de la résidence dans la liste
+    let index = liste['residences'].findIndex(res => res.residence === residence);
+
+    // si la résidence n'existe pas encore
+    if (index === -1) {
+      liste['residences'].push({
+        'residence': residence,
         'name': residence,
-        'liste': []
-      };
+        'liste': [id]
+      });
+    }
+    else {
+      // on vérifie que ce que l'on cherche à ajouter ne l'a pas déjà été
+      if (liste['residences'][index]['liste'].find(res => res === id) === undefined) {
+        liste['residences'][index]['liste'].push(id);
+      }
     }
 
-    liste['residences'][residence]['liste'].push(id);
-
+    // on réécrit le fichier
     fs.writeFileSync('./listPlannings.json', JSON.stringify(liste, null, 2));
   }
 

@@ -10,6 +10,7 @@ import {ListeModel} from '../shared/models/liste.model';
   providers: [HttpService]
 })
 export class ListePage implements OnInit {
+  public liste = new ListeModel();
 
   constructor(
     public user: User,
@@ -23,10 +24,17 @@ export class ListePage implements OnInit {
   }
 
   async recupListe() {
-    let liste = new ListeModel();
+    // let liste = new ListeModel();
 
     await this.httpService.getListe().toPromise().then((results: ListeModel) => {
-      liste = results;
+      this.liste = results;
     });
+
+    console.log(this.liste.residences);
+
+    for (const residence of this.liste.residences) {
+      console.log(residence.name);
+      // console.log(this.liste.residences);
+    }
   }
 }
