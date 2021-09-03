@@ -3,6 +3,8 @@ import {AngularFireAuth} from '@angular/fire/compat/auth';
 import {Router} from '@angular/router';
 import {Display} from '../shared/class/display';
 import {User} from '../shared/class/user';
+import {HttpService} from '../core/http.service';
+import {ListeModel} from '../shared/models/liste.model';
 
 @Component({
   selector: 'app-login',
@@ -20,11 +22,14 @@ export class LoginPage implements OnInit {
     mdpRp: '',
   };
 
+  public liste = new ListeModel();
+
   constructor(
     public router: Router,
     public afAuth: AngularFireAuth,
     public display: Display,
-    private user: User
+    private user: User,
+    public httpService: HttpService
   ) {
   }
 
@@ -69,5 +74,11 @@ export class LoginPage implements OnInit {
       .catch(err => {
         this.display.display(err).then();
       });
+  }
+
+  async recupListe() {
+    await this.httpService.getListe().toPromise().then((results: ListeModel) => {
+      this.liste = results;
+    });
   }
 }

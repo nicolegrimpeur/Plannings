@@ -22,8 +22,9 @@
       <ion-item>
         <ion-label><b>Résidence</b></ion-label>
         <ion-select [(ngModel)]="loginData.residence" required="true">
-          <ion-select-option value="sto">Saint-Omer</ion-select-option>
-          <ion-select-option value="dr">Denis Reille</ion-select-option>
+          <ion-select-option *ngFor="let residence of liste.residences" value="{{residence.residence}}">{{residence.name}}</ion-select-option>
+<!--          <ion-select-option value="sto">Saint-Omer</ion-select-option>-->
+<!--          <ion-select-option value="dr">Denis Reille</ion-select-option>-->
         </ion-select>
       </ion-item>
 

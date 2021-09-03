@@ -24,17 +24,8 @@ export class ListePage implements OnInit {
   }
 
   async recupListe() {
-    // let liste = new ListeModel();
-
     await this.httpService.getListe().toPromise().then((results: ListeModel) => {
       this.liste = results;
     });
-
-    console.log(this.liste.residences);
-
-    for (const residence of this.liste.residences) {
-      console.log(residence.name);
-      // console.log(this.liste.residences);
-    }
   }
 }

@@ -1,4 +1,5 @@
 class Infos {
+  residence: string;
   name: string;
   liste: Array<string>;
 }
