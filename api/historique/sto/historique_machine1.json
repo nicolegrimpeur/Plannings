@@ -1,3 +1,13 @@
 {
-  "historique": []
+  "historique": [
+    {
+      "modification": "Inscription sur le créneau",
+      "dateModif": "vendredi 3 septembre 2021, 12:14:57",
+      "nom": "barrat",
+      "prenom": "nicolas",
+      "chambre": "t404",
+      "jour": "dimanche1",
+      "heure": "7H"
+    }
+  ]
 }

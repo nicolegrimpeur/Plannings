@@ -20,11 +20,11 @@ export class HttpService {
 
   addCreneau(id, residence, jour, heure, nom, prenom, chambre): Observable<any> {
     const url = this.baseLink + 'add/' + id + '+' + residence + '+' + jour + '+' + heure + '+' + nom + '+' + prenom + '+' + chambre;
-    return this.http.get<ListeModel>(url);
+    return this.http.get<any>(url);
   }
 
   removeCreneau(id, residence, jour, heure, nom, prenom, chambre): Observable<any> {
     const url = this.baseLink + 'remove/' + id + '+' + residence + '+' + jour + '+' + heure + '+' + nom + '+' + prenom + '+' + chambre;
-  return this.http.get<ListeModel>(url);
+  return this.http.get<any>(url);
 }
 }
