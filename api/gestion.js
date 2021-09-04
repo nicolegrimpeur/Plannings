@@ -3,6 +3,7 @@
 const fs = require("fs");
 module.exports = class Gestion {
   fs = '';
+
   constructor() {
   }
 
@@ -21,16 +22,17 @@ module.exports = class Gestion {
 
     // tous les créneaux possibles
     const horaires = {
-      '7H': data,
-      '8H30': data,
-      '10H': data,
-      '11H30': data,
-      '13H': data,
-      '14H30': data,
-      '16H': data,
-      '17H30': data,
-      '19H': data,
-      '20H30': data};
+      'H7': data,
+      'H8M30': data,
+      'H10': data,
+      'H11M30': data,
+      'H13M': data,
+      'H14M30': data,
+      'H16M': data,
+      'H17M30': data,
+      'H19': data,
+      'H20M30': data
+    };
 
     // tous les jours de la semaine
     const jours = {
@@ -70,8 +72,7 @@ module.exports = class Gestion {
         'name': residence,
         'liste': [id]
       });
-    }
-    else {
+    } else {
       // on vérifie que ce que l'on cherche à ajouter ne l'a pas déjà été
       if (liste['residences'][index]['liste'].find(res => res === id) === undefined) {
         liste['residences'][index]['liste'].push(id);
@@ -111,22 +112,19 @@ module.exports = class Gestion {
 
           // on renvoi une réponse positive à l'inscription
           res.status(200).send('Inscription réussi');
-        }
-        else {
+        } else {
           // quelqu'un est déjà inscris, on envoi une réponse d'erreur
-          res.status(404).send('Créneau déjà utilisé')
+          res.status(201).send('Créneau déjà utilisé')
         }
-      }
-      catch (err) {
+      } catch (err) {
         // on initialise le fichier de planning
-        this.initFile(residence, id);
+        this.initFile(id, residence);
         // on refait l'inscription
         this.addCreneau(informations, res);
       }
-    }
-    else {
+    } else {
       // il manque des informations, donc on renvoit une erreur
-      res.status(404).send('Erreur dans les informations fournies');
+      res.status(201).send('Erreur dans les informations fournies');
     }
   }
 
@@ -159,19 +157,16 @@ module.exports = class Gestion {
 
           // on renvoit une réponse positive à la suppression
           res.status(200).send('Suppression réussi');
-        }
-        else {
+        } else {
           // on renvoi une erreur
-          res.status(404).send('Il n\'y a pas d\'inscription sur ce créneau');
+          res.status(201).send('Il n\'y a pas d\'inscription sur ce créneau');
         }
-      }
-      catch (err) {
+      } catch (err) {
         // on renvoi une erreur
-        res.status(404).send('Erreur dans les informations fournies')
+        res.status(201).send('Erreur dans les informations fournies')
       }
-    }
-    else {
-      res.status(404).send('Erreur dans les informations fournies');
+    } else {
+      res.status(201).send('Erreur dans les informations fournies');
     }
   }
 
@@ -217,7 +212,15 @@ module.exports = class Gestion {
     const historique = JSON.parse(fs.readFileSync('./historique/' + residence + '/' + 'historique_' + id + '.json'));
 
     // options pour l'enregistrement de la date
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+    const options = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    };
     historique.historique.push({
       modification: modification,
       dateModif: time.toLocaleDateString('fr-FR', options),

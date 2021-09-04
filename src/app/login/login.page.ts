@@ -31,6 +31,7 @@ export class LoginPage implements OnInit {
     private user: User,
     public httpService: HttpService
   ) {
+    this.recupListe().then();
   }
 
   ngOnInit() {

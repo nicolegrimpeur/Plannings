@@ -1,18 +1,15 @@
 {
   "residences": [
     {
-      "residence": "sto",
-      "name": "Saint-Omer",
+      "residence": "dr",
+      "name": "Denis-Reille",
       "liste": [
-        "machine1",
-        "machine2",
-        "aspirateur1",
-        "aspirateur2"
+        "machine1"
       ]
     },
     {
-      "residence": "dr",
-      "name": "Denis-Reille",
+      "residence": "sto",
+      "name": "Saint-Omer",
       "liste": [
         "machine1"
       ]
