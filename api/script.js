@@ -7,12 +7,6 @@ const gestion = new Gestion();
 
 gestion.addFS(fs);
 
-
-const paths = [
-  {residence: 'sto', id: 'machine1'},
-  // {residence: 'sto', id: 'machine2'},
-];
-
 // options pour l'enregistrement de la date
 const options = {
   weekday: 'long',
@@ -34,9 +28,10 @@ reset = () => {
 
   try {
     // on parcours le tableau pour remettre à 0 les plannings inscrits
-    for (let residence in liste['residences'])
-      for (let nomPlanning of liste['residences'][residence]['liste'])
-        gestion.remiseZero(nomPlanning, residence);
+
+    for (let residence of liste['residences'])
+      for (let nomPlanning of residence['liste'])
+        gestion.remiseZero(nomPlanning, residence['residence']);
 
     // on ajoute au log le succès
     log.log.push({
@@ -58,6 +53,7 @@ reset = () => {
 }
 
 checkDate = () => {
+  console.log('cc');
   // on récupère la date actuelle
   const time = new Date(Date());
 
@@ -80,3 +76,4 @@ checkDate = () => {
 
 // lance la fonction toutes les 12 heures
 setInterval(checkDate, 43200000);
+// setInterval(checkDate, 1000);
