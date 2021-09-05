@@ -39,8 +39,6 @@ export class PlanningPage implements OnInit {
     ).toPromise()
       .then(results => {
         this.planning = results;
-        console.log('ok', results);
-        console.log(this.planning.dimanche1.H7);
       })
       .catch(err => {
         this.display.display(err).then();

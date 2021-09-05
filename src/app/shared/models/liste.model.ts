@@ -1,4 +1,4 @@
-class Infos {
+export class Infos {
   residence: string;
   name: string;
   liste: Array<string>;

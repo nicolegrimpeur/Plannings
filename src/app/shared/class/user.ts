@@ -43,10 +43,11 @@ export class User {
   }
 
   initInfos() {
-    console.log(this.userData.mail);
-    if (this.userData.mail !== undefined && this.userData.mail !== null) {
+    if (this.userData.mail !== '' && this.userData.mail !== null) {
       [this.userData.nom, this.userData.prenom, this.userData.residence, this.userData.chambre, this.userData.isRp] =
         this.userData.mail.split('+');
+      this.userData.nom = this.userData.nom.substr(0, 1).toLocaleUpperCase() + this.userData.nom.substr(1);
+      this.userData.prenom = this.userData.prenom.substr(0, 1).toLocaleUpperCase() + this.userData.prenom.substr(1);
     }
   }
 

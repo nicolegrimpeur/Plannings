@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from '../shared/class/user';
 import {HttpService} from '../core/http.service';
-import {ListeModel} from '../shared/models/liste.model';
+import {Infos, ListeModel} from '../shared/models/liste.model';
 
 @Component({
   selector: 'app-liste',
@@ -11,20 +11,29 @@ import {ListeModel} from '../shared/models/liste.model';
 })
 export class ListePage implements OnInit {
   public liste = new ListeModel();
+  public residence = new Infos();
 
   constructor(
     public user: User,
     public httpService: HttpService
   ) {
-    this.recupListe().then();
   }
 
   ngOnInit() {
   }
 
+  ionViewWillEnter() {
+    this.recupListe().then();
+  }
+
   async recupListe() {
     await this.httpService.getListe().toPromise().then((results: ListeModel) => {
       this.liste = results;
+      this.initResidence();
     });
+  }
+
+  initResidence() {
+    this.residence = this.liste.residences.find(res => res.residence === this.user.userData.residence);
   }
 }
