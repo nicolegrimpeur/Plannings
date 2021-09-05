@@ -67,7 +67,6 @@ export class PlanningPage implements OnInit {
           this.planning = results;
         })
         .catch(err => {
-          console.log(err);
           this.display.display(err).then();
         });
     }
