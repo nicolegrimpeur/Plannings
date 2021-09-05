@@ -41,9 +41,7 @@ export class HttpService {
   }
 
   initPlanning(id, residence) {
-    console.log(id, residence);
     const url = this.baseLink + 'init/' + residence + '/' + id;
-    console.log(url);
     return this.http.get<any>(url);
   }
 }

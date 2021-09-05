@@ -26,6 +26,10 @@ export class HistoriquePage implements OnInit {
     this.getHistorique();
   }
 
+  ionViewWillLeave() {
+    this.user.deleteCurrentPage();
+  }
+
   getHistorique() {
     if (this.user.userData.currentPage !== '') {
       this.httpService.getHistorique(

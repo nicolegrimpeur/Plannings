@@ -11,8 +11,9 @@ import {PlanningModel} from '../shared/models/planning.model';
 })
 export class PlanningPage implements OnInit {
   public planning: PlanningModel;
-  public jours = [];
-  public heures: [
+  public jours = [''];
+  public heures = [
+    '',
     '7H -> 8H30',
     '8H30 -> 10H',
     '10H -> 11H30',
@@ -30,12 +31,13 @@ export class PlanningPage implements OnInit {
     private httpService: HttpService,
     private display: Display
   ) {
-    console.log(user.userData.currentPage);
+    this.initJours();
     // this.addCreneau('dimanche1', 'H10');
+    console.log(this.jours);
+    this.ngOnInit();
   }
 
   ngOnInit() {
-    this.initJours();
   }
 
   ionViewDidEnter() {
