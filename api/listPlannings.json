@@ -11,7 +11,10 @@
       "residence": "sto",
       "name": "Saint-Omer",
       "liste": [
-        "machine1"
+        "machine1",
+        "Machine2",
+        "machine3",
+        "mach"
       ]
     }
   ]

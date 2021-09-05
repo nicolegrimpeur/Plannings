@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {User} from '../shared/class/user';
 import {HttpService} from '../core/http.service';
 import {Infos, ListeModel} from '../shared/models/liste.model';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-liste',
@@ -15,7 +16,8 @@ export class ListePage implements OnInit {
 
   constructor(
     public user: User,
-    public httpService: HttpService
+    public httpService: HttpService,
+    public alertController: AlertController
   ) {
   }
 
@@ -35,5 +37,35 @@ export class ListePage implements OnInit {
 
   initResidence() {
     this.residence = this.liste.residences.find(res => res.residence === this.user.userData.residence);
+  }
+
+  async alert() {
+    const alert = await this.alertController.create({
+      inputs: [
+        {
+          name: 'nom',
+          type: 'text',
+          placeholder: 'Nom du planning'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Annuler',
+          role: 'cancel'
+        },
+        {
+          text: 'Ajouter',
+          handler: data => {
+            this.addPlanning(data.nom);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  addPlanning(id) {
+    this.httpService.initPlanning(id, this.user.userData.residence);
   }
 }

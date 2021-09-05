@@ -39,4 +39,9 @@ export class HttpService {
     const url = this.baseLink + 'remove/' + id + '+' + residence + '+' + jour + '+' + heure + '+' + nom + '+' + prenom + '+' + chambre;
     return this.http.get<any>(url);
   }
+
+  initPlanning(id, residence) {
+    const url = this.baseLink + 'init/' + residence + '/' + id;
+    return this.http.get<any>(url);
+  }
 }
