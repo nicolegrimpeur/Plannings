@@ -56,7 +56,9 @@ export class ListePage implements OnInit {
         {
           text: 'Ajouter',
           handler: data => {
-            this.addPlanning(data.nom);
+            if (data.nom !== '') {
+              this.addPlanning(data.nom);
+            }
           }
         }
       ]
@@ -66,6 +68,7 @@ export class ListePage implements OnInit {
   }
 
   addPlanning(id) {
-    this.httpService.initPlanning(id, this.user.userData.residence);
+    this.httpService.initPlanning(id, this.user.userData.residence).toPromise().then();
+    // this.ngOnInit();
   }
 }

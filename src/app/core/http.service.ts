@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {ListeModel} from '../shared/models/liste.model';
 import {PlanningModel} from '../shared/models/planning.model';
-import {HistoriqueModel} from "../shared/models/historique.model";
+import {HistoriqueModel} from '../shared/models/historique.model';
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +41,9 @@ export class HttpService {
   }
 
   initPlanning(id, residence) {
+    console.log(id, residence);
     const url = this.baseLink + 'init/' + residence + '/' + id;
+    console.log(url);
     return this.http.get<any>(url);
   }
 }

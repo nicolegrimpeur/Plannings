@@ -55,7 +55,7 @@ module.exports = class Gestion {
     this.addListe(id, residence);
 
     // si la fonction a été appelé via requête http
-    if (res !== undefined) res.status(200).send('ok');
+    if (res !== undefined) res.status(200).json('ok');
   }
 
   // ajoute le planning à la liste de planning
