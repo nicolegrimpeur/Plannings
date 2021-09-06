@@ -1,4 +1,31 @@
-ion-col {
+table {
+  @media (max-width: 700px) {
+    transform: rotate(90deg);
+    margin-top: 20vh;
+    margin-left: -23vw;
+  }
+}
+
+th {
   border: solid 1px grey;
 
+
+  @media (max-width: 700px) {
+    font-size: 12px;
+    height: 3vmax;
+    width: 5vmin;
+  }
+  @media (min-width: 700px) {
+    height: 8vmin;
+    width: 12vmax;
+  }
+
 }
+
+ion-grid {
+  //@media (max-width: 600px) {
+  //  transform: rotate(90deg);
+  //  margin-top: 10vh;
+  //}
+}
+
