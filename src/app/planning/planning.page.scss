@@ -1,31 +1,43 @@
-table {
-  @media (max-width: 700px) {
-    transform: rotate(90deg);
-    margin-top: 20vh;
-    margin-left: -23vw;
-  }
-}
+//table {
+//  @media (max-width: 750px) {
+//    //transform: rotate(90deg);
+//    //margin-top: 18vh;
+//    //margin-left: -23vw;
+//  }
+//}
+////
+////tr {
+////  @media (max-width: 750px) {
+////    height: 9%;
+////    width: 100%;
+////  }
+////}
+//
+//th {
+//  border: solid 1px grey;
+//
+//
+//  //@media (max-width: 750px) {
+//    //font-size: 12px;
+//    //height: 9vw;
+//    //width: 5vh;
+//  //}
+//  //@media (min-width: 750px) {
+//    height: 8vmin;
+//    width: 12vmax;
+//  //}
+//
+//}
+//
+//ion-grid {
+//  //@media (max-width: 600px) {
+//  //  transform: rotate(90deg);
+//  //  margin-top: 10vh;
+//  //}
+//}
 
-th {
+ion-col {
   border: solid 1px grey;
-
-
-  @media (max-width: 700px) {
-    font-size: 12px;
-    height: 3vmax;
-    width: 5vmin;
-  }
-  @media (min-width: 700px) {
-    height: 8vmin;
-    width: 12vmax;
-  }
-
+  height: 8vmin;
+  width: 12vmax;
 }
-
-ion-grid {
-  //@media (max-width: 600px) {
-  //  transform: rotate(90deg);
-  //  margin-top: 10vh;
-  //}
-}
-

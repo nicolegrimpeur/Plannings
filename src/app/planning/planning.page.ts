@@ -3,6 +3,7 @@ import {User} from '../shared/class/user';
 import {HttpService} from '../core/http.service';
 import {Display} from '../shared/class/display';
 import {PlanningModel} from '../shared/models/planning.model';
+import {Platform} from '@ionic/angular';
 
 @Component({
   selector: 'app-planning',
@@ -10,30 +11,36 @@ import {PlanningModel} from '../shared/models/planning.model';
   styleUrls: ['./planning.page.scss'],
 })
 export class PlanningPage implements OnInit {
-  public planning: PlanningModel;
+  public planning = new PlanningModel();
   public jours = [''];
   public heures = [
     '',
-    '7H->8H30',
-    '8H30->10H',
-    '10H->11H30',
-    '11H30->13H',
-    '13H->14H30',
-    '14H30->16H',
-    '16H->17H30',
-    '17H30->19H',
-    '19H->20H30',
-    '20H30->22H',
+    '7H -> 8H30',
+    '8H30 -> 10H',
+    '10H -> 11H30',
+    '11H30 -> 13H',
+    '13H -> 14H30',
+    '14H30 -> 16H',
+    '16H -> 17H30',
+    '17H30 -> 19H',
+    '19H -> 20H30',
+    '20H30 -> 22H',
   ];
+  public mobile = this.platform.platforms().findIndex(res => res === 'mobile') !== -1;
+  public currentDay = 1;
 
   constructor(
     public user: User,
     private httpService: HttpService,
-    private display: Display
+    private display: Display,
+    public platform: Platform
   ) {
     this.initJours();
     // this.addCreneau('dimanche1', 'H10');
     console.log(this.jours);
+    console.log(platform.platforms());
+    console.log(this.mobile);
+    console.log(this.planning[this.currentDay]);
     this.ngOnInit();
   }
 
@@ -50,7 +57,7 @@ export class PlanningPage implements OnInit {
 
   initJours() {
     const time = new Date(new Date().setDate(new Date().getDate() - new Date(Date.now()).getDay()));
-    const options = {weekday: 'long', day: 'numeric', month: 'long'};;
+    const options = {weekday: 'long', day: 'numeric', month: 'long'};
     let tmp;
 
     for (let jour = 0; jour <= 7; jour++) {
@@ -67,6 +74,7 @@ export class PlanningPage implements OnInit {
       ).toPromise()
         .then(results => {
           this.planning = results;
+          console.log(this.planning.dimanche1.H7.chambre);
         })
         .catch(err => {
           this.display.display(err).then();

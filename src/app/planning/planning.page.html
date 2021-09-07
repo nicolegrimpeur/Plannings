@@ -10,10 +10,24 @@
 </ion-header>
 
 <ion-content>
-  <table>
-    <tr *ngFor="let heure of heures">
-      <th *ngFor="let jour of jours">{{(heure === '') ? jour : ((jour === '') ? heure : '')}}</th>
-    </tr>
-  </table>
+  <ion-grid *ngIf="!mobile">
+    <ion-row *ngFor="let heure of heures">
+      <ion-col *ngFor="let jour of jours">{{(heure === '') ? jour : ((jour === '') ? heure : '')}}</ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid *ngIf="mobile">
+    <ion-row *ngFor="let creneau of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">
+      <ion-col>
+        {{heures[creneau]}}
+      </ion-col>
+      <ion-col>
+        {{(heures[creneau] === '') ? jours[currentDay] : (planning[currentDay] !== undefined) ? planning[currentDay][creneau]['chambre'] : ''}}
+      </ion-col>
+    </ion-row>
+    <ion-row *ngFor="let creneau of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]">
+
+    </ion-row>
+  </ion-grid>
 
 </ion-content>
