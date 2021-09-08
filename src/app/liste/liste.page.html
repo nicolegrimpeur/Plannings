@@ -42,7 +42,7 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card *ngIf="residence !== undefined && user.userData.isRp">
+  <ion-card *ngIf="residence !== undefined && user.userData.isRp === 'true'">
     <ion-card-header>
       <ion-card-title>{{'Historique ' + residence.name + ' :'}}</ion-card-title>
     </ion-card-header>
@@ -59,8 +59,8 @@
   </ion-card>
 
   <ion-button expand="block" color="medium"
-              *ngIf="user.userData.isRp" (click)="alert()">
-    Ajouter un planning
+              *ngIf="user.userData.isRp === 'true'" (click)="alert()">
+  Ajouter un planning
   </ion-button>
 
   <ion-item-divider></ion-item-divider>

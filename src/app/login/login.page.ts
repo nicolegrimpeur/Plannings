@@ -47,34 +47,43 @@ export class LoginPage implements OnInit {
       ((this.loginData.mdpRp === 'Hell0Rps') ? 'true' : 'false') +
       '+planning@all.fr';
 
-    const password = 'f355bcd8af0541b815c00eda1360a30024c2ae8bfc53ead1073bf29b7589cc64';
+    // si le mot de passe est incorrect on bloque la connexion
+    if (this.loginData.mdpRp !== '' && this.loginData.mdpRp !== 'Hell0Rps') {
+      this.display.display('Mauvais mot de passe').then();
+      this.loginData.mdpRp = '';
+    } else {
+      const password = 'f355bcd8af0541b815c00eda1360a30024c2ae8bfc53ead1073bf29b7589cc64';
 
-    this.afAuth.fetchSignInMethodsForEmail(mail)
-      .then(res => {
-        // on check si l'email est connecté ou non avec un provider
-        if (res.length === 1) { // si le mail existe, on l'envoi sur la page de login
-          this.afAuth.signInWithEmailAndPassword(mail, password)
-            .then(auth => {
-              this.router.navigateByUrl('/').then();
-            })
-            .catch(err => {
-              this.display.display(err).then();
-            });
-        } else { // sinon on créé un compte
-          this.afAuth.createUserWithEmailAndPassword(mail, password)
-            .then(auth => {
-              // on redirige l'utilisateur sur la page d'accueil
-              this.router.navigateByUrl('/').then();
-            })
-            .catch(err => {
-              // sinon on affiche une erreur
-              this.display.display(err).then();
-            });
-        }
-      })
-      .catch(err => {
-        this.display.display(err).then();
-      });
+      // on regarde si un compte existe déjà avec cette email
+      this.afAuth.fetchSignInMethodsForEmail(mail)
+        .then(res => {
+          // si oui on connecte l'utilisateur
+          if (res.length === 1) {
+            this.afAuth.signInWithEmailAndPassword(mail, password)
+              .then(auth => {
+                // on redirige l'utilisateur sur la page d'accueil
+                this.router.navigateByUrl('/').then();
+              })
+              .catch(err => {
+                // sinon on affiche une erreur
+                this.display.display(err).then();
+              });
+          } else { // sinon on créé un compte
+            this.afAuth.createUserWithEmailAndPassword(mail, password)
+              .then(auth => {
+                // on redirige l'utilisateur sur la page d'accueil
+                this.router.navigateByUrl('/').then();
+              })
+              .catch(err => {
+                // sinon on affiche une erreur
+                this.display.display(err).then();
+              });
+          }
+        })
+        .catch(err => {
+          this.display.display(err).then();
+        });
+    }
   }
 
   async recupListe() {

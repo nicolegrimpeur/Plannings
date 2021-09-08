@@ -64,6 +64,7 @@ export class ListePage implements OnInit {
       ]
     });
 
+    console.log(this.user.userData.isRp);
     await alert.present();
   }
 
