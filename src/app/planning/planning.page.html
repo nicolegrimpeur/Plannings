@@ -26,7 +26,7 @@
       <ion-col style="height: 7vh">
         {{heures[creneau]}}
       </ion-col>
-      <ion-col style="height: 7vh">
+      <ion-col style="height: 7vh" (click)="clickEvent(this.getElemPlanning(planning, currentDay), this.getElemPlanning(planning[this.getElemPlanning(planning, currentDay)], creneau-1))">
         {{(heures[creneau] === '') ? jours[currentDay+1] : (planning[this.getElemPlanning(planning, currentDay)] !== undefined) ? planning[this.getElemPlanning(planning, currentDay)][this.getElemPlanning(planning[this.getElemPlanning(planning, currentDay)], creneau-1)]['chambre'] : ''}}
       </ion-col>
     </ion-row>

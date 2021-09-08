@@ -28,6 +28,11 @@ export class PlanningPage implements OnInit {
   ];
   public mobile = this.platform.platforms().findIndex(res => res === 'mobile') !== -1;
   public currentDay = 0;
+  private infosCreneau = {
+    modification: '',
+    jour: '',
+    heure: ''
+  };
 
   constructor(
     public user: User,
@@ -102,6 +107,29 @@ export class PlanningPage implements OnInit {
     return tmp;
   }
 
+  clickEvent(jour, heure) {
+    if (this.planning[jour][heure].nom === '') {
+      if (this.infosCreneau.modification === 'add' && this.infosCreneau.jour === jour && this.infosCreneau.heure === heure) {
+        this.addCreneau(jour, heure);
+      }
+      else {
+        this.infosCreneau.modification = 'add';
+        this.infosCreneau.jour = jour;
+        this.infosCreneau.heure = heure;
+      }
+    }
+    if (this.planning[jour][heure].nom === this.user.userData.nom) {
+      if ((this.infosCreneau.modification === 'remove' && this.infosCreneau.jour === jour && this.infosCreneau.heure === heure)) {
+        this.removeCreneau(jour, heure);
+      }
+      else {
+        this.infosCreneau.modification = 'remove';
+        this.infosCreneau.jour = jour;
+        this.infosCreneau.heure = heure;
+      }
+    }
+  }
+
   addCreneau(jour, heure) {
     this.httpService.addCreneau(
       this.user.userData.currentPage,
@@ -114,6 +142,7 @@ export class PlanningPage implements OnInit {
     ).toPromise()
       .then(results => {
         console.log(results);
+        this.ionViewDidEnter();
       })
       .catch(err => {
         console.log(err);
@@ -126,6 +155,7 @@ export class PlanningPage implements OnInit {
             this.display.display(err.statusText).then();
           }
         }
+        this.ionViewDidEnter();
       });
   }
 
@@ -140,7 +170,21 @@ export class PlanningPage implements OnInit {
       this.user.userData.chambre
     ).toPromise().then(results => {
       console.log(results);
-    });
+      this.ionViewDidEnter();
+    })
+      .catch(err => {
+        console.log(err);
+        if (err.status === 200) {
+          this.display.display({code: err.error.text, color: 'success'}).then();
+        } else {
+          if (err.error.text !== undefined) {
+            this.display.display(err.error.text).then();
+          } else {
+            this.display.display(err.statusText).then();
+          }
+        }
+        this.ionViewDidEnter();
+      });
   }
 
   // événement pour rafraichir la page

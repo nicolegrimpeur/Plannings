@@ -69,7 +69,7 @@ export class ListePage implements OnInit {
 
   addPlanning(id) {
     this.httpService.initPlanning(id, this.user.userData.residence).toPromise().then();
-    // this.ngOnInit();
+    this.ionViewWillEnter();
   }
 
   // événement pour rafraichir la page
