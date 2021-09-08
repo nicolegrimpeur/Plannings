@@ -63,25 +63,16 @@ export class PlanningPage implements OnInit {
 
   async getPlanning() {
     if (this.user.userData.currentPage !== '') {
-      console.log('getPlanning');
       await this.httpService.getPlanning(
         this.user.userData.currentPage,
         this.user.userData.residence
       ).toPromise()
         .then(results => {
           this.planning = results;
-          console.log('réussite');
-          console.log(this.planning.dimanche1.H7.chambre);
-          console.log(this.planning[this.getElemPlanning(this.planning, this.currentDay)]);
-          console.log(this.getElemPlanning(this.planning[this.getElemPlanning(this.planning, this.currentDay)], 0));
-          console.log(this.planning[this.getElemPlanning(this.planning, this.currentDay)][this.getElemPlanning(this.planning[this.getElemPlanning(this.planning, this.currentDay)], 0)]['chambre']);
-          console.log(this.planning[this.getElemPlanning(this.planning, this.currentDay)][this.getElemPlanning(this.planning[this.getElemPlanning(this.planning, this.currentDay)], 0)]);
         })
         .catch(err => {
           this.display.display(err).then();
         });
-      this.log();
-
     }
   }
 
