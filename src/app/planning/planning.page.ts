@@ -53,6 +53,11 @@ export class PlanningPage implements OnInit {
 
   ionViewWillLeave() {
     this.user.deleteCurrentPage();
+    this.infosCreneau = {
+      modification: '',
+      jour: '',
+      heure: ''
+    };
   }
 
   initJours() {

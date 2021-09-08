@@ -24,7 +24,7 @@ export class Display {
     // création du toast
     const toast = await this.toastController.create({
       message: strMessage,
-      duration: 4000,
+      duration: 3000,
       position: 'top',
       color: couleur
     });

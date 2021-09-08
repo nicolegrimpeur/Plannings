@@ -89,6 +89,15 @@
       "chambre": "t404",
       "jour": "dimanche1",
       "heure": "H10"
+    },
+    {
+      "modification": "Inscription sur le créneau",
+      "dateModif": "mercredi 8 septembre 2021, 18:54:17",
+      "nom": "Barrat",
+      "prenom": "Nicolas",
+      "chambre": "t404",
+      "jour": "dimanche1",
+      "heure": "H8M30"
     }
   ]
 }
