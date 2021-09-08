@@ -48,6 +48,7 @@ export class User {
         this.userData.mail.split('+');
       this.userData.nom = this.userData.nom.substr(0, 1).toLocaleUpperCase() + this.userData.nom.substr(1);
       this.userData.prenom = this.userData.prenom.substr(0, 1).toLocaleUpperCase() + this.userData.prenom.substr(1);
+      this.userData.chambre = this.userData.chambre.substr(0, 1).toLocaleUpperCase() + this.userData.chambre.substr(1);
     }
   }
 

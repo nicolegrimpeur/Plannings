@@ -41,7 +41,6 @@ export class PlanningPage implements OnInit {
     public platform: Platform
   ) {
     this.initJours();
-    // this.addCreneau('dimanche1', 'H10');
   }
 
   ngOnInit() {
@@ -94,11 +93,6 @@ export class PlanningPage implements OnInit {
     this.currentDay--;
   }
 
-  log() {
-    console.log('log', this.planning);
-    console.log('log', this.planning[this.getElemPlanning(this.planning, this.currentDay)][this.getElemPlanning(this.planning[this.getElemPlanning(this.planning, this.currentDay)], 0)]);
-  }
-
   getElemPlanning(planning, nb) {
     let compteur = 0;
     let tmp;
@@ -123,7 +117,7 @@ export class PlanningPage implements OnInit {
         this.infosCreneau.heure = heure;
       }
     }
-    if (this.planning[jour][heure].nom === this.user.userData.nom) {
+    else if (this.planning[jour][heure].nom === this.user.userData.nom) {
       if ((this.infosCreneau.modification === 'remove' && this.infosCreneau.jour === jour && this.infosCreneau.heure === heure)) {
         this.removeCreneau(jour, heure);
       }
