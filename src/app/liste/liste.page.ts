@@ -71,4 +71,14 @@ export class ListePage implements OnInit {
     this.httpService.initPlanning(id, this.user.userData.residence).toPromise().then();
     // this.ngOnInit();
   }
+
+  // événement pour rafraichir la page
+  doRefresh(event) {
+    setTimeout(() => {
+      // permet de terminer l'animation
+      event.target.complete();
+      // rafraichi le json
+      this.ionViewWillEnter();
+    }, 1000);
+  }
 }

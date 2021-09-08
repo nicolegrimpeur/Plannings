@@ -10,6 +10,11 @@
 </ion-header>
 
 <ion-content>
+  <!-- slide refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <ion-grid *ngIf="!mobile">
     <ion-row *ngFor="let heure of heures">
       <ion-col *ngFor="let jour of jours">{{(heure === '') ? jour : ((jour === '') ? heure : '')}}</ion-col>
@@ -18,16 +23,17 @@
 
   <ion-grid *ngIf="mobile">
     <ion-row *ngFor="let creneau of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">
-      <ion-col>
+      <ion-col style="height: 7vh">
         {{heures[creneau]}}
       </ion-col>
-      <ion-col>
-        {{(heures[creneau] === '') ? jours[currentDay] : (planning[currentDay] !== undefined) ? planning[currentDay][creneau]['chambre'] : ''}}
+      <ion-col style="height: 7vh">
+        {{(heures[creneau] === '') ? jours[currentDay+1] : (planning[this.getElemPlanning(planning, currentDay)] !== undefined) ? planning[this.getElemPlanning(planning, currentDay)][this.getElemPlanning(planning[this.getElemPlanning(planning, currentDay)], creneau-1)]['chambre'] : ''}}
       </ion-col>
-    </ion-row>
-    <ion-row *ngFor="let creneau of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]">
-
     </ion-row>
   </ion-grid>
 
+  <div>
+    <ion-icon name="arrow-back-circle" (click)="moinsCurrentDay()"></ion-icon>
+    <ion-icon name="arrow-forward-circle" (click)="plusCurrentDay()"></ion-icon>
+  </div>
 </ion-content>

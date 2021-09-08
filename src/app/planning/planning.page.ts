@@ -27,7 +27,7 @@ export class PlanningPage implements OnInit {
     '20H30 -> 22H',
   ];
   public mobile = this.platform.platforms().findIndex(res => res === 'mobile') !== -1;
-  public currentDay = 1;
+  public currentDay = 0;
 
   constructor(
     public user: User,
@@ -37,18 +37,13 @@ export class PlanningPage implements OnInit {
   ) {
     this.initJours();
     // this.addCreneau('dimanche1', 'H10');
-    console.log(this.jours);
-    console.log(platform.platforms());
-    console.log(this.mobile);
-    console.log(this.planning[this.currentDay]);
-    this.ngOnInit();
   }
 
   ngOnInit() {
   }
 
   ionViewDidEnter() {
-    this.getPlanning();
+    this.getPlanning().then();
   }
 
   ionViewWillLeave() {
@@ -66,20 +61,54 @@ export class PlanningPage implements OnInit {
     }
   }
 
-  getPlanning() {
+  async getPlanning() {
     if (this.user.userData.currentPage !== '') {
-      this.httpService.getPlanning(
+      console.log('getPlanning');
+      await this.httpService.getPlanning(
         this.user.userData.currentPage,
         this.user.userData.residence
       ).toPromise()
         .then(results => {
           this.planning = results;
+          console.log('réussite');
           console.log(this.planning.dimanche1.H7.chambre);
+          console.log(this.planning[this.getElemPlanning(this.planning, this.currentDay)]);
+          console.log(this.getElemPlanning(this.planning[this.getElemPlanning(this.planning, this.currentDay)], 0));
+          console.log(this.planning[this.getElemPlanning(this.planning, this.currentDay)][this.getElemPlanning(this.planning[this.getElemPlanning(this.planning, this.currentDay)], 0)]['chambre']);
+          console.log(this.planning[this.getElemPlanning(this.planning, this.currentDay)][this.getElemPlanning(this.planning[this.getElemPlanning(this.planning, this.currentDay)], 0)]);
         })
         .catch(err => {
           this.display.display(err).then();
         });
+      this.log();
+
     }
+  }
+
+  plusCurrentDay() {
+    this.currentDay++;
+  }
+
+  moinsCurrentDay() {
+    this.currentDay--;
+  }
+
+  log() {
+    console.log('log', this.planning);
+    console.log('log', this.planning[this.getElemPlanning(this.planning, this.currentDay)][this.getElemPlanning(this.planning[this.getElemPlanning(this.planning, this.currentDay)], 0)]);
+  }
+
+  getElemPlanning(planning, nb) {
+    let compteur = 0;
+    let tmp;
+
+    for (const chambre in planning) {
+      if (compteur <= nb) {
+        tmp = chambre;
+      }
+      compteur++;
+    }
+    return tmp;
   }
 
   addCreneau(jour, heure) {
@@ -121,5 +150,15 @@ export class PlanningPage implements OnInit {
     ).toPromise().then(results => {
       console.log(results);
     });
+  }
+
+  // événement pour rafraichir la page
+  doRefresh(event) {
+    setTimeout(() => {
+      // permet de terminer l'animation
+      event.target.complete();
+      // rafraichi le json
+      this.ionViewDidEnter();
+    }, 1000);
   }
 }
