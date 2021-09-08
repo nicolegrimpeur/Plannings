@@ -4,6 +4,9 @@ const fs = require("fs");
 module.exports = class Gestion {
   fs = '';
 
+  // path = '/home/ubuntu/sites/plannings/api/';
+  path = './';
+
   constructor() {
   }
 
@@ -47,7 +50,7 @@ module.exports = class Gestion {
     };
 
     // on écrit le fichier de planning avec ces données de base
-    fs.writeFileSync('./plannings/' + residence + '/' + id + '.json', JSON.stringify(jours, null, 2));
+    fs.writeFileSync(this.path + 'plannings/' + residence + '/' + id + '.json', JSON.stringify(jours, null, 2));
 
     // on initialise le système d'historique correspondant à ce planning
     this.initHistorique(id, residence);
@@ -60,7 +63,7 @@ module.exports = class Gestion {
 
   // ajoute le planning à la liste de planning
   addListe(id, residence) {
-    const liste = JSON.parse(fs.readFileSync('./listPlannings.json'));
+    const liste = JSON.parse(fs.readFileSync(this.path + 'listPlannings.json'));
 
     // on récupère l'index de la position de la résidence dans la liste
     let index = liste['residences'].findIndex(res => res.residence === residence);
@@ -80,7 +83,7 @@ module.exports = class Gestion {
     }
 
     // on réécrit le fichier
-    fs.writeFileSync('./listPlannings.json', JSON.stringify(liste, null, 2));
+    fs.writeFileSync(this.path + 'listPlannings.json', JSON.stringify(liste, null, 2));
   }
 
   // ajoute un créneau
@@ -95,7 +98,7 @@ module.exports = class Gestion {
       // si le try passe, le fichier existe, sinon on le créé
       try {
         // on récupère le planning
-        const planning = JSON.parse(fs.readFileSync('./plannings/' + residence + '/' + id + '.json'));
+        const planning = JSON.parse(fs.readFileSync(this.path + 'plannings/' + residence + '/' + id + '.json'));
 
         // on vérifie qu'il n'y a pas déjà quelqu'un sur ce créneau
         if (planning[jour][heure].nom === '') {
@@ -105,7 +108,7 @@ module.exports = class Gestion {
           planning[jour][heure].chambre = chambre;
 
           // on enregistre l'inscription
-          this.fs.writeFileSync('./plannings/' + residence + '/' + id + '.json', JSON.stringify(planning, null, 2));
+          this.fs.writeFileSync(this.path + 'plannings/' + residence + '/' + id + '.json', JSON.stringify(planning, null, 2));
 
           // on ajoute l'inscription à l'historique
           this.addHistorique('Inscription sur le créneau', id, residence, nom, prenom, chambre, jour, heure);
@@ -140,7 +143,7 @@ module.exports = class Gestion {
       // si le try passe, le fichier existe, sinon on renvoi une erreur
       try {
         // on récupère le planning
-        const planning = JSON.parse(fs.readFileSync('./plannings/' + residence + '/' + id + '.json'));
+        const planning = JSON.parse(fs.readFileSync(this.path + 'plannings/' + residence + '/' + id + '.json'));
 
         // on vérifie s'il y a quelqu'un ou pas sur ce créneau
         if (planning[jour][heure].nom !== '') {
@@ -150,7 +153,7 @@ module.exports = class Gestion {
           planning[jour][heure].chambre = '';
 
           // on enregistre les modifications
-          this.fs.writeFileSync('./plannings/' + residence + '/' + id + '.json', JSON.stringify(planning, null, 2));
+          this.fs.writeFileSync(this.path + 'plannings/' + residence + '/' + id + '.json', JSON.stringify(planning, null, 2));
 
           // on ajoute la modification à l'historique
           this.addHistorique('Suppression du créneau', id, residence, nom, prenom, chambre, jour, heure);
@@ -173,7 +176,7 @@ module.exports = class Gestion {
   // remet à 0 le planning et l'historique qui lui est associé
   remiseZero(id, residence, res) {
     // on récupère l'historique
-    const planning = JSON.parse(fs.readFileSync('./plannings/' + residence + '/' + id + '.json'));
+    const planning = JSON.parse(fs.readFileSync(this.path + 'plannings/' + residence + '/' + id + '.json'));
 
     // on déplace les données de dimanche 2 dans dimanche 1
     planning.dimanche1 = JSON.parse(JSON.stringify(planning.dimanche2));
@@ -186,7 +189,7 @@ module.exports = class Gestion {
             planning[jour][heure][data] = '';
 
     // on enregistre les modifications
-    fs.writeFileSync('./plannings/' + residence + '/' + id + '.json', JSON.stringify(planning, null, 2));
+    fs.writeFileSync(this.path + 'plannings/' + residence + '/' + id + '.json', JSON.stringify(planning, null, 2));
 
     // on réinitialise l'historique
     this.initHistorique(id, residence);
@@ -200,7 +203,7 @@ module.exports = class Gestion {
     const historique = {historique: []};
 
     // on écrit la modification
-    fs.writeFileSync('./historique/' + residence + '/' + 'historique_' + id + '.json', JSON.stringify(historique, null, 2));
+    fs.writeFileSync(this.path + 'historique/' + residence + '/' + 'historique_' + id + '.json', JSON.stringify(historique, null, 2));
   }
 
   // ajout à l'historique
@@ -209,7 +212,7 @@ module.exports = class Gestion {
     const time = new Date(Date());
 
     // on récupère l'historique
-    const historique = JSON.parse(fs.readFileSync('./historique/' + residence + '/' + 'historique_' + id + '.json'));
+    const historique = JSON.parse(fs.readFileSync(this.path + 'historique/' + residence + '/' + 'historique_' + id + '.json'));
 
     // options pour l'enregistrement de la date
     const options = {
@@ -232,6 +235,6 @@ module.exports = class Gestion {
     });
 
     // on enregistre les modifications
-    fs.writeFileSync('./historique/' + residence + '/' + 'historique_' + id + '.json', JSON.stringify(historique, null, 2));
+    fs.writeFileSync(this.path + 'historique/' + residence + '/' + 'historique_' + id + '.json', JSON.stringify(historique, null, 2));
   }
 }
