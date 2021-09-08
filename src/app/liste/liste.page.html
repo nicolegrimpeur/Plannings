@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Résidence {{(residence !== undefined) ? residence.name : ''}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- slide refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-item>
+    Nom : {{user.userData.nom}}
+  </ion-item>
+  <ion-item>
+    Prénom : {{user.userData.prenom}}
+  </ion-item>
+  <ion-item>
+    Résidence : {{user.userData.residence}}
+  </ion-item>
+  <ion-item>
+    Chambre : {{user.userData.chambre}}
+  </ion-item>
+  <ion-item>
+    isRp : {{user.userData.isRp}}
+  </ion-item>
+
+  <ion-card *ngIf="residence !== undefined">
+    <ion-card-header>
+      <ion-card-title>{{residence.name + ' :'}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col *ngFor="let planning of residence.liste">
+            <ion-button expand="block" color="medium" routerLink="/planning"
+                        (click)="user.addCurrentPage(planning)">{{planning}}</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="residence !== undefined && user.userData.isRp === 'true'">
+    <ion-card-header>
+      <ion-card-title>{{'Historique ' + residence.name + ' :'}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col *ngFor="let planning of residence.liste">
+            <ion-button expand="block" color="medium" routerLink="/historique"
+                        (click)="user.addCurrentPage(planning)">{{planning}}</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="block" color="medium"
+              *ngIf="user.userData.isRp === 'true'" (click)="alert()">
+  Ajouter un planning
+  </ion-button>
+
+  <ion-item-divider></ion-item-divider>
+
+  <ion-button expand="block" color="danger" (click)="user.logout()">
+    <ion-icon slot="start" name="log-out-outline"></ion-icon>
+    Déconnexion
+  </ion-button>
+</ion-content>

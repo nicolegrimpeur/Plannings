@@ -1,0 +1,6 @@
+{
+	"appId": "plannings.ionic.all",
+	"appName": "All Plannings",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

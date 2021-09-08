@@ -1,0 +1,19 @@
+{
+  "residences": [
+    {
+      "residence": "dr",
+      "name": "Denis-Reille",
+      "liste": [
+        "machine1"
+      ]
+    },
+    {
+      "residence": "sto",
+      "name": "Saint-Omer",
+      "liste": [
+        "machine1",
+        "machine2"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- bouton de retour en arrière -->
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="liste"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Planning {{user.userData.currentPage}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- slide refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-grid *ngIf="!mobile">
+    <ion-row *ngFor="let heure of heures">
+      <ion-col *ngFor="let jour of jours">{{(heure === '') ? jour : ((jour === '') ? heure : '')}}</ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid *ngIf="mobile">
+    <ion-row *ngFor="let creneau of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">
+      <ion-col style="height: 7vh">
+        {{heures[creneau]}}
+      </ion-col>
+      <ion-col style="height: 7vh" (click)="clickEvent(this.getElemPlanning(planning, currentDay), this.getElemPlanning(planning[this.getElemPlanning(planning, currentDay)], creneau-1))">
+        {{(heures[creneau] === '') ? jours[currentDay+1] : (planning[this.getElemPlanning(planning, currentDay)] !== undefined) ? planning[this.getElemPlanning(planning, currentDay)][this.getElemPlanning(planning[this.getElemPlanning(planning, currentDay)], creneau-1)]['chambre'] : ''}}
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div *ngIf="mobile">
+    <ion-icon name="arrow-back-circle" (click)="moinsCurrentDay()"></ion-icon>
+    <ion-icon name="arrow-forward-circle" (click)="plusCurrentDay()"></ion-icon>
+  </div>
+</ion-content>

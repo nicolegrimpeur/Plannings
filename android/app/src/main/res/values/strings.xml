@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Plannings</string>
-    <string name="title_activity_main">Plannings</string>
-    <string name="package_name">io.ionic.starter</string>
-    <string name="custom_url_scheme">io.ionic.starter</string>
+    <string name="app_name">All Plannings</string>
+    <string name="title_activity_main">All Plannings</string>
+    <string name="package_name">plannings.ionic.all</string>
+    <string name="custom_url_scheme">plannings.ionic.all</string>
 </resources>

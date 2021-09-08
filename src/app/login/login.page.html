@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Qui es-tu ?</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-item>
+        <ion-label><b>Nom</b></ion-label>
+        <ion-input [(ngModel)]="loginData.nom" type="text" autocomplete="family-name" required="true"
+                   placeholder="Entrez votre nom"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label><b>Prénom</b></ion-label>
+        <ion-input [(ngModel)]="loginData.prenom" type="text" autocomplete="name" required="true"
+                   placeholder="Entrez votre prénom"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label><b>Résidence</b></ion-label>
+        <ion-select [(ngModel)]="loginData.residence" required="true">
+          <ion-select-option *ngFor="let residence of liste.residences" value="{{residence.residence}}">{{residence.name}}</ion-select-option>
+<!--          <ion-select-option value="sto">Saint-Omer</ion-select-option>-->
+<!--          <ion-select-option value="dr">Denis Reille</ion-select-option>-->
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label><b>Chambre</b></ion-label>
+        <ion-input [(ngModel)]="loginData.chambre" type="text" required="true"
+                   placeholder="Entrez votre numéro de chambre (n'oubliez pas la lettre en fonction des résidences)"></ion-input>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label><b>Es-tu un responsable de ta résidence ?</b></ion-label>
+        <ion-select [(ngModel)]="loginData.isRp">
+          <ion-select-option value="true">Oui</ion-select-option>
+          <ion-select-option value="false">Non</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item *ngIf="loginData.isRp === 'true'">
+        <ion-label><b>Mot de passe RP</b></ion-label>
+        <ion-input [(ngModel)]="loginData.mdpRp" type="password" autocomplete="current-password" required="true"
+                   placeholder="Mot de passe"></ion-input>
+      </ion-item>
+
+      <div class="ion-padding">
+        <ion-button
+          disabled="{{!(loginData.nom !== '' && loginData.prenom !== '' && loginData.residence !== '' && loginData.chambre !== '')}}"
+          type="submit" (click)="login()" expand="block" color="tertiary">
+          OK
+        </ion-button>
+      </div>
+    </ion-card-content>
+
+  </ion-card>
+</ion-content>

@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- bouton de retour en arrière -->
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="liste"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Historique {{user.userData.currentPage}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      Pour information, dimanche1 correspond au dimanche précédent, dimanche2 au dimanche qui arrive
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngFor="let modif of historique.historique">
+    <ion-card-header>
+      <ion-card-title>
+        {{modif.dateModif}}
+      </ion-card-title>
+    </ion-card-header>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-card-content>
+            Modification : {{modif.modification}}
+          </ion-card-content>
+        </ion-col>
+        <ion-col>
+          <ion-card-content>
+            Nom : {{modif.nom}}
+          </ion-card-content>
+        </ion-col>
+        <ion-col>
+          <ion-card-content>
+            Prénom : {{modif.prenom}}
+          </ion-card-content>
+        </ion-col>
+        <ion-col>
+          <ion-card-content>
+            Chambre : {{modif.chambre}}
+          </ion-card-content>
+        </ion-col>
+        <ion-col>
+          <ion-card-content>
+            Date d'inscription : {{modif.heure + ', ' + modif.jour}}
+          </ion-card-content>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+</ion-content>

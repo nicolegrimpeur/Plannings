@@ -1,13 +1,15 @@
+// noinspection JSCheckFunctionSignatures
+
 const portHTTPS = 1080;
 
 const express = require('express');
 const fs = require('fs');
-const app = express();
-const serverHTTPS = require('http').createServer(app);
+const appHTTPS = express();
+const serverHTTPS = require('http').createServer(appHTTPS);
 
-app.use(express.static(__dirname));
+appHTTPS.use(express.static(__dirname));
 // pour l'api principalement
-app.use(function (req, res, next) {
+appHTTPS.use(function (req, res, next) {
   // site que je veux autoriser à se connecter
   res.setHeader('Access-Control-Allow-Origin', '*');
 
@@ -19,55 +21,45 @@ app.use(function (req, res, next) {
 
 const Gestion = require('./gestion');
 const gestion = new Gestion();
+const path = './';
+// const path = '/home/ubuntu/sites/plannings/api/';
 gestion.addFS(fs);
 
-app.get('/', (req, res) => {
-  res.status(200).json('coucou');
-});
-
-app.get('/plannings/add/:id', (req, res) => {
+appHTTPS.get('/plannings/add/:id', (req, res) => {
   const informations = String(req.params.id);
 
   gestion.addCreneau(informations, res);
 });
 
-app.get('/plannings/remove/:id', (req, res) => {
+appHTTPS.get('/plannings/remove/:id', (req, res) => {
   const informations = String(req.params.id);
 
   gestion.removeCreneau(informations, res);
 });
 
-app.get('/plannings/getHistorique/:id/:name', (req, res) => {
+appHTTPS.get('/plannings/getHistorique/:id/:name', (req, res) => {
   const id = String(req.params.id);
   const residence = String(req.params.name);
 
-  const historique = JSON.parse(fs.readFileSync('./historique/' + residence + '/' + 'historique_' + id + '.json'));
+  const historique = JSON.parse(fs.readFileSync(path + 'historique/' + residence + '/' + 'historique_' + id + '.json'));
   res.status(200).json(historique);
 });
 
-app.get('/plannings/getPlanning/:id/:name', (req, res) => {
+appHTTPS.get('/plannings/getPlanning/:id/:name', (req, res) => {
   const id = String(req.params.id);
   const residence = String(req.params.name);
 
-  const planning = JSON.parse(fs.readFileSync('./plannings/' + residence + '/' + id + '.json'));
+  const planning = JSON.parse(fs.readFileSync(path + 'plannings/' + residence + '/' + id + '.json'));
   res.status(200).json(planning);
 });
 
-app.get('/plannings/:id', (req, res) => {
-  console.log('infos');
-  const informations = String(req.params.id);
-
-  let id, nom, prenom, residence, chambre;
-  [id, nom, prenom, residence, chambre] = informations.split('+');
-
-  const planning = require('./plannings/' + residence + '/' + id + '.json');
-  // const textes = require('/home/rps/infosApp/' + id + '.json');
-  // res.status(200).json(textes);
-  res.status(200).json(planning);
+appHTTPS.get('/plannings/getListPlannings', (req, res) => {
+  const liste = JSON.parse(fs.readFileSync(path + 'listPlannings.json'));
+  res.status(200).json(liste);
 });
 
 // initialisation du json d'un planning
-app.get('/plannings/init/:name/:id', (req, res) => {
+appHTTPS.get('/plannings/init/:name/:id', (req, res) => {
   const id = String(req.params.id);
   const residence = String(req.params.name);
 
@@ -75,7 +67,7 @@ app.get('/plannings/init/:name/:id', (req, res) => {
 });
 
 // remise à zéro du planning
-app.get('/plannings/zero/:name/:id', (req, res) => {
+appHTTPS.get('/plannings/zero/:name/:id', (req, res) => {
   const id = String(req.params.id);
   const residence = String(req.params.name);
 
@@ -84,4 +76,4 @@ app.get('/plannings/zero/:name/:id', (req, res) => {
 
 serverHTTPS.listen(portHTTPS);
 
-console.log("let's go https port : " + portHTTPS);
+console.log("let's go http port : " + portHTTPS);
