@@ -113,10 +113,10 @@ export class PlanningPage implements OnInit {
           this.addCreneau(jour, heure);
           this.removeConfirm();
         } else {
+          this.removeConfirm();
           this.infosCreneau.modification = 'add';
           this.infosCreneau.jour = jour;
           this.infosCreneau.heure = heure;
-          this.removeConfirm();
           this.addConfirm(idJour, idHeure);
         }
       } else if (this.planning[jour][heure].nom === this.user.userData.nom) {
@@ -124,10 +124,10 @@ export class PlanningPage implements OnInit {
           this.removeCreneau(jour, heure);
           this.removeConfirm();
         } else {
+          this.removeConfirm();
           this.infosCreneau.modification = 'remove';
           this.infosCreneau.jour = jour;
           this.infosCreneau.heure = heure;
-          this.removeConfirm();
           this.addConfirm(idJour, idHeure);
         }
       }
@@ -149,6 +149,12 @@ export class PlanningPage implements OnInit {
   }
 
   removeConfirm() {
+    this.infosCreneau = {
+      modification: '',
+      jour: '',
+      heure: ''
+    };
+
     for (const row of Array.from(document.getElementsByClassName('row'))) {
       for (const col of Array.from(row.children)) {
         col.setAttribute('style', 'background-color: initial;');
