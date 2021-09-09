@@ -107,24 +107,24 @@ export class PlanningPage implements OnInit {
   }
 
   clickEvent(jour, heure) {
-    if (this.planning[jour][heure].nom === '') {
-      if (this.infosCreneau.modification === 'add' && this.infosCreneau.jour === jour && this.infosCreneau.heure === heure) {
-        this.addCreneau(jour, heure);
-      }
-      else {
-        this.infosCreneau.modification = 'add';
-        this.infosCreneau.jour = jour;
-        this.infosCreneau.heure = heure;
-      }
-    }
-    else if (this.planning[jour][heure].nom === this.user.userData.nom) {
-      if ((this.infosCreneau.modification === 'remove' && this.infosCreneau.jour === jour && this.infosCreneau.heure === heure)) {
-        this.removeCreneau(jour, heure);
-      }
-      else {
-        this.infosCreneau.modification = 'remove';
-        this.infosCreneau.jour = jour;
-        this.infosCreneau.heure = heure;
+    console.log(jour, heure);
+    if (jour !== undefined && heure !== undefined) {
+      if (this.planning[jour][heure].nom === '') {
+        if (this.infosCreneau.modification === 'add' && this.infosCreneau.jour === jour && this.infosCreneau.heure === heure) {
+          this.addCreneau(jour, heure);
+        } else {
+          this.infosCreneau.modification = 'add';
+          this.infosCreneau.jour = jour;
+          this.infosCreneau.heure = heure;
+        }
+      } else if (this.planning[jour][heure].nom === this.user.userData.nom) {
+        if ((this.infosCreneau.modification === 'remove' && this.infosCreneau.jour === jour && this.infosCreneau.heure === heure)) {
+          this.removeCreneau(jour, heure);
+        } else {
+          this.infosCreneau.modification = 'remove';
+          this.infosCreneau.jour = jour;
+          this.infosCreneau.heure = heure;
+        }
       }
     }
   }
