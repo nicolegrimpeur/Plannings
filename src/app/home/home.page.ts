@@ -25,6 +25,8 @@ export class HomePage {
         this.route.navigate(['/home']).then();
       } else if (this.route.url === '/planning') {  // si on est sur la page de liste on va sur la page principale
         this.route.navigate(['/liste']).then();
+      } else if (this.route.url === '/historique') {  // si on est sur la page de liste on va sur la page principale
+        this.route.navigate(['/liste']).then();
       } else {  // sinon c'est que l'on est sur la page de login donc on peut quitte l'appli
         App.exitApp();
       }
