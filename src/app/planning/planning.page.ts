@@ -140,11 +140,14 @@ export class PlanningPage implements OnInit {
   addConfirm(idJour, idHeure) {
     const col = document.getElementsByClassName('row')[idHeure].children[idJour];
 
+    // change la couleur de la case selon le theme de l'appareil
+    const base = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+
     if (this.infosCreneau.modification === 'add' && col.getAttribute('style') === 'background-color: initial;') {
-      col.setAttribute('style', 'background-color: green;');
+      col.setAttribute('style', 'background-color: ' + base + 'green;');
     }
     else if (this.infosCreneau.modification === 'remove' && col.getAttribute('style') === 'background-color: initial;') {
-      col.setAttribute('style', 'background-color: red;');
+      col.setAttribute('style', 'background-color: ' + base + 'red;');
     }
     else {
       col.setAttribute('style', 'background-color: initial;');
@@ -176,7 +179,6 @@ export class PlanningPage implements OnInit {
       this.user.userData.chambre
     ).toPromise()
       .then(results => {
-        console.log(results);
         this.ionViewDidEnter();
       })
       .catch(err => {
