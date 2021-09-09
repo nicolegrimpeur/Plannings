@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/compat/auth';
 import {Router} from '@angular/router';
 import {Display} from '../shared/class/display';
@@ -23,6 +23,9 @@ export class LoginPage implements OnInit {
   };
 
   public liste = new ListeModel();
+
+  @ViewChild('inputMdp') inputMdp;
+  @ViewChild('iconMdp') iconMdp;
 
   constructor(
     public router: Router,
@@ -93,6 +96,17 @@ export class LoginPage implements OnInit {
     await this.httpService.getListe().toPromise().then((results: ListeModel) => {
       this.liste = results;
     });
+  }
+
+  toggleMdp() {
+    if (this.iconMdp.name === 'eye-outline') {
+      this.iconMdp.name = 'eye-off-outline';
+      this.inputMdp.type = 'password';
+    }
+    else {
+      this.iconMdp.name = 'eye-outline';
+      this.inputMdp.type = 'text';
+    }
   }
 
   // événement pour rafraichir la page
