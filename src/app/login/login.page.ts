@@ -31,10 +31,13 @@ export class LoginPage implements OnInit {
     private user: User,
     public httpService: HttpService
   ) {
-    this.recupListe().then();
   }
 
   ngOnInit() {
+  }
+
+  ionViewWillEnter() {
+    this.recupListe().then();
   }
 
   // connecte l'utilisateur avec email et mot de passe
@@ -90,5 +93,15 @@ export class LoginPage implements OnInit {
     await this.httpService.getListe().toPromise().then((results: ListeModel) => {
       this.liste = results;
     });
+  }
+
+  // événement pour rafraichir la page
+  doRefresh(event) {
+    setTimeout(() => {
+      // permet de terminer l'animation
+      event.target.complete();
+      // rafraichi le json
+      this.ionViewWillEnter();
+    }, 1000);
   }
 }

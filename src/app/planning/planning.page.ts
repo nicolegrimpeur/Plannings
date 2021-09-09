@@ -107,7 +107,6 @@ export class PlanningPage implements OnInit {
   }
 
   clickEvent(jour, heure) {
-    console.log(jour, heure);
     if (jour !== undefined && heure !== undefined) {
       if (this.planning[jour][heure].nom === '') {
         if (this.infosCreneau.modification === 'add' && this.infosCreneau.jour === jour && this.infosCreneau.heure === heure) {
