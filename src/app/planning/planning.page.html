@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar (click)="removeConfirm()">
     <!-- bouton de retour en arrière -->
     <ion-buttons slot="start">
       <ion-back-button defaultHref="liste"></ion-back-button>
@@ -16,18 +16,25 @@
   </ion-refresher>
 
   <ion-grid *ngIf="!mobile">
-    <ion-row *ngFor="let heure of heures">
-      <ion-col *ngFor="let jour of jours">{{(heure === '') ? jour : ((jour === '') ? heure : '')}}</ion-col>
+    <ion-row *ngFor="let idHeure of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" class="row">
+      <ion-col
+        *ngFor="let idJour of [0, 1, 2, 3, 4, 5, 6, 7, 8]" style="background-color: initial"
+        (click)="clickEvent(this.getElemPlanning(planning, idJour - 1), this.getElemPlanning(planning[this.getElemPlanning(planning, idJour - 1)], idHeure-1), idJour, idHeure)">
+        {{(heures[idHeure] === '') ? jours[idJour] : ((jours[idJour] === '') ? heures[idHeure] :
+          (planning[this.getElemPlanning(planning, currentDay)] !== undefined) ? planning[this.getElemPlanning(planning, idJour - 1)][this.getElemPlanning(planning[this.getElemPlanning(planning, idJour - 1)], idHeure - 1)]['chambre'] : ''
+      )}}
+      </ion-col>
     </ion-row>
   </ion-grid>
 
   <ion-grid *ngIf="mobile">
-    <ion-row *ngFor="let creneau of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">
-      <ion-col style="height: 7vh">
+    <ion-row *ngFor="let creneau of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" class="row">
+      <ion-col style="background-color: initial" class="colMobile">
         {{heures[creneau]}}
       </ion-col>
-      <ion-col style="height: 7vh" (click)="clickEvent(this.getElemPlanning(planning, currentDay), this.getElemPlanning(planning[this.getElemPlanning(planning, currentDay)], creneau-1))">
-        {{(heures[creneau] === '') ? jours[currentDay+1] : (planning[this.getElemPlanning(planning, currentDay)] !== undefined) ? planning[this.getElemPlanning(planning, currentDay)][this.getElemPlanning(planning[this.getElemPlanning(planning, currentDay)], creneau-1)]['chambre'] : ''}}
+      <ion-col style="background-color: initial" class="colMobile"
+               (click)="clickEvent(this.getElemPlanning(planning, currentDay), this.getElemPlanning(planning[this.getElemPlanning(planning, currentDay)], creneau-1), 1, creneau)">
+        {{(heures[creneau] === '') ? jours[currentDay + 1] : (planning[this.getElemPlanning(planning, currentDay)] !== undefined) ? planning[this.getElemPlanning(planning, currentDay)][this.getElemPlanning(planning[this.getElemPlanning(planning, currentDay)], creneau - 1)]['chambre'] : ''}}
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -6,6 +6,7 @@ export class Infos {
   chambre: string;
   jour: string;
   heure: string;
+  show: boolean;
 }
 
 export class HistoriqueModel {

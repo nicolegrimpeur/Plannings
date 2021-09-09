@@ -16,40 +16,29 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card *ngFor="let modif of historique.historique">
-    <ion-card-header>
-      <ion-card-title>
-        {{modif.dateModif}}
-      </ion-card-title>
-    </ion-card-header>
-    <ion-grid>
-      <ion-row>
-        <ion-col>
-          <ion-card-content>
-            Modification : {{modif.modification}}
-          </ion-card-content>
-        </ion-col>
-        <ion-col>
-          <ion-card-content>
-            Nom : {{modif.nom}}
-          </ion-card-content>
-        </ion-col>
-        <ion-col>
-          <ion-card-content>
-            Prénom : {{modif.prenom}}
-          </ion-card-content>
-        </ion-col>
-        <ion-col>
-          <ion-card-content>
-            Chambre : {{modif.chambre}}
-          </ion-card-content>
-        </ion-col>
-        <ion-col>
-          <ion-card-content>
-            Date d'inscription : {{modif.heure + ', ' + modif.jour}}
-          </ion-card-content>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+  <ion-searchbar animated (ionInput)="search($event)"></ion-searchbar>
+
+  <div *ngFor="let modif of historique.historique" class="historique">
+    <ion-card *ngIf="modif.show">
+      <ion-card-header>
+        <ion-card-title>
+          {{modif.dateModif}}
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        Show : {{modif.show}},
+        Modification : {{modif.modification}},
+        Nom : {{modif.nom}},
+        Prénom : {{modif.prenom}},
+        Chambre : {{modif.chambre}},
+        Date d'inscription : {{modif.heure + ', ' + modif.jour}}
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <ion-card>
+    <ion-card-content *ngIf="noSearch">
+      Aucun élément ne correspond à votre recherche
+    </ion-card-content>
   </ion-card>
 </ion-content>

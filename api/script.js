@@ -5,6 +5,9 @@ const fs = require('fs');
 const Gestion = require('./gestion');
 const gestion = new Gestion();
 
+// const path = '/home/ubuntu/sites/plannings/api/';
+const path = './';
+
 gestion.addFS(fs);
 
 // options pour l'enregistrement de la date
@@ -18,10 +21,10 @@ const options = {
 // remet à 0 les plannings dans paths
 reset = () => {
   // on récupère le fichier de log
-  const log = JSON.parse(fs.readFileSync('./log/log.json'));
+  const log = JSON.parse(fs.readFileSync(path + 'log/log.json'));
 
   // on récupère la liste des résidences
-  const liste = JSON.parse(fs.readFileSync('./listPlannings.json'));
+  const liste = JSON.parse(fs.readFileSync(path + 'listPlannings.json'));
 
   // on récupère la date actuelle
   const time = new Date(Date());
@@ -49,7 +52,7 @@ reset = () => {
   }
 
   // on enregistre les modifications
-  fs.writeFileSync('./log/log.json', JSON.stringify(log, null, 2));
+  fs.writeFileSync(path + 'log/log.json', JSON.stringify(log, null, 2));
 }
 
 checkDate = () => {
@@ -58,8 +61,8 @@ checkDate = () => {
   const time = new Date(Date());
 
   // on récupère le log
-  const log = JSON.parse(fs.readFileSync('./log/log.json'));
-  const logCheck = JSON.parse(fs.readFileSync('./log/logCheck.json'));
+  const log = JSON.parse(fs.readFileSync(path + 'log/log.json'));
+  const logCheck = JSON.parse(fs.readFileSync(path + 'log/logCheck.json'));
 
   logCheck.log.push({
     dateModif: time.toLocaleDateString('fr-FR', options),
@@ -67,7 +70,7 @@ checkDate = () => {
   });
 
   // on enregistre les modifications
-  fs.writeFileSync('./log/logCheck.json', JSON.stringify(logCheck, null, 2));
+  fs.writeFileSync(path + 'log/logCheck.json', JSON.stringify(logCheck, null, 2));
 
   // si l'on est un dimanche et que la remise à 0 n'a pas encore été faite ou si la dernière exécution a été une erreur
   if ((time.getDay() === 0 && log.log[log.log.length - 1].dateModif !== time.toLocaleDateString('fr-FR', options))
@@ -77,5 +80,6 @@ checkDate = () => {
 }
 
 // lance la fonction toutes les 12 heures
-setInterval(checkDate, 43200000);
-// setInterval(checkDate, 1000);
+// setInterval(checkDate, 43200000);
+setInterval(checkDate, 1000);
+// checkDate();

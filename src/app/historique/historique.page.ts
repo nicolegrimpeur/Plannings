@@ -11,6 +11,7 @@ import {HistoriqueModel} from '../shared/models/historique.model';
 })
 export class HistoriquePage implements OnInit {
   public historique = new HistoriqueModel();
+  public noSearch = false;
 
   constructor(
     public user: User,
@@ -38,6 +39,9 @@ export class HistoriquePage implements OnInit {
       ).toPromise()
         .then(results => {
           this.historique = results;
+          for (const modif of this.historique.historique) {
+            modif.show = true;
+          }
         })
         .catch(err => {
           this.display.display(err).then();
@@ -45,4 +49,22 @@ export class HistoriquePage implements OnInit {
     }
   }
 
+  search(event) {
+    if (event.target.value.toLowerCase() === '') {
+      for (const modif of this.historique.historique) {
+        modif.show = true;
+        this.noSearch = false;
+      }
+    } else {
+      let tmp = '';
+      this.noSearch = true;
+      for (const modif of this.historique.historique) {
+        tmp = modif.show + modif.modification + modif.nom + modif.prenom + modif.chambre + modif.heure + modif.jour;
+        modif.show = tmp.toLowerCase().indexOf(event.target.value.toLowerCase()) > -1;
+        if (modif.show && this.noSearch) {
+          this.noSearch = false;
+        }
+      }
+    }
+  }
 }

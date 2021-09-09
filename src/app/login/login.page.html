@@ -5,6 +5,11 @@
 </ion-header>
 
 <ion-content>
+  <!-- slide refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <ion-card>
     <ion-card-content>
       <ion-item>
@@ -23,8 +28,6 @@
         <ion-label><b>Résidence</b></ion-label>
         <ion-select [(ngModel)]="loginData.residence" required="true">
           <ion-select-option *ngFor="let residence of liste.residences" value="{{residence.residence}}">{{residence.name}}</ion-select-option>
-<!--          <ion-select-option value="sto">Saint-Omer</ion-select-option>-->
-<!--          <ion-select-option value="dr">Denis Reille</ion-select-option>-->
         </ion-select>
       </ion-item>
 
@@ -45,8 +48,9 @@
 
       <ion-item *ngIf="loginData.isRp === 'true'">
         <ion-label><b>Mot de passe RP</b></ion-label>
-        <ion-input [(ngModel)]="loginData.mdpRp" type="password" autocomplete="current-password" required="true"
+        <ion-input #inputMdp [(ngModel)]="loginData.mdpRp" type="password" autocomplete="current-password" required="true"
                    placeholder="Mot de passe"></ion-input>
+        <ion-icon #iconMdp (click)="toggleMdp()" name="eye-off-outline"></ion-icon>
       </ion-item>
 
       <div class="ion-padding">
