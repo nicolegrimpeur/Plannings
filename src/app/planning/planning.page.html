@@ -16,11 +16,14 @@
   </ion-refresher>
 
   <ion-grid *ngIf="!mobile">
-    <ion-row *ngFor="let idHeure of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">
-      <ion-col *ngFor="let idJour of [0, 1, 2, 3, 4, 5, 6, 7, 8]" (click)="clickEvent(this.getElemPlanning(planning, idJour - 1), this.getElemPlanning(planning[this.getElemPlanning(planning, idJour - 1)], idHeure-1))">
+    <ion-row *ngFor="let idHeure of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" class="row">
+      <ion-col
+        *ngFor="let idJour of [0, 1, 2, 3, 4, 5, 6, 7, 8]" style="background-color: initial"
+        (click)="clickEvent(this.getElemPlanning(planning, idJour - 1), this.getElemPlanning(planning[this.getElemPlanning(planning, idJour - 1)], idHeure-1), idJour, idHeure)">
         {{(heures[idHeure] === '') ? jours[idJour] : ((jours[idJour] === '') ? heures[idHeure] :
-          (planning[this.getElemPlanning(planning, currentDay)] !== undefined) ? planning[this.getElemPlanning(planning, idJour - 1)][this.getElemPlanning(planning[this.getElemPlanning(planning, idJour - 1)], idHeure-1)]['chambre'] : ''
-      )}}</ion-col>
+          (planning[this.getElemPlanning(planning, currentDay)] !== undefined) ? planning[this.getElemPlanning(planning, idJour - 1)][this.getElemPlanning(planning[this.getElemPlanning(planning, idJour - 1)], idHeure - 1)]['chambre'] : ''
+      )}}
+      </ion-col>
     </ion-row>
   </ion-grid>
 
@@ -29,8 +32,9 @@
       <ion-col style="height: 7vh">
         {{heures[creneau]}}
       </ion-col>
-      <ion-col style="height: 7vh" (click)="clickEvent(this.getElemPlanning(planning, currentDay), this.getElemPlanning(planning[this.getElemPlanning(planning, currentDay)], creneau-1))">
-        {{(heures[creneau] === '') ? jours[currentDay+1] : (planning[this.getElemPlanning(planning, currentDay)] !== undefined) ? planning[this.getElemPlanning(planning, currentDay)][this.getElemPlanning(planning[this.getElemPlanning(planning, currentDay)], creneau-1)]['chambre'] : ''}}
+      <ion-col style="height: 7vh"
+               (click)="clickEvent(this.getElemPlanning(planning, currentDay), this.getElemPlanning(planning[this.getElemPlanning(planning, currentDay)], creneau-1))">
+        {{(heures[creneau] === '') ? jours[currentDay + 1] : (planning[this.getElemPlanning(planning, currentDay)] !== undefined) ? planning[this.getElemPlanning(planning, currentDay)][this.getElemPlanning(planning[this.getElemPlanning(planning, currentDay)], creneau - 1)]['chambre'] : ''}}
       </ion-col>
     </ion-row>
   </ion-grid>

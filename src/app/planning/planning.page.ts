@@ -106,24 +106,52 @@ export class PlanningPage implements OnInit {
     return tmp;
   }
 
-  clickEvent(jour, heure) {
+  clickEvent(jour, heure, idJour, idHeure) {
     if (jour !== undefined && heure !== undefined) {
       if (this.planning[jour][heure].nom === '') {
         if (this.infosCreneau.modification === 'add' && this.infosCreneau.jour === jour && this.infosCreneau.heure === heure) {
           this.addCreneau(jour, heure);
+          this.removeConfirm();
         } else {
           this.infosCreneau.modification = 'add';
           this.infosCreneau.jour = jour;
           this.infosCreneau.heure = heure;
+          this.removeConfirm();
+          this.addConfirm(idJour, idHeure);
         }
       } else if (this.planning[jour][heure].nom === this.user.userData.nom) {
         if ((this.infosCreneau.modification === 'remove' && this.infosCreneau.jour === jour && this.infosCreneau.heure === heure)) {
           this.removeCreneau(jour, heure);
+          this.removeConfirm();
         } else {
           this.infosCreneau.modification = 'remove';
           this.infosCreneau.jour = jour;
           this.infosCreneau.heure = heure;
+          this.removeConfirm();
+          this.addConfirm(idJour, idHeure);
         }
+      }
+    }
+  }
+
+  addConfirm(idJour, idHeure) {
+    const col = document.getElementsByClassName('row')[idHeure].children[idJour];
+
+    if (this.infosCreneau.modification === 'add' && col.getAttribute('style') === 'background-color: initial;') {
+      col.setAttribute('style', 'background-color: green;');
+    }
+    else if (this.infosCreneau.modification === 'remove' && col.getAttribute('style') === 'background-color: initial;') {
+      col.setAttribute('style', 'background-color: red;');
+    }
+    else {
+      col.setAttribute('style', 'background-color: initial;');
+    }
+  }
+
+  removeConfirm() {
+    for (const row of Array.from(document.getElementsByClassName('row'))) {
+      for (const col of Array.from(row.children)) {
+        col.setAttribute('style', 'background-color: initial;');
       }
     }
   }
@@ -143,7 +171,6 @@ export class PlanningPage implements OnInit {
         this.ionViewDidEnter();
       })
       .catch(err => {
-        console.log(err);
         if (err.status === 200) {
           this.display.display({code: err.error.text, color: 'success'}).then();
         } else {
@@ -171,7 +198,6 @@ export class PlanningPage implements OnInit {
       this.ionViewDidEnter();
     })
       .catch(err => {
-        console.log(err);
         if (err.status === 200) {
           this.display.display({code: err.error.text, color: 'success'}).then();
         } else {
