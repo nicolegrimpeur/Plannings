@@ -4,6 +4,7 @@ import {HttpService} from '../core/http.service';
 import {Display} from '../shared/class/display';
 import {PlanningModel} from '../shared/models/planning.model';
 import {Platform} from '@ionic/angular';
+import {remove} from "@angular/fire/database";
 
 @Component({
   selector: 'app-planning',
@@ -86,10 +87,12 @@ export class PlanningPage implements OnInit {
   }
 
   plusCurrentDay() {
+    this.removeConfirm();
     this.currentDay++;
   }
 
   moinsCurrentDay() {
+    this.removeConfirm();
     this.currentDay--;
   }
 
