@@ -16,9 +16,10 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-searchbar animated (ionInput)="search($event)"></ion-searchbar>
+  <ion-searchbar animated placeholder="Rechercher" (ionInput)="search($event)"></ion-searchbar>
 
   <div *ngFor="let modif of historique.historique" class="historique">
+    <!-- on vérifie qu'il faut afficher ou non la ligne -> utile pour la barre de recherche -->
     <ion-card *ngIf="modif.show">
       <ion-card-header>
         <ion-card-title>
@@ -35,6 +36,7 @@
     </ion-card>
   </div>
 
+  <!-- si aucun élément ne correspond à la recherche -->
   <ion-card>
     <ion-card-content *ngIf="noSearch">
       Aucun élément ne correspond à votre recherche

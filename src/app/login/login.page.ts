@@ -25,6 +25,7 @@ export class LoginPage implements OnInit {
     mdpRp: '',
   };
 
+  // pour stocker la liste des résidences
   public liste = new ListeModel();
 
   constructor(
@@ -92,6 +93,7 @@ export class LoginPage implements OnInit {
     }
   }
 
+  // récupère la liste des résidences pour l'afficher dans la partie résidence
   async recupListe() {
     await this.httpService.getListe().toPromise()
       .then((results: ListeModel) => {
@@ -102,6 +104,7 @@ export class LoginPage implements OnInit {
       });
   }
 
+  // permet d'afficher le mot de passe pour le mdp rp
   toggleMdp() {
     if (this.iconMdp.name === 'eye-outline') {
       this.iconMdp.name = 'eye-off-outline';

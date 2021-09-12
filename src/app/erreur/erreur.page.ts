@@ -10,15 +10,17 @@ import {User} from '../shared/class/user';
   styleUrls: ['./erreur.page.scss']
 })
 export class ErreurPage implements OnInit {
-  public status;
-  private interval;
+  public status; // stocke le status courant
+  private interval; // variable d'actualisation
 
   constructor(
     private httpService: HttpService,
     private router: Router,
     private user: User
   ) {
+    // initialise le status
     this.initNetworkStatus().then();
+    // on vérifie si l'on peut de nouveau accéder au serveur toutes les 5 secondes
     this.interval = setInterval(() => {
       this.recupListe();
     }, 5000);
@@ -27,15 +29,18 @@ export class ErreurPage implements OnInit {
   ngOnInit() {
   }
 
+  // initialise le status
   async initNetworkStatus() {
     this.status = await Network.getStatus();
   }
 
+  // récupère la liste sur le serveur
   recupListe() {
     this.httpService.getListe().toPromise()
       .then(res => {
-        // this.router.navigate(['/']).then();
+        // si l'on a réussi, on redirige sur la page de connexion ou d'accueil
         this.user.redirectionErreur();
+        // on supprime la vérification
         clearInterval(this.interval);
       })
       .catch(err => {
