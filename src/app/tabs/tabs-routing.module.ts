@@ -9,6 +9,14 @@ const routes: Routes = [
     loadChildren: () => import('../planning/planning.module').then( m => m.PlanningPageModule)
   },
   {
+    path: 'historique',
+    loadChildren: () => import('../historique/historique.module').then( m => m.HistoriquePageModule)
+  },
+  {
+    path: 'erreur',
+    loadChildren: () => import('../erreur/erreur.module').then( m => m.ErreurPageModule)
+  },
+  {
     path: '',
     component: TabsPage,
     children: [

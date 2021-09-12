@@ -2,7 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {User} from '../shared/class/user';
 import {HttpService} from '../core/http.service';
 import {Infos, ListeModel} from '../shared/models/liste.model';
-import { AlertController } from '@ionic/angular';
+import {AlertController} from '@ionic/angular';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-liste',
@@ -17,7 +18,8 @@ export class ListePage implements OnInit {
   constructor(
     public user: User,
     public httpService: HttpService,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private router: Router
   ) {
   }
 
@@ -29,10 +31,14 @@ export class ListePage implements OnInit {
   }
 
   async recupListe() {
-    await this.httpService.getListe().toPromise().then((results: ListeModel) => {
-      this.liste = results;
-      this.initResidence();
-    });
+    await this.httpService.getListe().toPromise()
+      .then((results: ListeModel) => {
+        this.liste = results;
+        this.initResidence();
+      })
+      .catch(err => {
+        this.router.navigate(['/erreur']).then();
+      });
   }
 
   initResidence() {
@@ -65,7 +71,6 @@ export class ListePage implements OnInit {
       ]
     });
 
-    console.log(this.user.userData.isRp);
     await alert.present();
   }
 
@@ -80,7 +85,7 @@ export class ListePage implements OnInit {
       // permet de terminer l'animation
       event.target.complete();
       // rafraichi le json
-      this.ionViewWillEnter();
+      this.recupListe().then();
     }, 1000);
   }
 }

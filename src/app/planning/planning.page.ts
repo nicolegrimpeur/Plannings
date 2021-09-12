@@ -4,6 +4,7 @@ import {HttpService} from '../core/http.service';
 import {Display} from '../shared/class/display';
 import {PlanningModel} from '../shared/models/planning.model';
 import {Platform} from '@ionic/angular';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-planning',
@@ -38,7 +39,8 @@ export class PlanningPage implements OnInit {
     public user: User,
     private httpService: HttpService,
     private display: Display,
-    public platform: Platform
+    private platform: Platform,
+    private router: Router
   ) {
     this.initJours(); // on initialise les jours de la semaine
   }
@@ -92,8 +94,8 @@ export class PlanningPage implements OnInit {
           this.planning = results;
         })
         .catch(err => {
-          // en cas d'erreur on l'affiche
-          this.display.display(err).then();
+          // on redirige vers la page d'erreur
+          this.router.navigate(['/erreur']).then();
         });
     }
   }
@@ -167,6 +169,8 @@ export class PlanningPage implements OnInit {
           this.addConfirm(idJour, idHeure);
         }
       }
+    } else {
+      this.removeConfirm();
     }
   }
 

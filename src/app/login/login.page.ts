@@ -87,15 +87,19 @@ export class LoginPage implements OnInit {
           }
         })
         .catch(err => {
-          this.display.display(err).then();
+          this.recupListe().then();
         });
     }
   }
 
   async recupListe() {
-    await this.httpService.getListe().toPromise().then((results: ListeModel) => {
-      this.liste = results;
-    });
+    await this.httpService.getListe().toPromise()
+      .then((results: ListeModel) => {
+        this.liste = results;
+      })
+      .catch(err => {
+        this.router.navigate(['/erreur']).then();
+      });
   }
 
   toggleMdp() {

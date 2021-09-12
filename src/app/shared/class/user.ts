@@ -61,11 +61,26 @@ export class User {
   redirection() {
     this.platform.ready().then(() => {
       this.afAuth.authState.subscribe(auth => {
-        if (auth) {
+        if (this.router.url !== '/erreur') {
+          if (auth) {
             this.router.navigateByUrl('/').then();
-        } else {
-          this.router.navigateByUrl('/login').then();
+          } else {
+            this.router.navigateByUrl('/login').then();
+          }
         }
+      });
+    });
+  }
+
+  // redirige l'utilisateur s'il est connecté ou non depuis la page d'erreur
+  redirectionErreur() {
+    this.platform.ready().then(() => {
+      this.afAuth.authState.subscribe(auth => {
+          if (auth) {
+            this.router.navigateByUrl('/').then();
+          } else {
+            this.router.navigateByUrl('/login').then();
+          }
       });
     });
   }

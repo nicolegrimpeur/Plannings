@@ -68,7 +68,7 @@
     </ion-card-content>
   </ion-card>
 
-  <br>
+  <br *ngIf="user.userData.isRp === 'true'">
 
   <ion-button expand="block" color="medium"
               *ngIf="user.userData.isRp === 'true'" (click)="alert()">
