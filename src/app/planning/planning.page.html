@@ -15,11 +15,15 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
+  <!-- planning sur ordi -->
   <ion-grid *ngIf="!mobile">
+    <!-- 11 lignes d'heures -->
     <ion-row *ngFor="let idHeure of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" class="row">
+      <!-- 9 colonnes de jours -->
       <ion-col
         *ngFor="let idJour of [0, 1, 2, 3, 4, 5, 6, 7, 8]" style="background-color: initial"
         (click)="clickEvent(this.getElemPlanning(planning, idJour - 1), this.getElemPlanning(planning[this.getElemPlanning(planning, idJour - 1)], idHeure-1), idJour, idHeure)">
+        <!-- si l'heure est vide, on affiche les jours, sinon si les jours sont vides, on affiche l'heure, sinon on est dans le tableau on affiche la case du planning -->
         {{(heures[idHeure] === '') ? jours[idJour] : ((jours[idJour] === '') ? heures[idHeure] :
           (planning[this.getElemPlanning(planning, currentDay)] !== undefined) ? planning[this.getElemPlanning(planning, idJour - 1)][this.getElemPlanning(planning[this.getElemPlanning(planning, idJour - 1)], idHeure - 1)]['chambre'] : ''
       )}}
@@ -27,18 +31,24 @@
     </ion-row>
   </ion-grid>
 
+  <!-- si l'on est sur téléphone -->
   <ion-grid *ngIf="mobile">
+    <!-- 11 lignes d'heures -->
     <ion-row *ngFor="let creneau of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" class="row">
+      <!-- cette colonne permet d'afficher l'heure -->
       <ion-col style="background-color: initial" class="colMobile">
         {{heures[creneau]}}
       </ion-col>
+      <!-- colonne d'affichage du planning -->
       <ion-col style="background-color: initial" class="colMobile"
                (click)="clickEvent(this.getElemPlanning(planning, currentDay), this.getElemPlanning(planning[this.getElemPlanning(planning, currentDay)], creneau-1), 1, creneau)">
+        <!-- si l'heure est vide, on affiche le jour, sinon la case du planning -->
         {{(heures[creneau] === '') ? jours[currentDay + 1] : (planning[this.getElemPlanning(planning, currentDay)] !== undefined) ? planning[this.getElemPlanning(planning, currentDay)][this.getElemPlanning(planning[this.getElemPlanning(planning, currentDay)], creneau - 1)]['chambre'] : ''}}
       </ion-col>
     </ion-row>
   </ion-grid>
 
+  <!-- boutons pour mobile pour changer la date -->
   <div *ngIf="mobile">
     <ion-icon name="arrow-back-circle" (click)="moinsCurrentDay()"></ion-icon>
     <ion-icon name="arrow-forward-circle" (click)="plusCurrentDay()"></ion-icon>

@@ -1,9 +1,7 @@
 import {Component} from '@angular/core';
 import {Platform} from '@ionic/angular';
 import {Router} from '@angular/router';
-import {Plugins} from '@capacitor/core';
-const {App} = Plugins;
-
+import {App} from '@capacitor/app';
 
 @Component({
   selector: 'app-home',

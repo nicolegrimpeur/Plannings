@@ -12,6 +12,9 @@ import {ListeModel} from '../shared/models/liste.model';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  @ViewChild('inputMdp') inputMdp;
+  @ViewChild('iconMdp') iconMdp;
+
   // data utilisés pour la connexion
   public loginData = {
     nom: '',
@@ -22,10 +25,8 @@ export class LoginPage implements OnInit {
     mdpRp: '',
   };
 
+  // pour stocker la liste des résidences
   public liste = new ListeModel();
-
-  @ViewChild('inputMdp') inputMdp;
-  @ViewChild('iconMdp') iconMdp;
 
   constructor(
     public router: Router,
@@ -87,17 +88,23 @@ export class LoginPage implements OnInit {
           }
         })
         .catch(err => {
-          this.display.display(err).then();
+          this.recupListe().then();
         });
     }
   }
 
+  // récupère la liste des résidences pour l'afficher dans la partie résidence
   async recupListe() {
-    await this.httpService.getListe().toPromise().then((results: ListeModel) => {
-      this.liste = results;
-    });
+    await this.httpService.getListe().toPromise()
+      .then((results: ListeModel) => {
+        this.liste = results;
+      })
+      .catch(err => {
+        this.router.navigate(['/erreur']).then();
+      });
   }
 
+  // permet d'afficher le mot de passe pour le mdp rp
   toggleMdp() {
     if (this.iconMdp.name === 'eye-outline') {
       this.iconMdp.name = 'eye-off-outline';

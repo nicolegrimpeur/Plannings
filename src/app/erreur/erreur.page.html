@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Un problème est survenu</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- slide refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-card *ngIf="status !== undefined && status.connected !== undefined">
+    <ion-card-header>
+      <ion-card-title>
+        Un problème est survenu lors de la connexion au serveur distant
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content *ngIf="status.connected">
+      Le serveur est en maintenance, merci de réessayer plus tard
+    </ion-card-content>
+    <ion-card-content *ngIf="status.connected">
+      Si le problème perdure, merci de contacter Nicolas Barrat au
+      <a href='sms:07.81.70.66.63' title='Envoyer un message à Nicolas' target='_blank'>07.81.70.66.63</a>
+      ou par
+      <a href='https://m.me/nicolegrimpeur' title='Envoyer un message à Nicolas' target='_blank'>Messenger</a>
+    </ion-card-content>
+
+    <ion-card-content *ngIf="!status.connected">
+      Merci de vérifier votre connexion à internet
+    </ion-card-content>
+  </ion-card>
+
+  <br>
+
+  <div style="text-align: center">
+    <img alt="Pas d'internet" src="assets/noInternet.gif">
+  </div>
+</ion-content>

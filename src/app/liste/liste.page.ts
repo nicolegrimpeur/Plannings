@@ -2,7 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {User} from '../shared/class/user';
 import {HttpService} from '../core/http.service';
 import {Infos, ListeModel} from '../shared/models/liste.model';
-import { AlertController } from '@ionic/angular';
+import {AlertController} from '@ionic/angular';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-liste',
@@ -11,13 +12,14 @@ import { AlertController } from '@ionic/angular';
   providers: [HttpService]
 })
 export class ListePage implements OnInit {
-  public liste = new ListeModel();
-  public residence = new Infos();
+  public liste = new ListeModel(); // stocke les infos des résidences
+  public residence = new Infos(); // stocke les infos d'une seule résidence
 
   constructor(
     public user: User,
     public httpService: HttpService,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private router: Router
   ) {
   }
 
@@ -28,19 +30,28 @@ export class ListePage implements OnInit {
     this.recupListe().then();
   }
 
+  // on récupère les infos des résidences
   async recupListe() {
-    await this.httpService.getListe().toPromise().then((results: ListeModel) => {
-      this.liste = results;
-      this.initResidence();
-    });
+    await this.httpService.getListe().toPromise()
+      .then((results: ListeModel) => {
+        this.liste = results;
+        // on initialise les infos de la résidence dont on a besoin
+        this.initResidence();
+      })
+      .catch(err => {
+        this.router.navigate(['/erreur']).then();
+      });
   }
 
+  // on initialise les infos de la résidence dont on a besoin
   initResidence() {
     this.residence = this.liste.residences.find(res => res.residence === this.user.userData.residence);
   }
 
+  // demande à l'aide d'une alert quel est le nom du planning à créer
   async alert() {
     const alert = await this.alertController.create({
+      header: 'Ajouter un planning',
       inputs: [
         {
           name: 'nom',
@@ -57,6 +68,7 @@ export class ListePage implements OnInit {
           text: 'Ajouter',
           handler: data => {
             if (data.nom !== '') {
+              // on ajoute le planning
               this.addPlanning(data.nom);
             }
           }
@@ -64,11 +76,12 @@ export class ListePage implements OnInit {
       ]
     });
 
-    console.log(this.user.userData.isRp);
+    // on affiche l'alerte
     await alert.present();
   }
 
   addPlanning(id) {
+    // initialise le nouveau planning et refresh la page
     this.httpService.initPlanning(id, this.user.userData.residence).toPromise().then();
     this.ionViewWillEnter();
   }
@@ -79,7 +92,7 @@ export class ListePage implements OnInit {
       // permet de terminer l'animation
       event.target.complete();
       // rafraichi le json
-      this.ionViewWillEnter();
+      this.recupListe().then();
     }, 1000);
   }
 }

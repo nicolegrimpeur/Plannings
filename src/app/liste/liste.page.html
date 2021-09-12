@@ -10,27 +10,29 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-item>
-    Nom : {{user.userData.nom}}
-  </ion-item>
-  <ion-item>
-    Prénom : {{user.userData.prenom}}
-  </ion-item>
-  <ion-item>
-    Résidence : {{user.userData.residence}}
-  </ion-item>
-  <ion-item>
-    Chambre : {{user.userData.chambre}}
-  </ion-item>
-  <ion-item>
-    isRp : {{user.userData.isRp}}
-  </ion-item>
+  <!-- utile pour afficher les infos de debug de l'utilisateur -->
+<!--  <ion-item>-->
+<!--    Nom : {{user.userData.nom}}-->
+<!--  </ion-item>-->
+<!--  <ion-item>-->
+<!--    Prénom : {{user.userData.prenom}}-->
+<!--  </ion-item>-->
+<!--  <ion-item>-->
+<!--    Résidence : {{user.userData.residence}}-->
+<!--  </ion-item>-->
+<!--  <ion-item>-->
+<!--    Chambre : {{user.userData.chambre}}-->
+<!--  </ion-item>-->
+<!--  <ion-item>-->
+<!--    isRp : {{user.userData.isRp}}-->
+<!--  </ion-item>-->
 
   <ion-card *ngIf="residence !== undefined">
     <ion-card-header>
       <ion-card-title>{{residence.name + ' :'}}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
+      <!-- liste des plannings -->
       <ion-grid>
         <ion-row>
           <ion-col *ngFor="let planning of residence.liste">
@@ -39,6 +41,15 @@
           </ion-col>
         </ion-row>
       </ion-grid>
+
+      <!-- affiche une erreur s'il n'existe pas encore de planning pour cette résidence -->
+      <ion-card-content *ngIf="residence.liste !== undefined && residence.liste.length === 0 && user.userData.isRp === 'true'">
+        Vous pouvez ajouter un planning avec le bouton "AJOUTER UN PLANNING" si dessous
+      </ion-card-content>
+      <ion-card-content *ngIf="residence.liste !== undefined && residence.liste.length === 0 && user.userData.isRp === 'false'">
+        Aucun planning n'a encore été créé pour votre résidence, vous pouvez contacter votre RP,
+        ou Nicolas Barrat au <a href='sms:07.81.70.66.63' title='Envoyer un message à Nicolas' target='_blank'>07.81.70.66.63</a>
+      </ion-card-content>
     </ion-card-content>
   </ion-card>
 
@@ -47,6 +58,7 @@
       <ion-card-title>{{'Historique ' + residence.name + ' :'}}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
+      <!-- liste des historiques -->
       <ion-grid>
         <ion-row>
           <ion-col *ngFor="let planning of residence.liste">
@@ -55,16 +67,26 @@
           </ion-col>
         </ion-row>
       </ion-grid>
+
+      <!-- affiche une erreur s'il n'existe pas encore de planning pour cette résidence -->
+      <ion-card-content *ngIf="residence.liste !== undefined && residence.liste.length === 0">
+        Vous pouvez ajouter un planning avec le bouton "AJOUTER UN PLANNING" si dessous
+      </ion-card-content>
     </ion-card-content>
   </ion-card>
 
+  <br *ngIf="user.userData.isRp === 'true'">
+
+  <!-- bouton pour ajouter un nouveau planning -->
   <ion-button expand="block" color="medium"
               *ngIf="user.userData.isRp === 'true'" (click)="alert()">
-  Ajouter un planning
+    <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+    Ajouter un planning
   </ion-button>
 
   <ion-item-divider></ion-item-divider>
 
+  <!-- bouton de déconnexion -->
   <ion-button expand="block" color="danger" (click)="user.logout()">
     <ion-icon slot="start" name="log-out-outline"></ion-icon>
     Déconnexion
