@@ -50,7 +50,7 @@
 
   <!-- boutons pour mobile pour changer la date -->
   <div *ngIf="mobile">
-    <ion-icon name="arrow-back-circle" (click)="moinsCurrentDay()"></ion-icon>
-    <ion-icon name="arrow-forward-circle" (click)="plusCurrentDay()"></ion-icon>
+    <ion-icon *ngIf="currentDay >= 1" name="arrow-back-circle" (click)="moinsCurrentDay()"></ion-icon>
+    <ion-icon *ngIf="currentDay < 7" name="arrow-forward-circle" (click)="plusCurrentDay()"></ion-icon>
   </div>
 </ion-content>

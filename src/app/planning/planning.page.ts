@@ -103,12 +103,16 @@ export class PlanningPage implements OnInit {
   // fonctions liés au flèche pour afficher les jours sur mobile
   plusCurrentDay() {
     this.removeConfirm();
-    this.currentDay++;
+    if (this.currentDay < 7) {
+      this.currentDay++;
+    }
   }
 
   moinsCurrentDay() {
     this.removeConfirm();
-    this.currentDay--;
+    if (this.currentDay >= 1) {
+      this.currentDay--;
+    }
   }
 
   // permet d'obtenir le nom de l'élément à l'indice nb dans l'objet planning
