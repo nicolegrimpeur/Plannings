@@ -1,3 +1,4 @@
+// css pour une case
 ion-col {
   border: solid 1px grey;
   border-radius: 3px;
@@ -6,15 +7,20 @@ ion-col {
   width: 12vmax;
 }
 
+// taille en haute sur mobile
+.colMobile {
+  height: 7vh;
+}
+
+// css des boutons
 ion-icon {
   zoom: 3;
   margin: 0.5vh;
 }
 
+// pour centrer les boutons
 div {
   text-align: center;
 }
 
-.colMobile {
-  height: 7vh;
-}
+
