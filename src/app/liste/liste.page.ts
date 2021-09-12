@@ -41,6 +41,7 @@ export class ListePage implements OnInit {
 
   async alert() {
     const alert = await this.alertController.create({
+      header: 'Ajouter un planning',
       inputs: [
         {
           name: 'nom',

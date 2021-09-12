@@ -141,13 +141,14 @@ export class PlanningPage implements OnInit {
     const col = document.getElementsByClassName('row')[idHeure].children[idJour];
 
     // change la couleur de la case selon le theme de l'appareil
-    const base = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    const baseRed = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'darkred' : '#FEC0AA';
+    const baseGreen = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 
     if (this.infosCreneau.modification === 'add' && col.getAttribute('style') === 'background-color: initial;') {
-      col.setAttribute('style', 'background-color: ' + base + 'green;');
+      col.setAttribute('style', 'background-color: ' + baseGreen + 'green;');
     }
     else if (this.infosCreneau.modification === 'remove' && col.getAttribute('style') === 'background-color: initial;') {
-      col.setAttribute('style', 'background-color: ' + base + 'red;');
+      col.setAttribute('style', 'background-color: ' + baseRed + ';');
     }
     else {
       col.setAttribute('style', 'background-color: initial;');
