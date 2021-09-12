@@ -37,7 +37,6 @@
                    placeholder="Entrez votre numéro de chambre (n'oubliez pas la lettre en fonction des résidences)"></ion-input>
       </ion-item>
 
-
       <ion-item>
         <ion-label><b>Es-tu un responsable de ta résidence ?</b></ion-label>
         <ion-select [(ngModel)]="loginData.isRp">
@@ -54,13 +53,13 @@
       </ion-item>
 
       <div class="ion-padding">
+        <!-- on active le bouton que si tous les éléments nécessaires sont remplis -->
         <ion-button
-          disabled="{{!(loginData.nom !== '' && loginData.prenom !== '' && loginData.residence !== '' && loginData.chambre !== '')}}"
+          disabled="{{!(loginData.nom !== '' && loginData.prenom !== '' && loginData.residence !== '' && loginData.chambre !== '' && ((loginData.isRp === 'true' && loginData.mdpRp !== '') || loginData.isRp === 'false'))}}"
           type="submit" (click)="login()" expand="block" color="tertiary">
           OK
         </ion-button>
       </div>
     </ion-card-content>
-
   </ion-card>
 </ion-content>

@@ -12,6 +12,9 @@ import {ListeModel} from '../shared/models/liste.model';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  @ViewChild('inputMdp') inputMdp;
+  @ViewChild('iconMdp') iconMdp;
+
   // data utilisés pour la connexion
   public loginData = {
     nom: '',
@@ -23,9 +26,6 @@ export class LoginPage implements OnInit {
   };
 
   public liste = new ListeModel();
-
-  @ViewChild('inputMdp') inputMdp;
-  @ViewChild('iconMdp') iconMdp;
 
   constructor(
     public router: Router,
