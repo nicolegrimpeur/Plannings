@@ -34,15 +34,20 @@ export class PlanningPage implements OnInit {
     jour: '',
     heure: ''
   };
+  private interval; // variable d'actualisation du planning
 
   constructor(
     public user: User,
     private httpService: HttpService,
-    private display: Display,
+    public display: Display,
     private platform: Platform,
     private router: Router
   ) {
     this.initJours(); // on initialise les jours de la semaine
+    // on vérifie si l'on peut de nouveau accéder au serveur toutes les 5 secondes
+    this.interval = setInterval(() => {
+      this.getPlanning().then();
+    }, 5000);
   }
 
   ngOnInit() {
@@ -233,18 +238,7 @@ export class PlanningPage implements OnInit {
         this.ionViewDidEnter();
       })
       .catch(err => {
-        // le serveur renvoi une erreur 200 pour confirmer l'inscription
-        if (err.status === 200) {
-          this.display.display({code: err.error.text, color: 'success'}).then();
-        } else { // sinon c'est qu'il y a eu une erreur
-          if (err.error.text !== undefined) {
-            this.display.display(err.error.text).then();
-          } else {
-            this.display.display(err.statusText).then();
-          }
-        }
-        // on refresh la page
-        this.ionViewDidEnter();
+        this.catchCreneau(err);
       });
   }
 
@@ -262,19 +256,23 @@ export class PlanningPage implements OnInit {
       this.ionViewDidEnter();
     })
       .catch(err => {
-        // le serveur renvoi une erreur 200 pour confirmer l'inscription
-        if (err.status === 200) {
-          this.display.display({code: err.error.text, color: 'success'}).then();
-        } else { // sinon c'est qu'il y a eu une erreur
-          if (err.error.text !== undefined) {
-            this.display.display(err.error.text).then();
-          } else {
-            this.display.display(err.statusText).then();
-          }
-        }
-        // on refresh la page
-        this.ionViewDidEnter();
+        this.catchCreneau(err);
       });
+  }
+
+  catchCreneau(err) {
+    // le serveur renvoi une erreur 200 pour confirmer l'inscription
+    if (err.status === 200) {
+      this.display.display({code: err.error.text, color: 'success'}).then();
+    } else { // sinon c'est qu'il y a eu une erreur
+      if (err.error.text !== undefined) {
+        this.display.display(err.error.text).then();
+      } else {
+        this.display.display(err.statusText).then();
+      }
+    }
+    // on refresh la page
+    this.ionViewDidEnter();
   }
 
   // événement pour rafraichir la page

@@ -3,9 +3,6 @@ import {Router} from '@angular/router';
 import {AngularFireAuth} from '@angular/fire/compat/auth';
 import {Platform} from '@ionic/angular';
 import {Display} from './display';
-// import firebase from 'firebase';
-// import firebase from 'firebase';
-// import {firebaseConfig} from '../../app.module';
 
 @Injectable({
   providedIn: 'platform'
@@ -31,8 +28,6 @@ export class User {
   ) {
     this.connexion();
 
-    // on initialise la base de donnée SDK JS
-    // firebase.initializeApp(firebaseConfig);
     this.initCurrentUser();
     this.initInfos();
   }
