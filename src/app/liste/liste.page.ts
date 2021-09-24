@@ -81,9 +81,11 @@ export class ListePage implements OnInit {
     await alert.present();
   }
 
+  // affiche les plannings pour choisir celui à supprimer
   async actionSheet() {
     const tmp = [];
 
+    // on parcours la liste de plannings et on rajoute un bouton pour chaque
     for (const planning of this.residence.liste) {
       tmp.push({
         text: planning,
@@ -91,22 +93,28 @@ export class ListePage implements OnInit {
       });
     }
 
+    // on rajoute le bouton annuler
     tmp.push({
       text: 'Annuler',
       role: 'cancel'
     });
 
+    // création de l'action sheet
     const actionSheet = await this.actionSheetController.create({
       header: 'Quel planning voulez-vous supprimer ?',
       cssClass: 'actionSheet',
       buttons: tmp
     });
+    // on affiche l'action sheet
     await actionSheet.present();
 
+    // lorsqu'une sélection est faite, on récupère son attribut
     const {role} = await actionSheet.onDidDismiss();
 
     if (role !== 'cancel') {
+      // on supprime le planning correspondant
       await this.httpService.supprPlanning(role, this.user.userData.residence).toPromise();
+      // on resynchronise la liste de planning
       await this.recupListe();
     }
   }

@@ -1,11 +1,11 @@
 {
   "name": "All Plannings",
   "short_name": "plannings",
-  "theme_color": "#1976d2",
+  "theme_color": "#12599F",
   "background_color": "#fafafa",
   "display": "standalone",
-  "scope": "./",
-  "start_url": "./",
+  "scope": "./plannings/",
+  "start_url": "./plannings/",
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",
