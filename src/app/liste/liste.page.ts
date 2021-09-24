@@ -81,11 +81,17 @@ export class ListePage implements OnInit {
     await alert.present();
   }
 
+<<<<<<< HEAD
   // affiche les plannings pour choisir celui à supprimer
   async actionSheet() {
     const tmp = [];
 
     // on parcours la liste de plannings et on rajoute un bouton pour chaque
+=======
+  async actionSheet() {
+    const tmp = [];
+
+>>>>>>> enTest
     for (const planning of this.residence.liste) {
       tmp.push({
         text: planning,
@@ -93,18 +99,25 @@ export class ListePage implements OnInit {
       });
     }
 
+<<<<<<< HEAD
     // on rajoute le bouton annuler
+=======
+>>>>>>> enTest
     tmp.push({
       text: 'Annuler',
       role: 'cancel'
     });
 
+<<<<<<< HEAD
     // création de l'action sheet
+=======
+>>>>>>> enTest
     const actionSheet = await this.actionSheetController.create({
       header: 'Quel planning voulez-vous supprimer ?',
       cssClass: 'actionSheet',
       buttons: tmp
     });
+<<<<<<< HEAD
     // on affiche l'action sheet
     await actionSheet.present();
 
@@ -115,6 +128,14 @@ export class ListePage implements OnInit {
       // on supprime le planning correspondant
       await this.httpService.supprPlanning(role, this.user.userData.residence).toPromise();
       // on resynchronise la liste de planning
+=======
+    await actionSheet.present();
+
+    const {role} = await actionSheet.onDidDismiss();
+
+    if (role !== 'cancel') {
+      await this.httpService.supprPlanning(role, this.user.userData.residence).toPromise();
+>>>>>>> enTest
       await this.recupListe();
     }
   }
