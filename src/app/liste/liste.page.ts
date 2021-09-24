@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {User} from '../shared/class/user';
 import {HttpService} from '../core/http.service';
 import {Infos, ListeModel} from '../shared/models/liste.model';
-import {AlertController} from '@ionic/angular';
+import {ActionSheetController, AlertController} from '@ionic/angular';
 import {Router} from '@angular/router';
 
 @Component({
@@ -19,7 +19,8 @@ export class ListePage implements OnInit {
     public user: User,
     public httpService: HttpService,
     public alertController: AlertController,
-    private router: Router
+    private router: Router,
+    public actionSheetController: ActionSheetController
   ) {
   }
 
@@ -78,6 +79,36 @@ export class ListePage implements OnInit {
 
     // on affiche l'alerte
     await alert.present();
+  }
+
+  async actionSheet() {
+    const tmp = [];
+
+    for (const planning of this.residence.liste) {
+      tmp.push({
+        text: planning,
+        role: planning
+      });
+    }
+
+    tmp.push({
+      text: 'Annuler',
+      role: 'cancel'
+    });
+
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Quel planning voulez-vous supprimer ?',
+      cssClass: 'actionSheet',
+      buttons: tmp
+    });
+    await actionSheet.present();
+
+    const {role} = await actionSheet.onDidDismiss();
+
+    if (role !== 'cancel') {
+      await this.httpService.supprPlanning(role, this.user.userData.residence).toPromise();
+      await this.recupListe();
+    }
   }
 
   addPlanning(id) {

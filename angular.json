@@ -30,7 +30,12 @@
                 "input": "node_modules/ionicons/dist/ionicons/svg",
                 "output": "./svg"
               },
-              "src/manifest.webmanifest"
+              "src/manifest.webmanifest",
+              {
+                "glob": "*.ico",
+                "input": "src",
+                "output": "./"
+              }
             ],
             "styles": ["src/theme/variables.scss", "src/global.scss"],
             "scripts": [],

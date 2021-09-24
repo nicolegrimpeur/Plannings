@@ -77,12 +77,27 @@
 
   <br *ngIf="user.userData.isRp === 'true'">
 
-  <!-- bouton pour ajouter un nouveau planning -->
-  <ion-button expand="block" color="medium"
-              *ngIf="user.userData.isRp === 'true'" (click)="alert()">
-    <ion-icon slot="start" name="add-circle-outline"></ion-icon>
-    Ajouter un planning
-  </ion-button>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <!-- bouton pour ajouter un nouveau planning -->
+        <ion-button expand="block" color="medium"
+                    *ngIf="user.userData.isRp === 'true'" (click)="alert()">
+          <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+          Ajouter un planning
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <!-- bouton pour supprimer un planning -->
+        <ion-button expand="block" color="medium"
+                    *ngIf="user.userData.isRp === 'true'" (click)="actionSheet()">
+          <ion-icon slot="start" name="remove-circle-outline"></ion-icon>
+          Supprimer un planning
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 
   <ion-item-divider></ion-item-divider>
 

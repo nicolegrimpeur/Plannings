@@ -38,3 +38,7 @@ section{
 ion-router-outlet {
   height: calc(var(--vh, 1vh) * 100);
 }
+
+.actionSheet .action-sheet-button-inner.sc-ion-action-sheet-md {
+  justify-content: center;
+}

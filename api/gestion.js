@@ -1,6 +1,7 @@
 // noinspection JSCheckFunctionSignatures
 
 const fs = require("fs");
+const del = require("del");
 module.exports = class Gestion {
   fs = '';
 
@@ -59,6 +60,35 @@ module.exports = class Gestion {
 
     // si la fonction a été appelé via requête http
     if (res !== undefined) res.status(200).json('ok');
+  }
+
+  // supprime un planning
+  removeFile(id, residence, res) {
+    // supprime le planning correspondant
+    del([this.path + 'plannings/' + residence + '/' + id + '.json']).then();
+    del([this.path + 'historique/' + residence + '/historique_' + id + '.json']).then();
+
+    const liste = JSON.parse(fs.readFileSync(this.path + 'listPlannings.json'));
+
+    // on récupère l'indice de l'objet résidence
+    const indexRes = liste['residences'].findIndex(res => res.residence === residence);
+    if (indexRes !== -1) {
+      // on récupère l'indice de l'id
+      let indexId = liste['residences'][indexRes].liste.findIndex(res => res === id);
+      if (indexId !== -1) {
+        liste['residences'][indexRes].liste.splice(indexId, 1);
+
+        // on réécrit le fichier
+        fs.writeFileSync(this.path + 'listPlannings.json', JSON.stringify(liste, null, 2));
+
+        // si la fonction a été appelé via requête http
+        if (res !== undefined) {
+          res.status(200).json('ok');
+          res = undefined;
+        }
+      }
+    }
+    if (res !== undefined) res.status(201).json('pas trouvé');
   }
 
   // ajoute le planning à la liste de planning
