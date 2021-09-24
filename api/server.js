@@ -66,6 +66,14 @@ appHTTPS.get('/plannings/init/:name/:id', (req, res) => {
   gestion.initFile(id, residence, res);
 });
 
+// suppression du json d'un planning
+appHTTPS.get('/plannings/removeFile/:name/:id', (req, res) => {
+  const id = String(req.params.id);
+  const residence = String(req.params.name);
+
+  gestion.removeFile(id, residence, res);
+});
+
 // remise à zéro du planning
 appHTTPS.get('/plannings/zero/:name/:id', (req, res) => {
   const id = String(req.params.id);

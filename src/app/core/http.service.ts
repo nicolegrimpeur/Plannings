@@ -44,4 +44,9 @@ export class HttpService {
     const url = this.baseLink + 'init/' + residence + '/' + id;
     return this.http.get<any>(url);
   }
+
+  supprPlanning(id, residence) {
+    const url = this.baseLink + 'removeFile/' + residence + '/' + id;
+    return this.http.get<any>(url);
+  }
 }
