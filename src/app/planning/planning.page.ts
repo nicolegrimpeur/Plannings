@@ -152,6 +152,7 @@ export class PlanningPage implements OnInit {
           // on supprime les couleurs sur les cases
           this.removeConfirm();
 
+          // on vérifie que le nombre d'inscription réalisé sur ce type de planning est inférieur ou égal à 2 (2 inscriptions maxi par semaine)
           const idNb = this.user.userData.currentPage.search(/[0-9]/g);
           const debutPlanning = this.user.userData.currentPage.slice(0, idNb !== -1 ? idNb : this.user.userData.currentPage.length - 1);
           const idPlanning = this.user.inscriptions.findIndex(res => res.name === debutPlanning);

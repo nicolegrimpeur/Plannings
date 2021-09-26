@@ -124,44 +124,50 @@ export class User {
     };
   }
 
+  // initialise le tableau d'inscriptions
   async initInscription() {
     this.inscriptions = [];
 
+    // on récupère la liste des plannings pour cette résidence
     const liste = await this.recupListe().then(result => result);
 
     const plannings = [];
-    for (const objResidence of liste.residences) {
-      for (const planning of objResidence.liste) {
-        plannings.push({nomPlanning: planning, planning: await this.recupPlanning(planning, objResidence.residence)});
-      }
+    // on récupère les infos qui correspondent à la résidence
+    const objResidence = liste.residences.find(res => res.residence === this.userData.residence);
+    // on parcours la liste des plannings de la résidence pour ajouter chaque planning à plannings
+    for (const planning of objResidence.liste) {
+      plannings.push({nomPlanning: planning, planning: await this.recupPlanning(planning, objResidence.residence)});
     }
 
     let debutPlanning;
     let idNb;
     let idInscription;
     let nbInscription;
+    // on parcours tous les plannings de la résidence
     for (const planning of plannings) {
+      // on récupère le début du nom du plannings (exemple Machine 1 donne Machine )
       idNb = planning.nomPlanning.search(/[0-9]/g);
       debutPlanning = planning.nomPlanning.slice(0, idNb !== -1 ? idNb : planning.nomPlanning.length - 1);
 
       nbInscription = 0;
-      console.log(this.userData);
+      // on parcours le planning en cours
       for (const jour in planning.planning) {
         for (const heure in planning.planning[jour]) {
+          // si le numéro de chambre lui correspond, alors on lui rajoute une inscription sur ce planning
           if (planning.planning[jour][heure].chambre === this.userData.chambre) {
-            console.log(planning.planning[jour][heure].chambre, this.userData.chambre);
             nbInscription++;
           }
         }
       }
 
+      // on ajoute les inscriptions obtenus au tableau d'inscriptions
       idInscription = this.inscriptions.findIndex(res => res.name === debutPlanning);
       if (idInscription === -1) {
         this.inscriptions.push({name: debutPlanning, nbInscriptions: nbInscription});
+      } else {
+        this.inscriptions[idInscription].nbInscriptions += nbInscription;
       }
     }
-
-    console.log(this.inscriptions);
   }
 
   // on récupère les infos des résidences
@@ -185,15 +191,17 @@ export class User {
       });
   }
 
+  // ajoute une inscription
   addInscription(name) {
     this.manageInscriptions(name, +1);
-    console.log(this.inscriptions);
   }
 
+  // supprime une inscription
   removeInscription(name) {
     this.manageInscriptions(name, -1);
   }
 
+  // manipule le tableau d'inscription pour rajouter ou enlever une inscription
   manageInscriptions(name, nb) {
     const debutName = name.slice(0, name.search(/[0-9]/g));
 

@@ -5,6 +5,7 @@ ion-col {
   text-align: center;
   height: 7.3vmin;
   width: 12vmax;
+  user-select: none;
 }
 
 // taille en haute sur mobile
@@ -22,5 +23,3 @@ ion-icon {
 div {
   text-align: center;
 }
-
-
