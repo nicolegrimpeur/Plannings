@@ -25,7 +25,7 @@ export class Display {
     // création du toast
     const toast = await this.toastController.create({
       message: strMessage,
-      duration: 3000,
+      duration: 2000,
       position: 'top',
       color: couleur
     });
@@ -33,7 +33,7 @@ export class Display {
     await toast.present();
   }
 
-  //
+  // création d'une alerte
   async alert(info: string) {
     const alert = await this.alertController.create({
       header: 'Information',

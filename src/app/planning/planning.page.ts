@@ -151,14 +151,22 @@ export class PlanningPage implements OnInit {
         } else { // sinon on initialise l'inscription
           // on supprime les couleurs sur les cases
           this.removeConfirm();
-          // on enregistre les infos d'inscription
-          this.infosCreneau.modification = 'add';
-          this.infosCreneau.jour = jour;
-          this.infosCreneau.heure = heure;
-          // on ajoute la couleur
-          this.addConfirm(idJour, idHeure);
+
+          const idNb = this.user.userData.currentPage.search(/[0-9]/g);
+          const debutPlanning = this.user.userData.currentPage.slice(0, idNb !== -1 ? idNb : this.user.userData.currentPage.length - 1);
+          const idPlanning = this.user.inscriptions.findIndex(res => res.name === debutPlanning);
+          if (this.user.inscriptions[idPlanning].nbInscriptions < 2) {
+            // on enregistre les infos d'inscription
+            this.infosCreneau.modification = 'add';
+            this.infosCreneau.jour = jour;
+            this.infosCreneau.heure = heure;
+            // on ajoute la couleur
+            this.addConfirm(idJour, idHeure);
+          } else {
+            this.display.display('Vous avez atteint la limite d\'inscription sur les ' + debutPlanning).then();
+          }
         }
-      // sinon on vérifie si le numéro de chambre et le nom correspondent pour supprimer le créneau
+        // sinon on vérifie si le numéro de chambre et le nom correspondent pour supprimer le créneau
       } else if (this.planning[jour][heure].chambre === this.user.userData.chambre &&
         this.planning[jour][heure].nom === this.user.userData.nom) {
         // on vérifie qu'on a déjà initialisé la suppression
@@ -240,6 +248,7 @@ export class PlanningPage implements OnInit {
       .catch(err => {
         this.catchCreneau(err);
       });
+    this.user.addInscription(this.user.userData.currentPage);
   }
 
   // supprime un créneau
@@ -258,6 +267,7 @@ export class PlanningPage implements OnInit {
       .catch(err => {
         this.catchCreneau(err);
       });
+    this.user.removeInscription(this.user.userData.currentPage);
   }
 
   catchCreneau(err) {

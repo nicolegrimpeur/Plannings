@@ -3,6 +3,8 @@ import {Router} from '@angular/router';
 import {AngularFireAuth} from '@angular/fire/compat/auth';
 import {Platform} from '@ionic/angular';
 import {Display} from './display';
+import {HttpService} from '../../core/http.service';
+import {ListeModel} from '../models/liste.model';
 
 @Injectable({
   providedIn: 'platform'
@@ -18,13 +20,15 @@ export class User {
     displayName: '',
     currentPage: ''
   };
+  public inscriptions;
   private currentUser: any;
 
   constructor(
     private router: Router,
     private afAuth: AngularFireAuth,
     private platform: Platform,
-    private display: Display
+    private display: Display,
+    private httpService: HttpService
   ) {
     this.connexion();
 
@@ -71,11 +75,11 @@ export class User {
   redirectionErreur() {
     this.platform.ready().then(() => {
       this.afAuth.authState.subscribe(auth => {
-          if (auth) {
-            this.router.navigateByUrl('/').then();
-          } else {
-            this.router.navigateByUrl('/login').then();
-          }
+        if (auth) {
+          this.router.navigateByUrl('/').then();
+        } else {
+          this.router.navigateByUrl('/login').then();
+        }
       });
     });
   }
@@ -88,6 +92,7 @@ export class User {
           this.userData.mail = auth.email;
           this.userData.displayName = auth.displayName;
           this.initInfos();
+          this.initInscription().then();
         }
       }
     });
@@ -117,5 +122,88 @@ export class User {
       displayName: '',
       currentPage: ''
     };
+  }
+
+  async initInscription() {
+    this.inscriptions = [];
+
+    const liste = await this.recupListe().then(result => result);
+
+    const plannings = [];
+    for (const objResidence of liste.residences) {
+      for (const planning of objResidence.liste) {
+        plannings.push({nomPlanning: planning, planning: await this.recupPlanning(planning, objResidence.residence)});
+      }
+    }
+
+    let debutPlanning;
+    let idNb;
+    let idInscription;
+    let nbInscription;
+    for (const planning of plannings) {
+      idNb = planning.nomPlanning.search(/[0-9]/g);
+      debutPlanning = planning.nomPlanning.slice(0, idNb !== -1 ? idNb : planning.nomPlanning.length - 1);
+
+      nbInscription = 0;
+      console.log(this.userData);
+      for (const jour in planning.planning) {
+        for (const heure in planning.planning[jour]) {
+          if (planning.planning[jour][heure].chambre === this.userData.chambre) {
+            console.log(planning.planning[jour][heure].chambre, this.userData.chambre);
+            nbInscription++;
+          }
+        }
+      }
+
+      idInscription = this.inscriptions.findIndex(res => res.name === debutPlanning);
+      if (idInscription === -1) {
+        this.inscriptions.push({name: debutPlanning, nbInscriptions: nbInscription});
+      }
+    }
+
+    console.log(this.inscriptions);
+  }
+
+  // on récupère les infos des résidences
+  async recupListe() {
+    return await this.httpService.getListe().toPromise()
+      .then((results: ListeModel) => results)
+      .catch(err => {
+        this.router.navigate(['/erreur']).then();
+        return new ListeModel();
+      });
+  }
+
+  // récupère un planning
+  async recupPlanning(page, res) {
+    // on appelle la fonction getPlanning
+    return await this.httpService.getPlanning(page, res).toPromise()
+      .then(results => results)
+      .catch(err => {
+        // on redirige vers la page d'erreur
+        this.router.navigate(['/erreur']).then();
+      });
+  }
+
+  addInscription(name) {
+    this.manageInscriptions(name, +1);
+    console.log(this.inscriptions);
+  }
+
+  removeInscription(name) {
+    this.manageInscriptions(name, -1);
+  }
+
+  manageInscriptions(name, nb) {
+    const debutName = name.slice(0, name.search(/[0-9]/g));
+
+    let idInscriptions = this.inscriptions.findIndex(res => res.name === debutName);
+
+    if (idInscriptions === -1) {
+      this.inscriptions.push({name: debutName, nbInscriptions: 0});
+      idInscriptions = this.inscriptions.length - 1;
+    }
+
+    this.inscriptions[idInscriptions].nbInscriptions += nb;
   }
 }
