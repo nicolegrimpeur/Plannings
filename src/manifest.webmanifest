@@ -4,8 +4,8 @@
   "theme_color": "#12599F",
   "background_color": "#fafafa",
   "display": "standalone",
-  "scope": "./plannings/",
-  "start_url": "./plannings/",
+  "scope": "./",
+  "start_url": "https://nicob.ovh/plannings/",
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",

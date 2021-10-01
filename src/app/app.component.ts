@@ -11,7 +11,7 @@ export class AppComponent {
   constructor(
     public user: User
   ) {
-    this.user.redirection();
+    this.user.redirection('');
     window.addEventListener('load', this.modifRouterOutlet);
     window.addEventListener('resize', this.modifRouterOutlet);
   }

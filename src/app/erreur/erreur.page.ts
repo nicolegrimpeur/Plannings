@@ -29,6 +29,10 @@ export class ErreurPage implements OnInit {
   ngOnInit() {
   }
 
+  ionViewDidEnter() {
+    this.recupListe();
+  }
+
   // initialise le status
   async initNetworkStatus() {
     this.status = await Network.getStatus();

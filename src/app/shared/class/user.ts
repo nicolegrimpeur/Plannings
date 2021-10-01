@@ -57,12 +57,14 @@ export class User {
   }
 
   // redirige l'utilisateur s'il est connecté ou non
-  redirection() {
+  redirection(link) {
     this.platform.ready().then(() => {
       this.afAuth.authState.subscribe(auth => {
         if (this.router.url !== '/erreur') {
           if (auth) {
-            this.router.navigateByUrl('/').then();
+            if (link === '') {
+              this.router.navigateByUrl('/').then();
+            }
           } else {
             this.router.navigateByUrl('/login').then();
           }
@@ -122,6 +124,8 @@ export class User {
       displayName: '',
       currentPage: ''
     };
+
+    this.router.navigateByUrl('/login').then();
   }
 
   // initialise le tableau d'inscriptions
