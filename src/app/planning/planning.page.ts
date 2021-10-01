@@ -73,13 +73,15 @@ export class PlanningPage implements OnInit {
   initJours() {
     // time sert de référence en partant du dimanche précédant
     const time = new Date(new Date().setDate(new Date().getDate() - new Date(Date.now()).getDay()));
+    console.log(time);
     // option pour l'affichage de la date
     const options = {weekday: 'long', day: 'numeric', month: 'long'};
     let tmp;
 
     for (let jour = 0; jour <= 7; jour++) {
       // tmp stocke le jour correspondant à la date dimanche précédant + jour
-      tmp = new Date(new Date().setDate(time.getDate() + jour));
+      tmp = new Date(new Date().setTime(time.getTime() + jour * 86400000));
+      console.log(tmp);
       // on l'ajoute dans le tableau de jour
       this.jours.push(tmp.toLocaleDateString('fr-FR', options));
     }
