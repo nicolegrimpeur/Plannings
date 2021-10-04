@@ -156,10 +156,13 @@ export class User {
       nbInscription = 0;
       // on parcours le planning en cours
       for (const jour in planning.planning) {
-        for (const heure in planning.planning[jour]) {
-          // si le numéro de chambre lui correspond, alors on lui rajoute une inscription sur ce planning
-          if (planning.planning[jour][heure].chambre === this.userData.chambre) {
-            nbInscription++;
+        // permet d'éviter de considérer le dimanche précédent comme partie courante de la semaine
+        if (jour !== 'dimanche1') {
+          for (const heure in planning.planning[jour]) {
+            // si le numéro de chambre lui correspond, alors on lui rajoute une inscription sur ce planning
+            if (planning.planning[jour][heure].chambre === this.userData.chambre) {
+              nbInscription++;
+            }
           }
         }
       }
@@ -216,6 +219,8 @@ export class User {
       idInscriptions = this.inscriptions.length - 1;
     }
 
+    console.log(this.inscriptions[idInscriptions].nbInscriptions);
     this.inscriptions[idInscriptions].nbInscriptions += nb;
+    console.log(this.inscriptions[idInscriptions].nbInscriptions);
   }
 }

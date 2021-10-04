@@ -73,7 +73,7 @@ export class PlanningPage implements OnInit {
   initJours() {
     // time sert de référence en partant du dimanche précédant
     const time = new Date(new Date().setDate(new Date().getDate() - new Date(Date.now()).getDay()));
-    console.log(time);
+
     // option pour l'affichage de la date
     const options = {weekday: 'long', day: 'numeric', month: 'long'};
     let tmp;
@@ -81,7 +81,7 @@ export class PlanningPage implements OnInit {
     for (let jour = 0; jour <= 7; jour++) {
       // tmp stocke le jour correspondant à la date dimanche précédant + jour
       tmp = new Date(new Date().setTime(time.getTime() + jour * 86400000));
-      console.log(tmp);
+
       // on l'ajoute dans le tableau de jour
       this.jours.push(tmp.toLocaleDateString('fr-FR', options));
     }
@@ -158,7 +158,7 @@ export class PlanningPage implements OnInit {
           const idNb = this.user.userData.currentPage.search(/[0-9]/g);
           const debutPlanning = this.user.userData.currentPage.slice(0, idNb !== -1 ? idNb : this.user.userData.currentPage.length - 1);
           const idPlanning = this.user.inscriptions.findIndex(res => res.name === debutPlanning);
-          if (this.user.inscriptions[idPlanning].nbInscriptions < 2) {
+          if (this.user.inscriptions[idPlanning].nbInscriptions < 2 || jour === 'dimanche1') {
             // on enregistre les infos d'inscription
             this.infosCreneau.modification = 'add';
             this.infosCreneau.jour = jour;
@@ -166,7 +166,7 @@ export class PlanningPage implements OnInit {
             // on ajoute la couleur
             this.addConfirm(idJour, idHeure);
           } else {
-            this.display.display('Vous avez atteint la limite d\'inscription sur les ' + debutPlanning).then();
+            this.display.display('Vous avez atteint la limite d\'inscription sur les ' + debutPlanning + 'pour cette semaine').then();
           }
         }
         // sinon on vérifie si le numéro de chambre et le nom correspondent pour supprimer le créneau
@@ -251,7 +251,11 @@ export class PlanningPage implements OnInit {
       .catch(err => {
         this.catchCreneau(err);
       });
-    this.user.addInscription(this.user.userData.currentPage);
+
+    // permet d'éviter de considérer le dimanche précédent comme partie courante de la semaine
+    if (jour !== 'dimanche1') {
+      this.user.addInscription(this.user.userData.currentPage);
+    }
   }
 
   // supprime un créneau
@@ -270,7 +274,11 @@ export class PlanningPage implements OnInit {
       .catch(err => {
         this.catchCreneau(err);
       });
-    this.user.removeInscription(this.user.userData.currentPage);
+
+    // permet d'éviter de considérer le dimanche précédent comme partie courante de la semaine
+    if (jour !== 'dimanche1') {
+      this.user.removeInscription(this.user.userData.currentPage);
+    }
   }
 
   catchCreneau(err) {
