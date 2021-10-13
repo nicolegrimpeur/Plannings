@@ -82,6 +82,14 @@ appHTTPS.get('/plannings/zero/:name/:id', (req, res) => {
   gestion.remiseZero(id, residence, res);
 });
 
+// modifie l'ordre des plannings d'une résidence
+appHTTPS.get('/plannings/modifOrdrePlannings/:name/:id', (req, res) => {
+  const informations = String(req.params.id);
+  const residence = String(req.params.name);
+
+  gestion.modifListePlanning(residence, informations, res);
+});
+
 serverHTTPS.listen(portHTTPS);
 
 console.log("let's go http port : " + portHTTPS);

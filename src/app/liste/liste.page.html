@@ -11,21 +11,21 @@
   </ion-refresher>
 
   <!-- utile pour afficher les infos de debug de l'utilisateur -->
-<!--  <ion-item>-->
-<!--    Nom : {{user.userData.nom}}-->
-<!--  </ion-item>-->
-<!--  <ion-item>-->
-<!--    Prénom : {{user.userData.prenom}}-->
-<!--  </ion-item>-->
-<!--  <ion-item>-->
-<!--    Résidence : {{user.userData.residence}}-->
-<!--  </ion-item>-->
-<!--  <ion-item>-->
-<!--    Chambre : {{user.userData.chambre}}-->
-<!--  </ion-item>-->
-<!--  <ion-item>-->
-<!--    isRp : {{user.userData.isRp}}-->
-<!--  </ion-item>-->
+  <!--  <ion-item>-->
+  <!--    Nom : {{user.userData.nom}}-->
+  <!--  </ion-item>-->
+  <!--  <ion-item>-->
+  <!--    Prénom : {{user.userData.prenom}}-->
+  <!--  </ion-item>-->
+  <!--  <ion-item>-->
+  <!--    Résidence : {{user.userData.residence}}-->
+  <!--  </ion-item>-->
+  <!--  <ion-item>-->
+  <!--    Chambre : {{user.userData.chambre}}-->
+  <!--  </ion-item>-->
+  <!--  <ion-item>-->
+  <!--    isRp : {{user.userData.isRp}}-->
+  <!--  </ion-item>-->
 
   <ion-card>
     <ion-card-header>
@@ -51,10 +51,12 @@
       </ion-grid>
 
       <!-- affiche une erreur s'il n'existe pas encore de planning pour cette résidence -->
-      <ion-card-content *ngIf="residence.liste !== undefined && residence.liste.length === 0 && user.userData.isRp === 'true'">
+      <ion-card-content
+        *ngIf="residence.liste !== undefined && residence.liste.length === 0 && user.userData.isRp === 'true'">
         Vous pouvez ajouter un planning avec le bouton "AJOUTER UN PLANNING" si dessous
       </ion-card-content>
-      <ion-card-content *ngIf="residence.liste !== undefined && residence.liste.length === 0 && user.userData.isRp === 'false'">
+      <ion-card-content
+        *ngIf="residence.liste !== undefined && residence.liste.length === 0 && user.userData.isRp === 'false'">
         Aucun planning n'a encore été créé pour votre résidence, vous pouvez contacter votre RP,
         ou Nicolas Barrat au <a href='sms:07.81.70.66.63' title='Envoyer un message à Nicolas' target='_blank'>07.81.70.66.63</a>
       </ion-card-content>
@@ -93,6 +95,14 @@
                     *ngIf="user.userData.isRp === 'true'" (click)="alert()">
           <ion-icon slot="start" name="add-circle-outline"></ion-icon>
           Ajouter un planning
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <!-- bouton pour déplacer un planning -->
+        <ion-button expand="block" color="medium"
+                    *ngIf="user.userData.isRp === 'true'" (click)="movePlanning()">
+          <ion-icon slot="start" name="move-outline"></ion-icon>
+          Déplacer un planning
         </ion-button>
       </ion-col>
       <ion-col>

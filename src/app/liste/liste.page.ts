@@ -2,14 +2,15 @@ import {Component, OnInit} from '@angular/core';
 import {User} from '../shared/class/user';
 import {HttpService} from '../core/http.service';
 import {Infos, ListeModel} from '../shared/models/liste.model';
-import {ActionSheetController, AlertController} from '@ionic/angular';
+import {ActionSheetController, AlertController, ModalController} from '@ionic/angular';
 import {Router} from '@angular/router';
+import {InfosModalPage} from '../shared/modal/infos-modal/infos-modal.page';
 
 @Component({
   selector: 'app-liste',
   templateUrl: './liste.page.html',
   styleUrls: ['./liste.page.scss'],
-  providers: [HttpService]
+  providers: [HttpService,]
 })
 export class ListePage implements OnInit {
   public liste = new ListeModel(); // stocke les infos des résidences
@@ -20,7 +21,8 @@ export class ListePage implements OnInit {
     public httpService: HttpService,
     public alertController: AlertController,
     private router: Router,
-    public actionSheetController: ActionSheetController
+    public actionSheetController: ActionSheetController,
+    private modalController: ModalController
   ) {
   }
 
@@ -39,7 +41,7 @@ export class ListePage implements OnInit {
         // on initialise les infos de la résidence dont on a besoin
         this.initResidence();
       })
-      .catch(err => {
+      .catch(() => {
         this.router.navigate(['/erreur']).then();
       });
   }
@@ -117,6 +119,19 @@ export class ListePage implements OnInit {
       // on resynchronise la liste de planning
       await this.recupListe();
     }
+  }
+
+  async movePlanning() {
+    const modal = await this.modalController.create({
+      component: InfosModalPage,
+      componentProps: {residence: this.residence}
+    });
+
+    await modal.present();
+    await modal.onDidDismiss();
+
+    // rafraichi le json
+    this.recupListe().then();
   }
 
   addPlanning(id) {

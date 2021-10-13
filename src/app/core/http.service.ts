@@ -9,8 +9,8 @@ import {HistoriqueModel} from '../shared/models/historique.model';
   providedIn: 'root'
 })
 export class HttpService {
-  private baseLink = 'https://nicob.ovh/plannings/';
-  // private baseLink = 'http://localhost:1080/plannings/';
+  // private baseLink = 'https://nicob.ovh/plannings/';
+  private baseLink = 'http://localhost:1080/plannings/';
 
   constructor(private readonly http: HttpClient) {
   }
@@ -47,6 +47,11 @@ export class HttpService {
 
   supprPlanning(id, residence) {
     const url = this.baseLink + 'removeFile/' + residence + '/' + id;
+    return this.http.get<any>(url);
+  }
+
+  modifOrdrePlannings(residence, informations) {
+    const url = this.baseLink + 'modifOrdrePlannings/' + residence + '/' + informations + '+OkPourModifs';
     return this.http.get<any>(url);
   }
 }

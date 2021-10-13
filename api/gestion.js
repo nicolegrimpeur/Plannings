@@ -116,6 +116,29 @@ module.exports = class Gestion {
     fs.writeFileSync(this.path + 'listPlannings.json', JSON.stringify(liste, null, 2));
   }
 
+  // remplace la liste de planning d'une résidence par une nouvelle
+  modifListePlanning(residence, informations, res) {
+    const liste = JSON.parse(fs.readFileSync(this.path + 'listPlannings.json'));
+
+    // on récupère l'index de la position de la résidence dans la liste
+    let index = liste['residences'].findIndex(res => res.residence === residence);
+
+    // on remplace l'ancienne liste par la nouvelle avec le nouvelle ordre
+    liste['residences'][index].liste = informations.split('+');
+
+    // on vérifie que la modification vient bien de l'application
+    if (liste['residences'][index].liste[liste['residences'][index].liste.length - 1] === 'OkPourModifs') {
+      // on supprime la valeur du mot de passe
+      liste['residences'][index].liste.pop();
+
+      // on réécrit le fichier
+      fs.writeFileSync(this.path + 'listPlannings.json', JSON.stringify(liste, null, 2));
+
+      // on renvoi une réponse
+      if (res !== undefined) res.status(201).json('pas trouvé');
+    }
+  }
+
   // ajoute un créneau
   addCreneau(informations, res) {
     let id, nom, prenom, residence, chambre, jour, heure;
