@@ -55,6 +55,11 @@ export class InfosModalPage implements OnInit {
     this.dismissModal();
   }
 
+  annuler() {
+    this.display.display('Modifications annulés').then();
+    this.dismissModal();
+  }
+
   dismissModal() {
       this.modalController.dismiss().then();
   }
