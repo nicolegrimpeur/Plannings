@@ -74,6 +74,9 @@ export class PlanningPage implements OnInit {
     // time sert de référence en partant du dimanche précédant
     const time = new Date(new Date().setDate(new Date().getDate() - new Date(Date.now()).getDay()));
 
+    // initialisation de currentDay à aujourd'hui
+    this.currentDay = new Date(Date.now()).getDay();
+
     // option pour l'affichage de la date
     const options = {weekday: 'long', day: 'numeric', month: 'long'};
     let tmp;

@@ -219,8 +219,6 @@ export class User {
       idInscriptions = this.inscriptions.length - 1;
     }
 
-    console.log(this.inscriptions[idInscriptions].nbInscriptions);
     this.inscriptions[idInscriptions].nbInscriptions += nb;
-    console.log(this.inscriptions[idInscriptions].nbInscriptions);
   }
 }

@@ -172,14 +172,14 @@
       "chambre": ""
     },
     "H11M30": {
-      "nom": "Barrat",
-      "prenom": "Nicolas",
-      "chambre": "T404"
-    },
-    "H13M": {
       "nom": "",
       "prenom": "",
       "chambre": ""
+    },
+    "H13M": {
+      "nom": "Barrat",
+      "prenom": "Nicolas",
+      "chambre": "T404"
     },
     "H14M30": {
       "nom": "",
