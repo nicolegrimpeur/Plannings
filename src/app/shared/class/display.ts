@@ -12,6 +12,9 @@ export class Display {
   }
 
   // affiche d'un toast contenant le texte de l'erreur
+  // message peut être égal à
+  // 'info'
+  // ou {code: 'info', color: 'color'}
   async display(message: any) {
     let strMessage = message;
     let couleur = 'danger';

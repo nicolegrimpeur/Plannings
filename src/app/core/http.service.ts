@@ -9,8 +9,9 @@ import {HistoriqueModel} from '../shared/models/historique.model';
   providedIn: 'root'
 })
 export class HttpService {
-  private baseLink = 'https://nicob.ovh/plannings/';
-  // private baseLink = 'http://localhost:1080/plannings/';
+  private base = 'https://nicob.ovh/';
+  // private base = 'http://localhost:1080/';
+  private baseLink = this.base + 'plannings/';
 
   constructor(private readonly http: HttpClient) {
   }
@@ -52,6 +53,11 @@ export class HttpService {
 
   modifOrdrePlannings(residence, informations) {
     const url = this.baseLink + 'modifOrdrePlannings/' + residence + '/' + informations + '+OkPourModifs';
+    return this.http.get<any>(url);
+  }
+
+  checkMdpRp(mdp): Observable<any> {
+    const url = this.base + 'mdpRp/' + mdp;
     return this.http.get<any>(url);
   }
 }
