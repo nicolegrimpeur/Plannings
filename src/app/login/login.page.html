@@ -47,7 +47,7 @@
 
       <ion-item *ngIf="loginData.isRp === 'true'">
         <ion-label><b>Mot de passe RP</b></ion-label>
-        <ion-input #inputMdp [(ngModel)]="loginData.mdpRp" type="password" autocomplete="current-password" required="true"
+        <ion-input #inputMdp [(ngModel)]="loginData.mdpRp" type="password" autocomplete="current-password" required="true" minlength="6" maxlength="22"
                    placeholder="Mot de passe"></ion-input>
         <ion-icon #iconMdp (click)="toggleMdp()" name="eye-off-outline"></ion-icon>
       </ion-item>
