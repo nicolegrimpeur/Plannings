@@ -69,39 +69,39 @@ export class LoginPage implements OnInit {
       if (result.status !== 200) {
         this.display.display('Mauvais mot de passe').then();
         this.loginData.mdpRp = '';
-      } else {
-        const password = 'f355bcd8af0541b815c00eda1360a30024c2ae8bfc53ead1073bf29b7589cc64';
-
-        // on regarde si un compte existe déjà avec cette email
-        this.afAuth.fetchSignInMethodsForEmail(this.loginData.mail)
-          .then(res => {
-            // si oui on connecte l'utilisateur
-            if (res.length === 1) {
-              this.afAuth.signInWithEmailAndPassword(this.loginData.mail, password)
-                .then(auth => {
-                  // on redirige l'utilisateur sur la page d'accueil
-                  this.router.navigateByUrl('/').then();
-                })
-                .catch(err => {
-                  // sinon on affiche une erreur
-                  this.display.display(err).then();
-                });
-            } else { // sinon on créé un compte
-              this.afAuth.createUserWithEmailAndPassword(this.loginData.mail, password)
-                .then(auth => {
-                  // on redirige l'utilisateur sur la page d'accueil
-                  this.router.navigateByUrl('/').then();
-                })
-                .catch(err => {
-                  // sinon on affiche une erreur
-                  this.display.display(err).then();
-                });
-            }
-          })
-          .catch(err => {
-            this.recupListe().then();
-          });
       }
+
+      const password = 'f355bcd8af0541b815c00eda1360a30024c2ae8bfc53ead1073bf29b7589cc64';
+
+      // on regarde si un compte existe déjà avec cette email
+      this.afAuth.fetchSignInMethodsForEmail(this.loginData.mail)
+        .then(res => {
+          // si oui on connecte l'utilisateur
+          if (res.length === 1) {
+            this.afAuth.signInWithEmailAndPassword(this.loginData.mail, password)
+              .then(auth => {
+                // on redirige l'utilisateur sur la page d'accueil
+                this.router.navigateByUrl('/').then();
+              })
+              .catch(err => {
+                // sinon on affiche une erreur
+                this.display.display(err).then();
+              });
+          } else { // sinon on créé un compte
+            this.afAuth.createUserWithEmailAndPassword(this.loginData.mail, password)
+              .then(auth => {
+                // on redirige l'utilisateur sur la page d'accueil
+                this.router.navigateByUrl('/').then();
+              })
+              .catch(err => {
+                // sinon on affiche une erreur
+                this.display.display(err).then();
+              });
+          }
+        })
+        .catch(err => {
+          this.recupListe().then();
+        });
     });
   }
 
@@ -121,12 +121,65 @@ export class LoginPage implements OnInit {
     if (this.iconMdp.name === 'eye-outline') {
       this.iconMdp.name = 'eye-off-outline';
       this.inputMdp.type = 'password';
-    }
-    else {
+    } else {
       this.iconMdp.name = 'eye-outline';
       this.inputMdp.type = 'text';
     }
   }
+
+  createRes() {
+    this.display.alertWithInputs(
+      'Mot de passe RP',
+      [{
+        name: 'mdp',
+        type: 'text',
+        placeholder: 'Mot de passe RP'
+      }
+      ]).then(result => {
+
+      if (result.role !== 'cancel' && result.role !== 'backdrop') {
+        this.httpService.checkMdpRp(result.data.values.mdp).toPromise().then()
+          .catch(async err => {
+            // si status = 200, alors le mot de passe est correct
+            if (err.status === 200) {
+
+              this.display.alertWithInputs(
+                'Informations de la résidence',
+                [{
+                  name: 'name',
+                  type: 'text',
+                  placeholder: 'Nom de la résidence (exemple Saint-Omer)'
+                }, {
+                  name: 'id',
+                  type: 'text',
+                  placeholder: 'Id de la résidence (exemple STO)'
+                }]
+              ).then(res => {
+                if (res.role !== 'cancel' && res.role !== 'backdrop') {
+                  this.httpService.createRes(res.data.values.id, res.data.values.name).toPromise().then()
+                    .catch(error => {
+                      if (err.status === 200) {
+                        this.display.display({code: 'Résidence enregistré', color: 'success'}).then();
+                        this.ionViewWillEnter();
+                      } else if (err.status === 201) {
+                        this.display.display('Une erreur a eu lieu, vérifiez que la résidence n\'existe pas déjà');
+                      } else {
+                        this.router.navigate(['/erreur']).then();
+                      }
+                    });
+                }
+              });
+
+            } else if (err.status === 201) {
+              this.display.display('Mot de passe incorrect').then();
+            } else {
+              this.router.navigate(['/erreur']).then();
+            }
+          });
+      }
+    });
+  }
+
 
   // événement pour rafraichir la page
   doRefresh(event) {

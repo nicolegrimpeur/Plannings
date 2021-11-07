@@ -90,6 +90,14 @@ appHTTPS.get('/plannings/modifOrdrePlannings/:name/:id', (req, res) => {
   gestion.modifListePlanning(residence, informations, res);
 });
 
+// remise à zéro du planning
+appHTTPS.get('/plannings/createRes/:id/:name', (req, res) => {
+  const id = String(req.params.id);
+  const name = String(req.params.name);
+
+  gestion.createResidence(id, name, res);
+});
+
 serverHTTPS.listen(portHTTPS);
 
 console.log("let's go http port : " + portHTTPS);

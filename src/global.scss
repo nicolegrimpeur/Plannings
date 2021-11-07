@@ -42,3 +42,8 @@ ion-router-outlet {
 .actionSheet .action-sheet-button-inner.sc-ion-action-sheet-md {
   justify-content: center;
 }
+
+// css alerte with inputs dans display
+.alertWithInputs {
+  --max-width: inherit;
+}

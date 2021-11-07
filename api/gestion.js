@@ -1,7 +1,7 @@
 // noinspection JSCheckFunctionSignatures
 
-const fs = require("fs");
-const del = require("del");
+const fs = require('fs');
+const del = require('del');
 module.exports = class Gestion {
   fs = '';
 
@@ -289,5 +289,36 @@ module.exports = class Gestion {
 
     // on enregistre les modifications
     fs.writeFileSync(this.path + 'historique/' + residence + '/' + 'historique_' + id + '.json', JSON.stringify(historique, null, 2));
+  }
+
+  // créer la nouvelle résidence
+  createResidence(id, name, res) {
+    function callBack(err) {
+      console.log(err);
+      return err;
+    }
+
+    // try {
+
+    // on récupère la liste de plannings / résidences
+    const liste = JSON.parse(fs.readFileSync(this.path + 'listPlannings.json'));
+    liste.residences.push({
+      residence: id,
+      name: name,
+      liste: []
+    });
+
+
+    fs.mkdirSync('./historique/' + id);
+    fs.mkdirSync('./plannings/' + id);
+    if (res !== undefined) res.status(200).send('ok');
+
+    // on enregistre les modifications
+    fs.writeFileSync(this.path + 'listPlannings.json', JSON.stringify(liste, null, 2));
+
+    // }
+    // catch {
+    //   if (res !== undefined) res.status(201).send('pas ok');
+    // }
   }
 }
