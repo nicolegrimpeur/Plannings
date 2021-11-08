@@ -9,8 +9,8 @@ import {HistoriqueModel} from '../shared/models/historique.model';
   providedIn: 'root'
 })
 export class HttpService {
-  // private base = 'https://nicob.ovh/';
-  private base = 'http://localhost:1080/';
+  private base = 'https://nicob.ovh/';
+  // private base = 'http://localhost:1080/';
   private baseLink = this.base + 'plannings/';
 
   constructor(private readonly http: HttpClient) {
@@ -57,8 +57,7 @@ export class HttpService {
   }
 
   checkMdpRp(mdp): Observable<any> {
-    // const url = this.base + 'mdpRp/' + mdp;
-    const url = 'https://nicob.ovh/mdpRp/' + mdp;
+    const url = this.base + 'mdpRp/' + mdp;
     return this.http.get<any>(url);
   }
 

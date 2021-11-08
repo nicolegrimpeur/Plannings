@@ -293,13 +293,6 @@ module.exports = class Gestion {
 
   // créer la nouvelle résidence
   createResidence(id, name, res) {
-    function callBack(err) {
-      console.log(err);
-      return err;
-    }
-
-    // try {
-
     // on récupère la liste de plannings / résidences
     const liste = JSON.parse(fs.readFileSync(this.path + 'listPlannings.json'));
     liste.residences.push({
@@ -308,17 +301,18 @@ module.exports = class Gestion {
       liste: []
     });
 
-
-    fs.mkdirSync('./historique/' + id);
-    fs.mkdirSync('./plannings/' + id);
-    if (res !== undefined) res.status(200).send('ok');
-
     // on enregistre les modifications
     fs.writeFileSync(this.path + 'listPlannings.json', JSON.stringify(liste, null, 2));
 
-    // }
-    // catch {
-    //   if (res !== undefined) res.status(201).send('pas ok');
-    // }
+    try {
+      fs.mkdirSync(this.path + 'historique/' + id);
+      fs.mkdirSync(this.path + 'plannings/' + id);
+      if (res !== undefined) res.status(200).send('ok');
+    }
+    catch {
+      if (res !== undefined) res.status(200).send('ok mais la résidence existe déjà');
+    }
+
+
   }
 }
