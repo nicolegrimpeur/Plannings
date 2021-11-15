@@ -3,6 +3,7 @@ import {ModalController, NavParams} from '@ionic/angular';
 import {Infos} from '../../models/liste.model';
 import {HttpService} from '../../../core/http.service';
 import {Display} from '../../class/display';
+import {lastValueFrom} from "rxjs";
 
 @Component({
   selector: 'app-infos-modal',
@@ -44,7 +45,7 @@ export class InfosModalPage implements OnInit {
       }
     }
 
-    this.httpService.modifOrdrePlannings(this.residence.residence, informations).toPromise()
+    lastValueFrom(this.httpService.modifOrdrePlannings(this.residence.residence, informations))
       .then(() => {
         this.display.display({code: 'Modifications effectués', color: 'success'}).then();
       })

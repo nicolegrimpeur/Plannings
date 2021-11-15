@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {Display} from '../shared/class/display';
 import {HttpService} from '../core/http.service';
 import {ListeModel} from '../shared/models/liste.model';
+import {lastValueFrom} from "rxjs";
 
 @Component({
   selector: 'app-login',
@@ -63,7 +64,7 @@ export class LoginPage implements OnInit {
     this.checkMail();
 
     // si le mot de passe est incorrect on bloque la connexion
-    this.httpService.checkMdpRp(this.loginData.mdpRp).toPromise().then().catch(result => {
+    lastValueFrom(this.httpService.checkMdpRp(this.loginData.mdpRp)).then().catch(result => {
       if (result.status !== 200) {
         this.display.display('Mauvais mot de passe').then();
         this.loginData.mdpRp = '';
@@ -105,7 +106,7 @@ export class LoginPage implements OnInit {
 
   // récupère la liste des résidences pour l'afficher dans la partie résidence
   async recupListe() {
-    await this.httpService.getListe().toPromise()
+    await lastValueFrom(this.httpService.getListe())
       .then((results: ListeModel) => {
         this.liste = results;
       })
@@ -135,7 +136,7 @@ export class LoginPage implements OnInit {
       }
       ]).then(result => {
       if (result.role !== 'cancel' && result.role !== 'backdrop') {
-        this.httpService.checkMdpRp(result.data.values.mdp).toPromise().then()
+        lastValueFrom(this.httpService.checkMdpRp(result.data.values.mdp)).then()
           .catch(async err => {
             // si status = 200, alors le mot de passe est correct
             if (err.status === 200) {
@@ -154,7 +155,7 @@ export class LoginPage implements OnInit {
               ).then(res => {
                 if (res.role !== 'cancel' && res.role !== 'backdrop') {
                   // on créé la res
-                  this.httpService.createRes(res.data.values.id, res.data.values.name).toPromise().then()
+                  lastValueFrom(this.httpService.createRes(res.data.values.id, res.data.values.name)).then()
                     .catch(error => {
                       if (err.status === 200) {
                         this.display.display({code: 'Résidence enregistré', color: 'success'}).then();
@@ -188,7 +189,7 @@ export class LoginPage implements OnInit {
       }
       ]).then(result => {
       if (result.role !== 'cancel' && result.role !== 'backdrop') {
-        this.httpService.checkMdpRp(result.data.values.mdp).toPromise().then()
+        lastValueFrom(this.httpService.checkMdpRp(result.data.values.mdp)).then()
           .catch(async err => {
             // si status = 200, alors le mot de passe est correct
             if (err.status === 200) {
@@ -201,7 +202,7 @@ export class LoginPage implements OnInit {
                       .then(resultat => {
                         if (resultat.role === 'ok') {
                           // on supprime la résidence
-                          this.httpService.supprRes(this.liste.residences[res].residence, this.liste.residences[res].name).toPromise().then()
+                          lastValueFrom(this.httpService.supprRes(this.liste.residences[res].residence, this.liste.residences[res].name)).then()
                             .catch(error => {
                               if (error.status === 200) {
                                 this.display.display({code: 'Résidence supprimé', color: 'success'});

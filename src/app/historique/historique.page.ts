@@ -3,6 +3,7 @@ import {User} from '../shared/class/user';
 import {HttpService} from '../core/http.service';
 import {Display} from '../shared/class/display';
 import {HistoriqueModel} from '../shared/models/historique.model';
+import {lastValueFrom} from "rxjs";
 
 @Component({
   selector: 'app-historique',
@@ -36,10 +37,10 @@ export class HistoriquePage implements OnInit {
   getHistorique() {
     // on vérifie qu'il n'y a pas de problème avec la page courante
     if (this.user.userData.currentPage !== '') {
-      this.httpService.getHistorique(
+      lastValueFrom(this.httpService.getHistorique(
         this.user.userData.currentPage,
         this.user.userData.residence
-      ).toPromise()
+      ))
         .then(results => {
           this.historique = results;
           // on affiche chaque partie de l'historique

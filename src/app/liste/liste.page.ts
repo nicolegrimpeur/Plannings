@@ -6,6 +6,7 @@ import {ActionSheetController, ModalController} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {InfosModalPage} from '../shared/modal/infos-modal/infos-modal.page';
 import {Display} from '../shared/class/display';
+import {lastValueFrom} from 'rxjs';
 
 @Component({
   selector: 'app-liste',
@@ -36,7 +37,7 @@ export class ListePage implements OnInit {
 
   // on récupère les infos des résidences
   async recupListe() {
-    await this.httpService.getListe().toPromise()
+    await lastValueFrom(this.httpService.getListe())
       .then((results: ListeModel) => {
         this.liste = results;
         // on initialise les infos de la résidence dont on a besoin
@@ -100,7 +101,7 @@ export class ListePage implements OnInit {
 
     if (role !== 'cancel') {
       // on supprime le planning correspondant
-      await this.httpService.supprPlanning(role, this.user.userData.residence).toPromise();
+      await lastValueFrom(this.httpService.supprPlanning(role, this.user.userData.residence));
       // on resynchronise la liste de planning
       await this.recupListe();
     }
@@ -119,9 +120,9 @@ export class ListePage implements OnInit {
     this.recupListe().then();
   }
 
-  addPlanning(id) {
+  async addPlanning(id) {
     // initialise le nouveau planning et refresh la page
-    this.httpService.initPlanning(id, this.user.userData.residence).toPromise().then();
+    await lastValueFrom(this.httpService.initPlanning(id, this.user.userData.residence)).then();
     this.ionViewWillEnter();
   }
 

@@ -5,6 +5,7 @@ import {Display} from '../shared/class/display';
 import {PlanningModel} from '../shared/models/planning.model';
 import {Platform} from '@ionic/angular';
 import {Router} from '@angular/router';
+import {lastValueFrom} from "rxjs";
 
 @Component({
   selector: 'app-planning',
@@ -95,10 +96,10 @@ export class PlanningPage implements OnInit {
     // on vérifie que la page c'est bien lancé pour éviter toute erreur lors de l'appel du planning
     if (this.user.userData.currentPage !== '') {
       // on appelle la fonction getPlanning
-      await this.httpService.getPlanning(
+      await lastValueFrom(this.httpService.getPlanning(
         this.user.userData.currentPage,
         this.user.userData.residence
-      ).toPromise()
+      ))
         .then(results => {
           // on stocke les résultats
           this.planning = results;
@@ -239,7 +240,7 @@ export class PlanningPage implements OnInit {
 
   // ajout du créneau
   addCreneau(jour, heure) {
-    this.httpService.addCreneau(
+    lastValueFrom(this.httpService.addCreneau(
       this.user.userData.currentPage,
       this.user.userData.residence,
       jour,
@@ -247,7 +248,7 @@ export class PlanningPage implements OnInit {
       this.user.userData.nom,
       this.user.userData.prenom,
       this.user.userData.chambre
-    ).toPromise()
+    ))
       .then(results => {
         this.ionViewDidEnter();
       })
@@ -263,7 +264,7 @@ export class PlanningPage implements OnInit {
 
   // supprime un créneau
   removeCreneau(jour, heure) {
-    this.httpService.removeCreneau(
+    lastValueFrom(this.httpService.removeCreneau(
       this.user.userData.currentPage,
       this.user.userData.residence,
       jour,
@@ -271,7 +272,7 @@ export class PlanningPage implements OnInit {
       this.user.userData.nom,
       this.user.userData.prenom,
       this.user.userData.chambre
-    ).toPromise().then(results => {
+    )).then(results => {
       this.ionViewDidEnter();
     })
       .catch(err => {

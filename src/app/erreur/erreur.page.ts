@@ -3,6 +3,7 @@ import {Network} from '@capacitor/network';
 import {HttpService} from '../core/http.service';
 import {Router} from '@angular/router';
 import {User} from '../shared/class/user';
+import {lastValueFrom} from 'rxjs';
 
 @Component({
   selector: 'app-erreur',
@@ -40,7 +41,7 @@ export class ErreurPage implements OnInit {
 
   // récupère la liste sur le serveur
   recupListe() {
-    this.httpService.getListe().toPromise()
+    lastValueFrom(this.httpService.getListe())
       .then(res => {
         // si l'on a réussi, on redirige sur la page de connexion ou d'accueil
         this.user.redirectionErreur();

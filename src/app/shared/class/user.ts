@@ -5,6 +5,7 @@ import {Platform} from '@ionic/angular';
 import {Display} from './display';
 import {HttpService} from '../../core/http.service';
 import {ListeModel} from '../models/liste.model';
+import {lastValueFrom} from "rxjs";
 
 @Injectable({
   providedIn: 'platform'
@@ -179,7 +180,7 @@ export class User {
 
   // on récupère les infos des résidences
   async recupListe() {
-    return await this.httpService.getListe().toPromise()
+    return await lastValueFrom(this.httpService.getListe())
       .then((results: ListeModel) => results)
       .catch(err => {
         this.router.navigate(['/erreur']).then();
@@ -190,7 +191,7 @@ export class User {
   // récupère un planning
   async recupPlanning(page, res) {
     // on appelle la fonction getPlanning
-    return await this.httpService.getPlanning(page, res).toPromise()
+    return await lastValueFrom(this.httpService.getPlanning(page, res))
       .then(results => results)
       .catch(err => {
         // on redirige vers la page d'erreur
