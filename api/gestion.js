@@ -293,44 +293,50 @@ module.exports = class Gestion {
 
   // créer la nouvelle résidence
   createResidence(id, name, res) {
-    // on récupère la liste de plannings / résidences
-    const liste = JSON.parse(fs.readFileSync(this.path + 'listPlannings.json'));
-    liste.residences.push({
-      residence: id,
-      name: name,
-      liste: []
-    });
-
-    // on enregistre les modifications
-    fs.writeFileSync(this.path + 'listPlannings.json', JSON.stringify(liste, null, 2));
-
     try {
-      fs.mkdirSync(this.path + 'historique/' + id);
-      fs.mkdirSync(this.path + 'plannings/' + id);
-      if (res !== undefined) res.status(200).send('ok');
-    }
-    catch {
-      if (res !== undefined) res.status(200).send('ok mais la résidence existe déjà');
+      // on récupère la liste de plannings / résidences
+      const liste = JSON.parse(fs.readFileSync(this.path + 'listPlannings.json'));
+      liste.residences.push({
+        residence: id,
+        name: name,
+        liste: []
+      });
+
+      // on enregistre les modifications
+      fs.writeFileSync(this.path + 'listPlannings.json', JSON.stringify(liste, null, 2));
+
+      try {
+        fs.mkdirSync(this.path + 'historique/' + id);
+        fs.mkdirSync(this.path + 'plannings/' + id);
+        if (res !== undefined) res.status(200).send('ok');
+      } catch {
+        if (res !== undefined) res.status(200).send('ok mais la résidence existe déjà');
+      }
+    } catch {
+      if (res !== undefined) res.status(201).send('Erreur dans l\'écriture de la liste');
     }
   }
 
   // créer la nouvelle résidence
   supprResidence(id, name, res) {
-    // on récupère la liste de plannings / résidences
-    let liste = JSON.parse(fs.readFileSync(this.path + 'listPlannings.json'));
-    const indSuppr = liste.residences.findIndex(res => res.name === name);
-    liste.residences = liste.residences.slice(0, indSuppr).concat(liste.residences.slice(indSuppr + 1, liste.residences.length))
-
-    // on enregistre les modifications
-    fs.writeFileSync(this.path + 'listPlannings.json', JSON.stringify(liste, null, 2));
-
     try {
-      fs.rmdirSync(this.path + 'historique/' + id);
-      fs.rmdirSync(this.path + 'plannings/' + id);
-      if (res !== undefined) res.status(200).send('ok');
-    }
-    catch {
-      if (res !== undefined) res.status(200).send('erreur dans la suppression des dossiers');
+      // on récupère la liste de plannings / résidences
+      let liste = JSON.parse(fs.readFileSync(this.path + 'listPlannings.json'));
+      const indSuppr = liste.residences.findIndex(res => res.name === name);
+      liste.residences = liste.residences.slice(0, indSuppr).concat(liste.residences.slice(indSuppr + 1, liste.residences.length))
+
+      // on enregistre les modifications
+      fs.writeFileSync(this.path + 'listPlannings.json', JSON.stringify(liste, null, 2));
+
+      try {
+        fs.rmdirSync(this.path + 'historique/' + id);
+        fs.rmdirSync(this.path + 'plannings/' + id);
+        if (res !== undefined) res.status(200).send('ok');
+      } catch {
+        if (res !== undefined) res.status(200).send('erreur dans la suppression des dossiers');
+      }
+    } catch {
+      if (res !== undefined) res.status(201).send('Erreur dans l\'écriture de la liste');
     }
   }
 }

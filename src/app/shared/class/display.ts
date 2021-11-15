@@ -54,7 +54,7 @@ export class Display {
       header: header,
       inputs: inputs,
       buttons: [{
-        text: 'Cancel',
+        text: 'Annuler',
         role: 'cancel'
       }, {
         text: 'Ok',

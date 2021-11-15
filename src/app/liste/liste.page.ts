@@ -2,9 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {User} from '../shared/class/user';
 import {HttpService} from '../core/http.service';
 import {Infos, ListeModel} from '../shared/models/liste.model';
-import {ActionSheetController, AlertController, ModalController} from '@ionic/angular';
+import {ActionSheetController, ModalController} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {InfosModalPage} from '../shared/modal/infos-modal/infos-modal.page';
+import {Display} from '../shared/class/display';
 
 @Component({
   selector: 'app-liste',
@@ -19,10 +20,10 @@ export class ListePage implements OnInit {
   constructor(
     public user: User,
     public httpService: HttpService,
-    public alertController: AlertController,
     private router: Router,
     public actionSheetController: ActionSheetController,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private display: Display
   ) {
   }
 
@@ -53,34 +54,18 @@ export class ListePage implements OnInit {
 
   // demande à l'aide d'une alert quel est le nom du planning à créer
   async alert() {
-    const alert = await this.alertController.create({
-      header: 'Ajouter un planning',
-      inputs: [
-        {
-          name: 'nom',
-          type: 'text',
-          placeholder: 'Nom du planning'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Annuler',
-          role: 'cancel'
-        },
-        {
-          text: 'Ajouter',
-          handler: data => {
-            if (data.nom !== '') {
-              // on ajoute le planning
-              this.addPlanning(data.nom);
-            }
-          }
-        }
-      ]
+    await this.display.alertWithInputs('Ajouter un planning', [
+      {
+        name: 'nom',
+        type: 'text',
+        placeholder: 'Nom du planning'
+      }
+    ]).then(res => {
+      if (res.role !== 'cancel' && res.data.values.nom !== '') {
+        // on ajoute le planning
+        this.addPlanning(res.data.values.nom);
+      }
     });
-
-    // on affiche l'alerte
-    await alert.present();
   }
 
   // affiche les plannings pour choisir celui à supprimer
