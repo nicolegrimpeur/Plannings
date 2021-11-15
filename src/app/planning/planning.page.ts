@@ -5,7 +5,7 @@ import {Display} from '../shared/class/display';
 import {PlanningModel} from '../shared/models/planning.model';
 import {Platform} from '@ionic/angular';
 import {Router} from '@angular/router';
-import {lastValueFrom} from "rxjs";
+import {lastValueFrom} from 'rxjs';
 
 @Component({
   selector: 'app-planning',

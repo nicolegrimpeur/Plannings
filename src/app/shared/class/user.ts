@@ -5,7 +5,7 @@ import {Platform} from '@ionic/angular';
 import {Display} from './display';
 import {HttpService} from '../../core/http.service';
 import {ListeModel} from '../models/liste.model';
-import {lastValueFrom} from "rxjs";
+import {lastValueFrom} from 'rxjs';
 
 @Injectable({
   providedIn: 'platform'

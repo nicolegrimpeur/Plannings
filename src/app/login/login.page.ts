@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 import {Display} from '../shared/class/display';
 import {HttpService} from '../core/http.service';
 import {ListeModel} from '../shared/models/liste.model';
-import {lastValueFrom} from "rxjs";
+import {lastValueFrom} from 'rxjs';
 
 @Component({
   selector: 'app-login',

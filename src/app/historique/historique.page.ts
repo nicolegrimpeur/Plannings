@@ -3,7 +3,7 @@ import {User} from '../shared/class/user';
 import {HttpService} from '../core/http.service';
 import {Display} from '../shared/class/display';
 import {HistoriqueModel} from '../shared/models/historique.model';
-import {lastValueFrom} from "rxjs";
+import {lastValueFrom} from 'rxjs';
 
 @Component({
   selector: 'app-historique',

@@ -3,7 +3,7 @@ import {ModalController, NavParams} from '@ionic/angular';
 import {Infos} from '../../models/liste.model';
 import {HttpService} from '../../../core/http.service';
 import {Display} from '../../class/display';
-import {lastValueFrom} from "rxjs";
+import {lastValueFrom} from 'rxjs';
 
 @Component({
   selector: 'app-infos-modal',
