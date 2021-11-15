@@ -48,7 +48,7 @@
       <!-- cette colonne permet d'afficher l'heure -->
       <ion-col style="background-color: initial" class="colMobile"
                (click)="heures[creneau] === '' ?
-               display.alert('Pour vous inscrire ou vous désinscrire, cliquez deux fois sur le créneau que vous souhaitez modifier') :
+               display.alert('Information', 'Pour vous inscrire ou vous désinscrire, cliquez deux fois sur le créneau que vous souhaitez modifier') :
                clickEvent(undefined, undefined, undefined, undefined)">
         {{heures[creneau] === '' ?
         'Infos supplémentaires' :

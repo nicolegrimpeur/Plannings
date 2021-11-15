@@ -2,7 +2,6 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/compat/auth';
 import {Router} from '@angular/router';
 import {Display} from '../shared/class/display';
-import {User} from '../shared/class/user';
 import {HttpService} from '../core/http.service';
 import {ListeModel} from '../shared/models/liste.model';
 
@@ -33,7 +32,6 @@ export class LoginPage implements OnInit {
     public router: Router,
     public afAuth: AngularFireAuth,
     public display: Display,
-    private user: User,
     public httpService: HttpService
   ) {
   }
@@ -136,7 +134,6 @@ export class LoginPage implements OnInit {
         placeholder: 'Mot de passe RP'
       }
       ]).then(result => {
-
       if (result.role !== 'cancel' && result.role !== 'backdrop') {
         this.httpService.checkMdpRp(result.data.values.mdp).toPromise().then()
           .catch(async err => {
@@ -156,6 +153,7 @@ export class LoginPage implements OnInit {
                 }]
               ).then(res => {
                 if (res.role !== 'cancel' && res.role !== 'backdrop') {
+                  // on créé la res
                   this.httpService.createRes(res.data.values.id, res.data.values.name).toPromise().then()
                     .catch(error => {
                       if (err.status === 200) {
@@ -169,6 +167,53 @@ export class LoginPage implements OnInit {
                     });
                 }
               });
+
+            } else if (err.status === 201) {
+              this.display.display('Mot de passe incorrect').then();
+            } else {
+              this.router.navigate(['/erreur']).then();
+            }
+          });
+      }
+    });
+  }
+
+  supprRes() {
+    this.display.alertWithInputs(
+      'Mot de passe RP',
+      [{
+        name: 'mdp',
+        type: 'text',
+        placeholder: 'Mot de passe RP'
+      }
+      ]).then(result => {
+      if (result.role !== 'cancel' && result.role !== 'backdrop') {
+        this.httpService.checkMdpRp(result.data.values.mdp).toPromise().then()
+          .catch(async err => {
+            // si status = 200, alors le mot de passe est correct
+            if (err.status === 200) {
+              // on affiche la liste de résidence
+              this.display.actionSheet(this.liste.residences, 'name', 'Choisissez la résidence à supprimer')
+                .then(res => {
+                  if (res !== 'cancel' && res !== 'backdrop') {
+                    // on demande une confirmation avant de supprimer la résidence
+                    this.display.alertWithInputs('Etes vous sur de vouloir supprimer la résidence ' + this.liste.residences[res].name + ' ?', [])
+                      .then(resultat => {
+                        if (resultat.role === 'ok') {
+                          // on supprime la résidence
+                          this.httpService.supprRes(this.liste.residences[res].residence, this.liste.residences[res].name).toPromise().then()
+                            .catch(error => {
+                              if (error.status === 200) {
+                                this.display.display({code: 'Résidence supprimé', color: 'success'});
+                                this.ionViewWillEnter();
+                              } else {
+                                this.display.display('Une erreur a eu lieu, merci de réessayer');
+                              }
+                            });
+                        }
+                      });
+                  }
+                });
 
             } else if (err.status === 201) {
               this.display.display('Mot de passe incorrect').then();

@@ -90,12 +90,20 @@ appHTTPS.get('/plannings/modifOrdrePlannings/:name/:id', (req, res) => {
   gestion.modifListePlanning(residence, informations, res);
 });
 
-// remise à zéro du planning
+// création d'une nouvelle résidence
 appHTTPS.get('/plannings/createRes/:id/:name', (req, res) => {
   const id = String(req.params.id);
   const name = String(req.params.name);
 
   gestion.createResidence(id, name, res);
+});
+
+// suppression d'une résidence
+appHTTPS.get('/plannings/supprRes/:id/:name', (req, res) => {
+  const id = String(req.params.id);
+  const name = String(req.params.name);
+
+  gestion.supprResidence(id, name, res);
 });
 
 serverHTTPS.listen(portHTTPS);

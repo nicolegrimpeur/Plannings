@@ -65,4 +65,9 @@ export class HttpService {
     const url = this.baseLink + 'createRes/' + id + '/' + name;
     return this.http.get<any>(url);
   }
+
+  supprRes(id, name): Observable<any> {
+    const url = this.baseLink + 'supprRes/' + id + '/' + name;
+    return this.http.get<any>(url);
+  }
 }

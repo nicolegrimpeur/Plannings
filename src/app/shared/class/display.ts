@@ -1,4 +1,4 @@
-import {AlertController, ToastController} from '@ionic/angular';
+import {ActionSheetController, AlertController, ToastController} from '@ionic/angular';
 import {Injectable} from '@angular/core';
 
 @Injectable({
@@ -7,7 +7,8 @@ import {Injectable} from '@angular/core';
 export class Display {
   constructor(
     private toastController: ToastController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private actionSheetController: ActionSheetController
   ) {
   }
 
@@ -37,9 +38,9 @@ export class Display {
   }
 
   // création d'une alerte
-  async alert(info: string) {
+  async alert(header: string, info: string) {
     const alert = await this.alertController.create({
-      header: 'Information',
+      header: header,
       message: info,
       buttons: ['OK']
     });
@@ -66,5 +67,44 @@ export class Display {
 
     // on attend que l'utilisateur supprime l'alerte
     return await alert.onDidDismiss().then(result => result);
+  }
+
+  // template d'action sheet avec
+  // infos le tableau d'infos, title le titre, header l'header
+  async actionSheet(infos: Array<any>, title: string, header: string) {
+    const tmp = [];
+
+    // on parcours la liste de plannings et on rajoute un bouton pour chaque
+    for (let i = 0; i < infos.length; i++) {
+      if (title === '') {
+        tmp.push({
+          text: infos[i],
+          role: i,
+        });
+      } else {
+        tmp.push({
+          text: infos[i][title],
+          role: i,
+        });
+      }
+    }
+
+    // on rajoute le bouton annuler
+    tmp.push({
+      text: 'Annuler',
+      role: 'cancel'
+    });
+
+    // création de l'action sheet
+    const actionSheet = await this.actionSheetController.create({
+      header: header,
+      cssClass: 'actionSheet',
+      buttons: tmp
+    });
+    // on affiche l'action sheet
+    await actionSheet.present();
+
+    // lorsqu'une sélection est faite, on récupère son attribut
+    return await actionSheet.onDidDismiss().then(result => result.role);
   }
 }
