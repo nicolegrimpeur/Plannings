@@ -138,7 +138,7 @@ export class User {
 
     const plannings = [];
     // on récupère les infos qui correspondent à la résidence
-    const objResidence = liste.residences.find(res => res.residence === this.userData.residence);
+    const objResidence = liste.residences.find(res => res.residence.toLowerCase() === this.userData.residence);
     // on parcours la liste des plannings de la résidence pour ajouter chaque planning à plannings
     for (const planning of objResidence.liste) {
       plannings.push({nomPlanning: planning, planning: await this.recupPlanning(planning, objResidence.residence)});
