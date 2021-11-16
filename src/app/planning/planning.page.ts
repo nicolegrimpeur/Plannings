@@ -191,8 +191,9 @@ export class PlanningPage implements OnInit {
 
           // on vérifie que le nombre d'inscription réalisé sur ce type de planning est inférieur ou égal à 2 (2 inscriptions maxi par semaine)
           const idNb = this.user.userData.currentPage.search(/[0-9]/g);
-          const debutPlanning = this.user.userData.currentPage.slice(0, idNb !== -1 ? idNb : this.user.userData.currentPage.length - 1);
+          const debutPlanning = this.user.userData.currentPage.slice(0, idNb !== -1 ? idNb : this.user.userData.currentPage.length);
           const idPlanning = this.user.inscriptions.findIndex(res => res.name === debutPlanning);
+
           if (this.user.inscriptions[idPlanning].nbInscriptions < 2 || jour === 'dimanche1') {
             // on enregistre les infos d'inscription
             this.infosCreneau.modification = 'add';
@@ -201,7 +202,7 @@ export class PlanningPage implements OnInit {
             // on ajoute la couleur
             this.addConfirm(idJour, idHeure);
           } else {
-            this.display.display('Vous avez atteint la limite d\'inscription sur les ' + debutPlanning + 'pour cette semaine').then();
+            this.display.display('Vous avez atteint la limite d\'inscription sur les ' + debutPlanning + ' pour cette semaine').then();
           }
         }
         // sinon on vérifie si le numéro de chambre et le nom correspondent pour supprimer le créneau

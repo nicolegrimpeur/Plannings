@@ -41,6 +41,16 @@ export class LoginPage implements OnInit {
   }
 
   ionViewWillEnter() {
+    this.loginData = {
+      nom: '',
+      prenom: '',
+      residence: '',
+      chambre: '',
+      isRp: 'false',
+      mdpRp: '',
+      mail: ''
+    };
+
     this.recupListe().then();
   }
 
@@ -113,58 +123,6 @@ export class LoginPage implements OnInit {
           this.recupListe().then();
         });
     }
-    //
-    // // si le mot de passe est incorrect on bloque la connexion
-    // lastValueFrom(this.httpService.checkMdpRp(this.loginData.mdpRp)).then().catch(result => {
-    //   console.log(result);
-    //   if (result.status !== 200) {
-    //     this.display.display('Mauvais mot de passe').then();
-    //     this.loginData.mdpRp = '';
-    //   } else {
-    //     console.log(result);
-    //     mdpCorrect = 'true';
-    //   }
-    //   console.log(mdpCorrect);
-    //   this.loginData.mail =
-    //     this.loginData.nom + '+' +
-    //     this.loginData.prenom + '+' +
-    //     this.loginData.residence + '+' +
-    //     this.loginData.chambre + '+' +
-    //     mdpCorrect +
-    //     '+planning@all.fr';
-    //
-    //   const password = 'f355bcd8af0541b815c00eda1360a30024c2ae8bfc53ead1073bf29b7589cc64';
-    //
-    //   // on regarde si un compte existe déjà avec cette email
-    //   this.afAuth.fetchSignInMethodsForEmail(this.loginData.mail)
-    //     .then(res => {
-    //       // si oui on connecte l'utilisateur
-    //       if (res.length === 1) {
-    //         this.afAuth.signInWithEmailAndPassword(this.loginData.mail, password)
-    //           .then(auth => {
-    //             // on redirige l'utilisateur sur la page d'accueil
-    //             this.router.navigateByUrl('/').then();
-    //           })
-    //           .catch(err => {
-    //             // sinon on affiche une erreur
-    //             this.display.display(err).then();
-    //           });
-    //       } else { // sinon on créé un compte
-    //         this.afAuth.createUserWithEmailAndPassword(this.loginData.mail, password)
-    //           .then(auth => {
-    //             // on redirige l'utilisateur sur la page d'accueil
-    //             this.router.navigateByUrl('/').then();
-    //           })
-    //           .catch(err => {
-    //             // sinon on affiche une erreur
-    //             this.display.display(err).then();
-    //           });
-    //       }
-    //     })
-    //     .catch(err => {
-    //       this.recupListe().then();
-    //     });
-    // });
   }
 
   // récupère la liste des résidences pour l'afficher dans la partie résidence
@@ -218,7 +176,7 @@ export class LoginPage implements OnInit {
               ).then(res => {
                 if (res.role !== 'cancel' && res.role !== 'backdrop') {
                   // on créé la res
-                  lastValueFrom(this.httpService.createRes(res.data.values.id, res.data.values.name)).then()
+                  lastValueFrom(this.httpService.createRes(res.data.values.id.toLowerCase(), res.data.values.name)).then()
                     .catch(error => {
                       if (err.status === 200) {
                         this.display.display({code: 'Résidence enregistré', color: 'success'}).then();

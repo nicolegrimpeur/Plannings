@@ -152,7 +152,7 @@ export class User {
     for (const planning of plannings) {
       // on récupère le début du nom du plannings (exemple Machine 1 donne Machine )
       idNb = planning.nomPlanning.search(/[0-9]/g);
-      debutPlanning = planning.nomPlanning.slice(0, idNb !== -1 ? idNb : planning.nomPlanning.length - 1);
+      debutPlanning = planning.nomPlanning.slice(0, idNb !== -1 ? idNb : planning.nomPlanning.length);
 
       nbInscription = 0;
       // on parcours le planning en cours
@@ -211,7 +211,8 @@ export class User {
 
   // manipule le tableau d'inscription pour rajouter ou enlever une inscription
   manageInscriptions(name, nb) {
-    const debutName = name.slice(0, name.search(/[0-9]/g));
+    const idNb = this.userData.currentPage.search(/[0-9]/g);
+    const debutName = name.slice(0, (idNb !== -1 ? idNb : name.length));
 
     let idInscriptions = this.inscriptions.findIndex(res => res.name === debutName);
 

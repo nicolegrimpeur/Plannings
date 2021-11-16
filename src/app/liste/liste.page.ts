@@ -61,10 +61,11 @@ export class ListePage implements OnInit {
         type: 'text',
         placeholder: 'Nom du planning'
       }
-    ]).then(res => {
-      if (res.role !== 'cancel' && res.data.values.nom !== '') {
+    ]).then(async res => {
+      if (res.role !== 'cancel' && res.role !== 'backdrop' && res.data.values.nom !== '') {
         // on ajoute le planning
-        this.addPlanning(res.data.values.nom);
+        await this.addPlanning(res.data.values.nom);
+        this.user.initInscription().then();
       }
     });
   }
@@ -99,7 +100,7 @@ export class ListePage implements OnInit {
     // lorsqu'une sélection est faite, on récupère son attribut
     const {role} = await actionSheet.onDidDismiss();
 
-    if (role !== 'cancel') {
+    if (role !== 'cancel' && role !== 'backdrop') {
       // on supprime le planning correspondant
       await lastValueFrom(this.httpService.supprPlanning(role, this.user.userData.residence));
       // on resynchronise la liste de planning
