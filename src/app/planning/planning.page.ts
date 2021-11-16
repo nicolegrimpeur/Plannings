@@ -15,19 +15,7 @@ import {lastValueFrom} from 'rxjs';
 export class PlanningPage implements OnInit {
   public planning = new PlanningModel(); // variable qui stockera le planning
   public jours = ['']; // stocke les différents jours de la semaine
-  public heures = [ // stocke les horaires de la semaine
-    '',
-    '7H -> 8H30',
-    '8H30 -> 10H',
-    '10H -> 11H30',
-    '11H30 -> 13H',
-    '13H -> 14H30',
-    '14H30 -> 16H',
-    '16H -> 17H30',
-    '17H30 -> 19H',
-    '19H -> 20H30',
-    '20H30 -> 22H',
-  ];
+  public heures = []; // stocke les horaires de la semaine
   public mobile = this.platform.platforms().findIndex(res => res === 'mobile') !== -1; // true si l'on est sur téléphone, false sinon
   public currentDay = 0; // premier jour, utile pour stocker le jour en cours pour l'affichage sur mobile
   private infosCreneau = { // infos d'inscription / suppression du créneau
@@ -36,6 +24,7 @@ export class PlanningPage implements OnInit {
     heure: ''
   };
   private interval; // variable d'actualisation du planning
+  public orientation; // stocke l'orientation de la page
 
   constructor(
     public user: User,
@@ -44,11 +33,16 @@ export class PlanningPage implements OnInit {
     private platform: Platform,
     private router: Router
   ) {
-    this.initJours(); // on initialise les jours de la semaine
     // on vérifie si l'on peut de nouveau accéder au serveur toutes les 5 secondes
     this.interval = setInterval(() => {
       this.getPlanning().then();
     }, 5000);
+
+    // on initialise l'orientation, ainsi que l'event qui modifie l'orientation quand l'utilisateur change l'orientation
+    this.changeOrientation();
+    screen.orientation.addEventListener("change", () => {
+      this.changeOrientation();
+    });
   }
 
   ngOnInit() {
@@ -56,7 +50,7 @@ export class PlanningPage implements OnInit {
 
   ionViewDidEnter() {
     // à chaque entré dans la page on actualise le planning
-    this.getPlanning().then();
+    this.getPlanning().then()
   }
 
   ionViewWillLeave() {
@@ -70,6 +64,36 @@ export class PlanningPage implements OnInit {
     };
   }
 
+  // enregistre la nouvelle orientation, modifie la liste d'heure si besoin, et réinitialise la liste de jours
+  changeOrientation() {
+    this.orientation = screen.orientation.type;
+    this.changeHeures();
+    this.initJours();
+  }
+
+  // permet de modifier le tableau d'heure
+  changeHeures() {
+    if (this.mobile && this.orientation === 'landscape-primary') {
+      this.heures = [ // stocke les horaires de la semaine
+        '', '7H', '8H30', '10H', '11H30', '13H', '14H30', '16H', '17H30', '19H', '20H30',
+      ];
+    } else {
+      this.heures = [ // stocke les horaires de la semaine
+        '',
+        '7H -> 8H30',
+        '8H30 -> 10H',
+        '10H -> 11H30',
+        '11H30 -> 13H',
+        '13H -> 14H30',
+        '14H30 -> 16H',
+        '16H -> 17H30',
+        '17H30 -> 19H',
+        '19H -> 20H30',
+        '20H30 -> 22H',
+      ];
+    }
+  }
+
   // initialisation des jours de la semaine
   initJours() {
     // time sert de référence en partant du dimanche précédant
@@ -78,10 +102,17 @@ export class PlanningPage implements OnInit {
     // initialisation de currentDay à aujourd'hui
     this.currentDay = new Date(Date.now()).getDay();
 
+    let options;
     // option pour l'affichage de la date
-    const options = {weekday: 'long', day: 'numeric', month: 'long'};
-    let tmp;
+    // si on est sur mobile en paysage, alors on réduit la date à jour/mois
+    if (this.mobile && this.orientation === 'landscape-primary') {
+      options = {day: 'numeric', month: 'numeric'};
+    } else {
+      options = {weekday: 'long', day: 'numeric', month: 'long'};
+    }
 
+    let tmp;
+    this.jours = [''];
     for (let jour = 0; jour <= 7; jour++) {
       // tmp stocke le jour correspondant à la date dimanche précédant + jour
       tmp = new Date(new Date().setTime(time.getTime() + jour * 86400000));

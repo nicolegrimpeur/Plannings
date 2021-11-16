@@ -16,7 +16,7 @@
   </ion-refresher>
 
   <!-- planning sur ordi -->
-  <ion-grid *ngIf="!mobile">
+  <ion-grid *ngIf="orientation.startsWith('landscape')">
     <!-- 11 lignes d'heures -->
     <ion-row *ngFor="let idHeure of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" class="row">
       <!-- 9 colonnes de jours -->
@@ -32,17 +32,16 @@
             '')}}
       </ion-col>
     </ion-row>
+
+    <ion-card>
+      <ion-card-content style="text-align: center">
+        Pour vous inscrire ou vous désinscrire, cliquez deux fois sur le créneau que vous souhaitez modifier
+      </ion-card-content>
+    </ion-card>
   </ion-grid>
 
-  <!--  <ion-card>-->
-  <ion-card *ngIf="!mobile">
-    <ion-card-content style="text-align: center">
-      Pour vous inscrire ou vous désinscrire, cliquez deux fois sur le créneau que vous souhaitez modifier
-    </ion-card-content>
-  </ion-card>
-
   <!-- si l'on est sur téléphone -->
-  <ion-grid *ngIf="mobile">
+  <ion-grid *ngIf="!orientation.startsWith('landscape')">
     <!-- 11 lignes d'heures -->
     <ion-row *ngFor="let creneau of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" class="row">
       <!-- cette colonne permet d'afficher l'heure -->
@@ -66,7 +65,7 @@
 
 
   <!-- boutons pour mobile pour changer la date -->
-  <div *ngIf="mobile">
+  <div *ngIf="!orientation.startsWith('landscape')">
     <ion-fab vertical="bottom" horizontal="start" slot="fixed" *ngIf="currentDay >= 1">
       <ion-fab-button color="light">
         <ion-icon name="arrow-back-circle-outline" (click)="moinsCurrentDay()"></ion-icon>
