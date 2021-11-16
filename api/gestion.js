@@ -319,6 +319,9 @@ module.exports = class Gestion {
 
   // créer la nouvelle résidence
   supprResidence(id, name, res) {
+    const logSuppr = JSON.parse(fs.readFileSync(this.path + '/log/logSuppr.json'));
+    let resultat = '';
+
     try {
       // on récupère la liste de plannings / résidences
       let liste = JSON.parse(fs.readFileSync(this.path + 'listPlannings.json'));
@@ -328,6 +331,8 @@ module.exports = class Gestion {
       // on enregistre les modifications
       fs.writeFileSync(this.path + 'listPlannings.json', JSON.stringify(liste, null, 2));
 
+      resultat = 'success';
+
       try {
         fs.rmdirSync(this.path + 'historique/' + id);
         fs.rmdirSync(this.path + 'plannings/' + id);
@@ -336,7 +341,19 @@ module.exports = class Gestion {
         if (res !== undefined) res.status(200).send('erreur dans la suppression des dossiers');
       }
     } catch {
+      resultat = 'fail';
       if (res !== undefined) res.status(201).send('Erreur dans l\'écriture de la liste');
     }
+
+    // options pour l'enregistrement de la date
+    const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+    // on ajoute au log le succès
+    logSuppr.log.push({
+      dateModif: new Date(Date()).toLocaleDateString('fr-FR', options),
+      modification: resultat
+    });
+
+    // on enregistre les modifications
+    fs.writeFileSync(this.path + '/log/logSuppr.json', JSON.stringify(logSuppr, null, 2));
   }
 }
