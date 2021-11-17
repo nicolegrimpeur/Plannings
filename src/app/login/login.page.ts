@@ -56,17 +56,17 @@ export class LoginPage implements OnInit {
 
   // corrige le mail si besoin
   checkMail() {
+    console.log(this.loginData.mail, this.loginData.mail.indexOf(' '));
     while (this.loginData.mail.indexOf(' ') !== -1) {
       this.loginData.mail = this.loginData.mail.replace(' ', '-');
     }
+    console.log(this.loginData);
+
   }
 
   // connecte l'utilisateur avec email et mot de passe
   async login() {
     let mdpCorrect = '';
-
-    // pour corriger le mail (remplacement espace par tiret)
-    this.checkMail();
 
     // si un mot de passe a été rentré, on le teste
     if (this.loginData.mdpRp !== '' && this.loginData.isRp === 'true') {
@@ -91,6 +91,10 @@ export class LoginPage implements OnInit {
         this.loginData.chambre + '+' +
         ((mdpCorrect === '') ? 'false' : mdpCorrect) +
         '+planning@all.fr';
+
+      // pour corriger le mail (remplacement espace par tiret)
+      this.checkMail();
+
       const password = 'f355bcd8af0541b815c00eda1360a30024c2ae8bfc53ead1073bf29b7589cc64';
 
       // on regarde si un compte existe déjà avec cette email
