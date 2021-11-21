@@ -9,8 +9,8 @@ import {HistoriqueModel} from '../shared/models/historique.model';
   providedIn: 'root'
 })
 export class HttpService {
-  // private base = 'https://nicob.ovh/';
-  private base = 'http://localhost:1080/';
+  private base = 'https://nicob.ovh/';
+  // private base = 'http://localhost:1080/';
   private baseLink = this.base + 'plannings/';
 
   constructor(private readonly http: HttpClient) {

@@ -56,12 +56,9 @@ export class LoginPage implements OnInit {
 
   // corrige le mail si besoin
   checkMail() {
-    console.log(this.loginData.mail, this.loginData.mail.indexOf(' '));
     while (this.loginData.mail.indexOf(' ') !== -1) {
       this.loginData.mail = this.loginData.mail.replace(' ', '-');
     }
-    console.log(this.loginData);
-
   }
 
   // connecte l'utilisateur avec email et mot de passe
