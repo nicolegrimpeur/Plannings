@@ -7,6 +7,7 @@ import {Router} from '@angular/router';
 import {InfosModalPage} from '../shared/modal/infos-modal/infos-modal.page';
 import {Display} from '../shared/class/display';
 import {lastValueFrom} from 'rxjs';
+import {user} from "@angular/fire/auth";
 
 @Component({
   selector: 'app-liste',
@@ -51,6 +52,7 @@ export class ListePage implements OnInit {
   // on initialise les infos de la résidence dont on a besoin
   initResidence() {
     this.residence = this.liste.residences.find(res => res.residence === this.user.userData.residence);
+    if (this.residence === undefined) this.user.logout();
   }
 
   // demande à l'aide d'une alert quel est le nom du planning à créer
