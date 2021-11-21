@@ -101,13 +101,12 @@ export class User {
     });
   }
 
-  addCurrentPage(page, link) {
+  // enregistre la page active
+  addCurrentPage(page) {
     this.userData.currentPage = page;
-
-    // redirige vers la page demandé
-    this.router.navigate([link]).then();
   }
 
+  // supprimer la page active
   deleteCurrentPage() {
     this.userData.currentPage = '';
   }
