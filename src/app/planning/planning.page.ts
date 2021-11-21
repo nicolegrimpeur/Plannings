@@ -24,7 +24,7 @@ export class PlanningPage implements OnInit {
     heure: ''
   };
   private interval; // variable d'actualisation du planning
-  public orientation; // stocke l'orientation de la page
+  public orientationObj; // stocke l'orientation de la page
 
   constructor(
     public user: User,
@@ -39,8 +39,9 @@ export class PlanningPage implements OnInit {
     }, 5000);
 
     // on initialise l'orientation, ainsi que l'event qui modifie l'orientation quand l'utilisateur change l'orientation
+    this.orientationObj = window.matchMedia('(orientation : landscape)');
     this.changeOrientation();
-    screen.orientation.addEventListener("change", () => {
+    this.orientationObj.addEventListener('change', () => {
       this.changeOrientation();
     });
   }
@@ -66,14 +67,13 @@ export class PlanningPage implements OnInit {
 
   // enregistre la nouvelle orientation, modifie la liste d'heure si besoin, et réinitialise la liste de jours
   changeOrientation() {
-    this.orientation = screen.orientation.type;
     this.changeHeures();
     this.initJours();
   }
 
   // permet de modifier le tableau d'heure
   changeHeures() {
-    if (this.mobile && this.orientation === 'landscape-primary') {
+    if (this.mobile && this.orientationObj) {
       this.heures = [ // stocke les horaires de la semaine
         '', '7H', '8H30', '10H', '11H30', '13H', '14H30', '16H', '17H30', '19H', '20H30',
       ];
@@ -105,7 +105,7 @@ export class PlanningPage implements OnInit {
     let options;
     // option pour l'affichage de la date
     // si on est sur mobile en paysage, alors on réduit la date à jour/mois
-    if (this.mobile && this.orientation === 'landscape-primary') {
+    if (this.mobile && this.orientationObj.matches) {
       options = {day: 'numeric', month: 'numeric'};
     } else {
       options = {weekday: 'long', day: 'numeric', month: 'long'};
