@@ -7,7 +7,6 @@ import {Router} from '@angular/router';
 import {InfosModalPage} from '../shared/modal/infos-modal/infos-modal.page';
 import {Display} from '../shared/class/display';
 import {lastValueFrom} from 'rxjs';
-import {user} from "@angular/fire/auth";
 
 @Component({
   selector: 'app-liste',
@@ -52,7 +51,7 @@ export class ListePage implements OnInit {
   // on initialise les infos de la résidence dont on a besoin
   initResidence() {
     this.residence = this.liste.residences.find(res => res.residence === this.user.userData.residence);
-    if (this.residence === undefined) this.user.logout();
+    if (this.user.userData.residence !== '' && this.residence === undefined) this.user.logout();
   }
 
   // demande à l'aide d'une alert quel est le nom du planning à créer
@@ -65,9 +64,14 @@ export class ListePage implements OnInit {
       }
     ]).then(async res => {
       if (res.role !== 'cancel' && res.role !== 'backdrop' && res.data.values.nom !== '') {
-        // on ajoute le planning
-        await this.addPlanning(res.data.values.nom);
-        this.user.initInscription().then();
+        // si le planning n'existe pas déjà
+        if (this.residence.liste.every(result => result.toLowerCase() !== res.data.values.nom)) {
+          // on ajoute le planning
+          await this.addPlanning(res.data.values.nom);
+          this.user.initInscription().then();
+        } else {
+          this.display.display('Le planning existe déjà').then();
+        }
       }
     });
   }

@@ -169,20 +169,16 @@ export class LoginPage implements OnInit {
                   name: 'name',
                   type: 'text',
                   placeholder: 'Nom de la résidence (exemple Saint-Omer)'
-                }, {
-                  name: 'id',
-                  type: 'text',
-                  placeholder: 'Id de la résidence (exemple STO)'
                 }]
               ).then(res => {
                 if (res.role !== 'cancel' && res.role !== 'backdrop') {
                   // on créé la res
-                  lastValueFrom(this.httpService.createRes(res.data.values.id.toLowerCase(), res.data.values.name)).then()
+                  lastValueFrom(this.httpService.createRes(this.findId(res.data.values.name), res.data.values.name)).then()
                     .catch(error => {
-                      if (err.status === 200) {
+                      if (error.status === 200) {
                         this.display.display({code: 'Résidence enregistré', color: 'success'}).then();
                         this.ionViewWillEnter();
-                      } else if (err.status === 201) {
+                      } else if (error.status === 201) {
                         this.display.display('Une erreur a eu lieu, vérifiez que la résidence n\'existe pas déjà');
                       } else {
                         this.router.navigate(['/erreur']).then();
@@ -199,6 +195,10 @@ export class LoginPage implements OnInit {
           });
       }
     });
+  }
+
+  findId(name) {
+    return name.replace(/[^a-zA-Z]/gi, '').toLowerCase();
   }
 
   supprRes() {

@@ -40,6 +40,7 @@ export class Display {
   // création d'une alerte
   async alert(header: string, info: string) {
     const alert = await this.alertController.create({
+      cssClass: 'alert',
       header: header,
       message: info,
       buttons: ['OK']
@@ -50,7 +51,7 @@ export class Display {
 
   async alertWithInputs(header: string, inputs) {
     const alert = await this.alertController.create({
-      cssClass: 'alertWithInputs',
+      cssClass: 'alert',
       header: header,
       inputs: inputs,
       buttons: [{
