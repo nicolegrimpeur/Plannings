@@ -70,42 +70,27 @@ export class ListePage implements OnInit {
     });
   }
 
-  // affiche les plannings pour choisir celui à supprimer
-  async actionSheet() {
-    const tmp = [];
+  async supprPlanning() {
+    this.display.actionSheet(this.residence.liste, '', 'Quel planning voulez-vous supprimer ?')
+      .then(res => {
+        if (res !== 'cancel' && res !== 'backdrop') {
+          // on demande une confirmation avant de supprimer la résidence
+          this.display.alertWithInputs('Etes vous sur de vouloir supprimer le planning ' + this.residence.liste[res] + ' ?', [])
+            .then(async resultat => {
+              if (resultat.role === 'ok') {
+                // on supprime le planning correspondant
+                await lastValueFrom(this.httpService.supprPlanning(this.residence.liste[res], this.user.userData.residence));
+                // on resynchronise la liste de planning
+                await this.recupListe();
 
-    // on parcours la liste de plannings et on rajoute un bouton pour chaque
-    for (const planning of this.residence.liste) {
-      tmp.push({
-        text: planning,
-        role: planning
-      });
-    }
-
-    // on rajoute le bouton annuler
-    tmp.push({
-      text: 'Annuler',
-      role: 'cancel'
-    });
-
-    // création de l'action sheet
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Quel planning voulez-vous supprimer ?',
-      cssClass: 'actionSheet',
-      buttons: tmp
-    });
-    // on affiche l'action sheet
-    await actionSheet.present();
-
-    // lorsqu'une sélection est faite, on récupère son attribut
-    const {role} = await actionSheet.onDidDismiss();
-
-    if (role !== 'cancel' && role !== 'backdrop') {
-      // on supprime le planning correspondant
-      await lastValueFrom(this.httpService.supprPlanning(role, this.user.userData.residence));
-      // on resynchronise la liste de planning
-      await this.recupListe();
-    }
+                this.display.display({code: 'Planning ' + this.residence.liste[res] + 'supprimé', color: 'success'}).then();
+              }
+            })
+            .catch(() => {
+              this.display.display('Une erreur a eu lieu').then();
+            })
+        }
+      })
   }
 
   async movePlanning() {
