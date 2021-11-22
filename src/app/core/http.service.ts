@@ -61,6 +61,11 @@ export class HttpService {
     return this.http.get<any>(url);
   }
 
+  checkMdpAll(mdp): Observable<any> {
+    const url = this.base + 'mdpRp/all/' + mdp;
+    return this.http.get<any>(url);
+  }
+
   createRes(id, name): Observable<any> {
     const url = this.baseLink + 'createRes/' + id + '/' + name;
     return this.http.get<any>(url);

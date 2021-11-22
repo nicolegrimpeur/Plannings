@@ -203,15 +203,15 @@ export class LoginPage implements OnInit {
 
   supprRes() {
     this.display.alertWithInputs(
-      'Mot de passe RP',
+      'Merci de demander au All de supprimer la résidence si besoin',
       [{
         name: 'mdp',
         type: 'text',
-        placeholder: 'Mot de passe RP'
+        placeholder: 'Mot de passe du ALL'
       }
       ]).then(result => {
       if (result.role !== 'cancel' && result.role !== 'backdrop') {
-        lastValueFrom(this.httpService.checkMdpRp(result.data.values.mdp)).then()
+        lastValueFrom(this.httpService.checkMdpAll(result.data.values.mdp)).then()
           .catch(async err => {
             // si status = 200, alors le mot de passe est correct
             if (err.status === 200) {
