@@ -63,6 +63,8 @@ export class PlanningPage implements OnInit {
       jour: '',
       heure: ''
     };
+    // on supprime l'interval
+    this.interval.clearInterval();
   }
 
   // enregistre la nouvelle orientation, modifie la liste d'heure si besoin, et réinitialise la liste de jours

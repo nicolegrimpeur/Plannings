@@ -63,7 +63,7 @@ export class ListePage implements OnInit {
         placeholder: 'Nom du planning'
       }
     ]).then(async res => {
-      if (res.role !== 'cancel' && res.role !== 'backdrop' && res.data.values.nom !== '') {
+      if (res.role !== 'cancel' && res.role !== 'backdrop' && res.data.values.nom.replaceAll(' ', '') !== '') {
         // si le planning n'existe pas déjà
         if (this.residence.liste.every(result => result.toLowerCase() !== res.data.values.nom)) {
           // on ajoute le planning
