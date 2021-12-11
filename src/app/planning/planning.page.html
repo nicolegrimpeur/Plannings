@@ -16,7 +16,7 @@
   </ion-refresher>
 
   <!-- planning sur ordi -->
-  <ion-grid *ngIf="orientationObj.matches">
+  <ion-grid *ngIf="orientationObj">
     <!-- 11 lignes d'heures -->
     <ion-row *ngFor="let idHeure of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" class="row">
       <!-- 9 colonnes de jours -->
@@ -41,7 +41,7 @@
   </ion-grid>
 
   <!-- si l'on est sur téléphone -->
-  <ion-grid *ngIf="!orientationObj.matches">
+  <ion-grid *ngIf="!orientationObj">
     <!-- 11 lignes d'heures -->
     <ion-row *ngFor="let creneau of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" class="row">
       <!-- cette colonne permet d'afficher l'heure -->
@@ -65,7 +65,7 @@
 
 
   <!-- boutons pour mobile pour changer la date -->
-  <div *ngIf="!orientationObj.matches">
+  <div *ngIf="!orientationObj">
     <ion-fab vertical="bottom" horizontal="start" slot="fixed" *ngIf="currentDay >= 1">
       <ion-fab-button color="light">
         <ion-icon name="arrow-back-circle-outline" (click)="moinsCurrentDay()"></ion-icon>

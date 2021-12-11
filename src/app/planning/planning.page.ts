@@ -6,11 +6,12 @@ import {PlanningModel} from '../shared/models/planning.model';
 import {Platform} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {lastValueFrom} from 'rxjs';
+import {ScreenOrientation} from '@awesome-cordova-plugins/screen-orientation/ngx';
 
 @Component({
   selector: 'app-planning',
   templateUrl: './planning.page.html',
-  styleUrls: ['./planning.page.scss'],
+  styleUrls: ['./planning.page.scss']
 })
 export class PlanningPage implements OnInit {
   public planning = new PlanningModel(); // variable qui stockera le planning
@@ -23,7 +24,7 @@ export class PlanningPage implements OnInit {
     jour: '',
     heure: ''
   };
-  private interval; // variable d'actualisation du planning
+  private readonly interval; // variable d'actualisation du planning
   public orientationObj; // stocke l'orientation de la page
 
   constructor(
@@ -31,7 +32,8 @@ export class PlanningPage implements OnInit {
     private httpService: HttpService,
     public display: Display,
     private platform: Platform,
-    private router: Router
+    private router: Router,
+    private screenOrientation: ScreenOrientation
   ) {
     // on vérifie si l'on peut de nouveau accéder au serveur toutes les 5 secondes
     this.interval = setInterval(() => {
@@ -39,9 +41,10 @@ export class PlanningPage implements OnInit {
     }, 5000);
 
     // on initialise l'orientation, ainsi que l'event qui modifie l'orientation quand l'utilisateur change l'orientation
-    this.orientationObj = window.matchMedia('(orientation : landscape)');
+    this.orientationObj = this.screenOrientation.type === 'landscape-primary';
     this.changeOrientation();
-    this.orientationObj.addEventListener('change', () => {
+    this.screenOrientation.onChange().subscribe( () => {
+      this.orientationObj = this.screenOrientation.type === 'landscape-primary';
       this.changeOrientation();
     });
   }
@@ -64,11 +67,12 @@ export class PlanningPage implements OnInit {
       heure: ''
     };
     // on supprime l'interval
-    this.interval.clearInterval();
+    clearInterval(this.interval);
   }
 
   // enregistre la nouvelle orientation, modifie la liste d'heure si besoin, et réinitialise la liste de jours
   changeOrientation() {
+    // this.orientationObj = this.screenOrientation.type === 'landscape-primary';
     this.changeHeures();
     this.initJours();
   }
@@ -107,7 +111,7 @@ export class PlanningPage implements OnInit {
     let options;
     // option pour l'affichage de la date
     // si on est sur mobile en paysage, alors on réduit la date à jour/mois
-    if (this.mobile && this.orientationObj.matches) {
+    if (this.mobile && this.orientationObj) {
       options = {day: 'numeric', month: 'numeric'};
     } else {
       options = {weekday: 'long', day: 'numeric', month: 'long'};

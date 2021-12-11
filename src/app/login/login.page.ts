@@ -197,6 +197,7 @@ export class LoginPage implements OnInit {
     });
   }
 
+  // remplace tous les caractères spéciaux pour créé un id au nom de la résidence
   findId(name) {
     return name.replace(/[^a-zA-Z]/gi, '').toLowerCase();
   }

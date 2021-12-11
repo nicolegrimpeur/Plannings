@@ -13,6 +13,7 @@ import {AngularFireAuthModule} from '@angular/fire/compat/auth';
 import {HttpClientModule} from '@angular/common/http';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {environment} from '../environments/environment';
+import {ScreenOrientation} from "@awesome-cordova-plugins/screen-orientation/ngx";
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyCRGxxUH7bdcRhdlvtOlp7mSRlyhzUtBwI',
@@ -36,8 +37,8 @@ export const firebaseConfig = {
       registrationStrategy: 'registerWhenStable:30000'
     }),
   ],
-  providers: [{provide: RouteReuseStrategy, useClass: IonicRouteStrategy}],
-  bootstrap: [AppComponent],
+  providers: [ScreenOrientation, {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }
