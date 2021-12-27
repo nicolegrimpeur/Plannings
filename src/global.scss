@@ -30,12 +30,16 @@ body {
 }
 
 // permet de surélever la page pour s'afficher au dessus du tabs
-section{
+.md section {
   margin: 95px 0;
 }
 
+.ios section {
+  margin: 0 !important;
+}
+
 // permet de passer le tab au dessus de la page
-ion-router-outlet {
+.md ion-router-outlet {
   height: calc(var(--vh, 1vh) * 100);
 }
 
