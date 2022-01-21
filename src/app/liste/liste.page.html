@@ -11,21 +11,29 @@
   </ion-refresher>
 
   <!-- utile pour afficher les infos de debug de l'utilisateur -->
-<!--  <ion-item>-->
-<!--    Nom : {{user.userData.nom}}-->
-<!--  </ion-item>-->
-<!--  <ion-item>-->
-<!--    Prénom : {{user.userData.prenom}}-->
-<!--  </ion-item>-->
-<!--  <ion-item>-->
-<!--    Résidence : {{user.userData.residence}}-->
-<!--  </ion-item>-->
-<!--  <ion-item>-->
-<!--    Chambre : {{user.userData.chambre}}-->
-<!--  </ion-item>-->
-<!--  <ion-item>-->
-<!--    isRp : {{user.userData.isRp}}-->
-<!--  </ion-item>-->
+  <!--  <ion-item>-->
+  <!--    Nom : {{user.userData.nom}}-->
+  <!--  </ion-item>-->
+  <!--  <ion-item>-->
+  <!--    Prénom : {{user.userData.prenom}}-->
+  <!--  </ion-item>-->
+  <!--  <ion-item>-->
+  <!--    Résidence : {{user.userData.residence}}-->
+  <!--  </ion-item>-->
+  <!--  <ion-item>-->
+  <!--    Chambre : {{user.userData.chambre}}-->
+  <!--  </ion-item>-->
+  <!--  <ion-item>-->
+  <!--    isRp : {{user.userData.isRp}}-->
+  <!--  </ion-item>-->
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title style="text-align: center">
+        Merci de lire les règles avant de vous inscrire !
+      </ion-card-title>
+    </ion-card-header>
+  </ion-card>
 
   <ion-card *ngIf="residence !== undefined">
     <ion-card-header>
@@ -36,17 +44,19 @@
       <ion-grid>
         <ion-row>
           <ion-col *ngFor="let planning of residence.liste">
-            <ion-button expand="block" color="medium" routerLink="/planning"
+            <ion-button expand="block" color="medium" [routerLink]="['/planning']"
                         (click)="user.addCurrentPage(planning)">{{planning}}</ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
 
       <!-- affiche une erreur s'il n'existe pas encore de planning pour cette résidence -->
-      <ion-card-content *ngIf="residence.liste !== undefined && residence.liste.length === 0 && user.userData.isRp === 'true'">
+      <ion-card-content
+        *ngIf="residence.liste !== undefined && residence.liste.length === 0 && user.userData.isRp === 'true'">
         Vous pouvez ajouter un planning avec le bouton "AJOUTER UN PLANNING" si dessous
       </ion-card-content>
-      <ion-card-content *ngIf="residence.liste !== undefined && residence.liste.length === 0 && user.userData.isRp === 'false'">
+      <ion-card-content
+        *ngIf="residence.liste !== undefined && residence.liste.length === 0 && user.userData.isRp === 'false'">
         Aucun planning n'a encore été créé pour votre résidence, vous pouvez contacter votre RP,
         ou Nicolas Barrat au <a href='sms:07.81.70.66.63' title='Envoyer un message à Nicolas' target='_blank'>07.81.70.66.63</a>
       </ion-card-content>
@@ -62,7 +72,7 @@
       <ion-grid>
         <ion-row>
           <ion-col *ngFor="let planning of residence.liste">
-            <ion-button expand="block" color="medium" routerLink="/historique"
+            <ion-button expand="block" color="medium" [routerLink]="['/historique']"
                         (click)="user.addCurrentPage(planning)">{{planning}}</ion-button>
           </ion-col>
         </ion-row>
@@ -77,12 +87,35 @@
 
   <br *ngIf="user.userData.isRp === 'true'">
 
-  <!-- bouton pour ajouter un nouveau planning -->
-  <ion-button expand="block" color="medium"
-              *ngIf="user.userData.isRp === 'true'" (click)="alert()">
-    <ion-icon slot="start" name="add-circle-outline"></ion-icon>
-    Ajouter un planning
-  </ion-button>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <!-- bouton pour ajouter un nouveau planning -->
+        <ion-button expand="block" color="medium"
+                    *ngIf="user.userData.isRp === 'true'" (click)="alert()">
+          <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+          Ajouter un planning
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <!-- bouton pour déplacer un planning -->
+        <ion-button expand="block" color="medium"
+                    *ngIf="user.userData.isRp === 'true'" (click)="movePlanning()">
+          <ion-icon slot="start" name="move-outline"></ion-icon>
+          Déplacer un planning
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <!-- bouton pour supprimer un planning -->
+        <ion-button expand="block" color="medium"
+                    *ngIf="user.userData.isRp === 'true'" (click)="supprPlanning()">
+          <ion-icon slot="start" name="remove-circle-outline"></ion-icon>
+          Supprimer un planning
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 
   <ion-item-divider></ion-item-divider>
 
@@ -91,4 +124,6 @@
     <ion-icon slot="start" name="log-out-outline"></ion-icon>
     Déconnexion
   </ion-button>
+
+  <section></section>
 </ion-content>

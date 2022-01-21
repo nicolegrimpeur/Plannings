@@ -1,0 +1,418 @@
+{
+  "dimanche1": {
+    "H7": {
+      "nom": "Barrat",
+      "prenom": "Nicolas",
+      "chambre": "T404"
+    },
+    "H8M30": {
+      "nom": "Barrat",
+      "prenom": "Nicolas",
+      "chambre": "T404"
+    },
+    "H10": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H11M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H13M": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H14M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H16M": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H17M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H19": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H20M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    }
+  },
+  "lundi": {
+    "H7": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H8M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H10": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H11M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H13M": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H14M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H16M": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H17M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H19": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H20M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    }
+  },
+  "mardi": {
+    "H7": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H8M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H10": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H11M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H13M": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H14M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H16M": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H17M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H19": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H20M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    }
+  },
+  "mercredi": {
+    "H7": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H8M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H10": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H11M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H13M": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H14M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H16M": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H17M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H19": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H20M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    }
+  },
+  "jeudi": {
+    "H7": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H8M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H10": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H11M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H13M": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H14M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H16M": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H17M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H19": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H20M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    }
+  },
+  "vendredi": {
+    "H7": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H8M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H10": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H11M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H13M": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H14M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H16M": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H17M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H19": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H20M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    }
+  },
+  "samedi": {
+    "H7": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H8M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H10": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H11M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H13M": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H14M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H16M": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H17M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H19": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H20M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    }
+  },
+  "dimanche2": {
+    "H7": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H8M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H10": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H11M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H13M": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H14M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H16M": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H17M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H19": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    },
+    "H20M30": {
+      "nom": "",
+      "prenom": "",
+      "chambre": ""
+    }
+  }
+}

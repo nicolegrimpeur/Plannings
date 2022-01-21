@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Modifier l'ordre des plannings</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-reorder-group (ionItemReorder)="reorderItems($event)" disabled="false">
+    <ion-item *ngFor="let planning of listPlannings">
+      <ion-reorder slot="start"></ion-reorder>
+      <ion-label>
+        {{planning}}
+      </ion-label>
+    </ion-item>
+  </ion-reorder-group>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <!-- bouton pour annuler -->
+        <ion-button expand="block" color="danger" fill="clear" (click)="annuler()">
+          <ion-icon slot="start" name="close-circle-outline"></ion-icon>
+          Annuler
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <!-- bouton pour enregistrer -->
+        <ion-button expand="block" color="medium" fill="clear" (click)="enregistrer()">
+          <ion-icon slot="start" name="save-outline"></ion-icon>
+          Enregistrer
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -3,9 +3,9 @@ import {Router} from '@angular/router';
 import {AngularFireAuth} from '@angular/fire/compat/auth';
 import {Platform} from '@ionic/angular';
 import {Display} from './display';
-// import firebase from 'firebase';
-// import firebase from 'firebase';
-// import {firebaseConfig} from '../../app.module';
+import {HttpService} from '../../core/http.service';
+import {ListeModel} from '../models/liste.model';
+import {lastValueFrom} from 'rxjs';
 
 @Injectable({
   providedIn: 'platform'
@@ -21,18 +21,18 @@ export class User {
     displayName: '',
     currentPage: ''
   };
+  public inscriptions;
   private currentUser: any;
 
   constructor(
     private router: Router,
     private afAuth: AngularFireAuth,
     private platform: Platform,
-    private display: Display
+    private display: Display,
+    private httpService: HttpService
   ) {
     this.connexion();
 
-    // on initialise la base de donnée SDK JS
-    // firebase.initializeApp(firebaseConfig);
     this.initCurrentUser();
     this.initInfos();
   }
@@ -58,12 +58,14 @@ export class User {
   }
 
   // redirige l'utilisateur s'il est connecté ou non
-  redirection() {
+  redirection(link) {
     this.platform.ready().then(() => {
       this.afAuth.authState.subscribe(auth => {
         if (this.router.url !== '/erreur') {
           if (auth) {
-            this.router.navigateByUrl('/').then();
+            if (link === '') {
+              this.router.navigateByUrl('/').then();
+            }
           } else {
             this.router.navigateByUrl('/login').then();
           }
@@ -76,11 +78,11 @@ export class User {
   redirectionErreur() {
     this.platform.ready().then(() => {
       this.afAuth.authState.subscribe(auth => {
-          if (auth) {
-            this.router.navigateByUrl('/').then();
-          } else {
-            this.router.navigateByUrl('/login').then();
-          }
+        if (auth) {
+          this.router.navigateByUrl('/').then();
+        } else {
+          this.router.navigateByUrl('/login').then();
+        }
       });
     });
   }
@@ -93,15 +95,18 @@ export class User {
           this.userData.mail = auth.email;
           this.userData.displayName = auth.displayName;
           this.initInfos();
+          this.initInscription().then();
         }
       }
     });
   }
 
+  // enregistre la page active
   addCurrentPage(page) {
     this.userData.currentPage = page;
   }
 
+  // supprimer la page active
   deleteCurrentPage() {
     this.userData.currentPage = '';
   }
@@ -122,5 +127,104 @@ export class User {
       displayName: '',
       currentPage: ''
     };
+
+    this.router.navigateByUrl('/login').then();
+  }
+
+  // initialise le tableau d'inscriptions
+  async initInscription() {
+    this.inscriptions = [];
+
+    // on récupère la liste des plannings pour cette résidence
+    const liste = await this.recupListe().then(result => result);
+
+    const plannings = [];
+    // on récupère les infos qui correspondent à la résidence
+    const objResidence = liste.residences.find(res => res.residence.toLowerCase() === this.userData.residence);
+    if (objResidence !== undefined) {
+      // on parcours la liste des plannings de la résidence pour ajouter chaque planning à plannings
+      for (const planning of objResidence.liste) {
+        plannings.push({nomPlanning: planning, planning: await this.recupPlanning(planning, objResidence.residence)});
+      }
+
+      let debutPlanning;
+      let idNb;
+      let idInscription;
+      let nbInscription;
+      // on parcours tous les plannings de la résidence
+      for (const planning of plannings) {
+        // on récupère le début du nom du plannings (exemple Machine 1 donne Machine )
+        idNb = planning.nomPlanning.search(/[0-9]/g);
+        debutPlanning = planning.nomPlanning.slice(0, idNb !== -1 ? idNb : planning.nomPlanning.length);
+
+        nbInscription = 0;
+        // on parcours le planning en cours
+        for (const jour in planning.planning) {
+          // permet d'éviter de considérer le dimanche précédent comme partie courante de la semaine
+          if (jour !== 'dimanche1') {
+            for (const heure in planning.planning[jour]) {
+              // si le numéro de chambre lui correspond, alors on lui rajoute une inscription sur ce planning
+              if (planning.planning[jour][heure].chambre === this.userData.chambre) {
+                nbInscription++;
+              }
+            }
+          }
+        }
+
+        // on ajoute les inscriptions obtenus au tableau d'inscriptions
+        idInscription = this.inscriptions.findIndex(res => res.name === debutPlanning);
+        if (idInscription === -1) {
+          this.inscriptions.push({name: debutPlanning, nbInscriptions: nbInscription});
+        } else {
+          this.inscriptions[idInscription].nbInscriptions += nbInscription;
+        }
+      }
+    }
+  }
+
+  // on récupère les infos des résidences
+  async recupListe() {
+    return await lastValueFrom(this.httpService.getListe())
+      .then((results: ListeModel) => results)
+      .catch(err => {
+        this.router.navigate(['/erreur']).then();
+        return new ListeModel();
+      });
+  }
+
+  // récupère un planning
+  async recupPlanning(page, res) {
+    // on appelle la fonction getPlanning
+    return await lastValueFrom(this.httpService.getPlanning(page, res))
+      .then(results => results)
+      .catch(err => {
+        // on redirige vers la page d'erreur
+        this.router.navigate(['/erreur']).then();
+      });
+  }
+
+  // ajoute une inscription
+  addInscription(name) {
+    this.manageInscriptions(name, +1);
+  }
+
+  // supprime une inscription
+  removeInscription(name) {
+    this.manageInscriptions(name, -1);
+  }
+
+  // manipule le tableau d'inscription pour rajouter ou enlever une inscription
+  manageInscriptions(name, nb) {
+    const idNb = this.userData.currentPage.search(/[0-9]/g);
+    const debutName = name.slice(0, (idNb !== -1 ? idNb : name.length));
+
+    let idInscriptions = this.inscriptions.findIndex(res => res.name === debutName);
+
+    if (idInscriptions === -1) {
+      this.inscriptions.push({name: debutName, nbInscriptions: 0});
+      idInscriptions = this.inscriptions.length - 1;
+    }
+
+    this.inscriptions[idInscriptions].nbInscriptions += nb;
   }
 }

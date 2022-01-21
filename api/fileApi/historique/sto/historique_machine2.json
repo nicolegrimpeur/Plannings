@@ -1,0 +1,58 @@
+{
+  "historique": [
+    {
+      "modification": "Inscription sur le créneau",
+      "dateModif": "mercredi 13 octobre 2021, 08:18:56",
+      "nom": "Barrat",
+      "prenom": "Nicolas",
+      "chambre": "T404",
+      "jour": "mardi",
+      "heure": "H10"
+    },
+    {
+      "modification": "Inscription sur le créneau",
+      "dateModif": "mercredi 13 octobre 2021, 08:18:57",
+      "nom": "Barrat",
+      "prenom": "Nicolas",
+      "chambre": "T404",
+      "jour": "mercredi",
+      "heure": "H11M30"
+    },
+    {
+      "modification": "Suppression du créneau",
+      "dateModif": "mercredi 13 octobre 2021, 09:13:41",
+      "nom": "Barrat",
+      "prenom": "Nicolas",
+      "chambre": "T404",
+      "jour": "mercredi",
+      "heure": "H11M30"
+    },
+    {
+      "modification": "Inscription sur le créneau",
+      "dateModif": "mercredi 13 octobre 2021, 09:13:42",
+      "nom": "Barrat",
+      "prenom": "Nicolas",
+      "chambre": "T404",
+      "jour": "mercredi",
+      "heure": "H13M"
+    },
+    {
+      "modification": "Inscription sur le créneau",
+      "dateModif": "mercredi 13 octobre 2021, 09:15:15",
+      "nom": "Barrat",
+      "prenom": "Nicolas",
+      "chambre": "T404",
+      "jour": "dimanche1",
+      "heure": "H7"
+    },
+    {
+      "modification": "Suppression du créneau",
+      "dateModif": "mercredi 13 octobre 2021, 09:15:17",
+      "nom": "Barrat",
+      "prenom": "Nicolas",
+      "chambre": "T404",
+      "jour": "dimanche1",
+      "heure": "H7"
+    }
+  ]
+}

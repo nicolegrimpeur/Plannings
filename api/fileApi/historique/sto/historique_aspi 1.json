@@ -1,0 +1,22 @@
+{
+  "historique": [
+    {
+      "modification": "Inscription sur le créneau",
+      "dateModif": "mercredi 13 octobre 2021, 09:15:52",
+      "nom": "Barrat",
+      "prenom": "Nicolas",
+      "chambre": "T404",
+      "jour": "dimanche1",
+      "heure": "H7"
+    },
+    {
+      "modification": "Inscription sur le créneau",
+      "dateModif": "mercredi 13 octobre 2021, 09:15:53",
+      "nom": "Barrat",
+      "prenom": "Nicolas",
+      "chambre": "T404",
+      "jour": "dimanche1",
+      "heure": "H8M30"
+    }
+  ]
+}

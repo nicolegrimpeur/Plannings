@@ -1,12 +1,12 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 
-import { IonicModule } from '@ionic/angular';
+import {IonicModule} from '@ionic/angular';
 
-import { ListePageRoutingModule } from './liste-routing.module';
+import {ListePageRoutingModule} from './liste-routing.module';
 
-import { ListePage } from './liste.page';
+import {ListePage} from './liste.page';
 
 @NgModule({
   imports: [
@@ -17,4 +17,5 @@ import { ListePage } from './liste.page';
   ],
   declarations: [ListePage]
 })
-export class ListePageModule {}
+export class ListePageModule {
+}

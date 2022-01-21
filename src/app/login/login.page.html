@@ -20,7 +20,7 @@
 
       <ion-item>
         <ion-label><b>Prénom</b></ion-label>
-        <ion-input [(ngModel)]="loginData.prenom" type="text" autocomplete="name" required="true"
+        <ion-input [(ngModel)]="loginData.prenom" type="text" autocomplete="given-name" required="true"
                    placeholder="Entrez votre prénom"></ion-input>
       </ion-item>
 
@@ -47,7 +47,7 @@
 
       <ion-item *ngIf="loginData.isRp === 'true'">
         <ion-label><b>Mot de passe RP</b></ion-label>
-        <ion-input #inputMdp [(ngModel)]="loginData.mdpRp" type="password" autocomplete="current-password" required="true"
+        <ion-input #inputMdp [(ngModel)]="loginData.mdpRp" type="password" autocomplete="current-password" required="true" minlength="6" maxlength="22"
                    placeholder="Mot de passe"></ion-input>
         <ion-icon #iconMdp (click)="toggleMdp()" name="eye-off-outline"></ion-icon>
       </ion-item>
@@ -60,6 +60,23 @@
           OK
         </ion-button>
       </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        Votre résidence n'apparait pas ?
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Demandez à votre responsable de résidence de la rajouter !
+    </ion-card-content>
+    <ion-card-content (click)="createRes()">
+      Si vous êtes responsable de votre résidence, cliquez ici pour la rajouter
+    </ion-card-content>
+    <ion-card-content (click)="supprRes()">
+      En cas d'erreur, vous pouvez cliquez ici pour supprimer la résidence
     </ion-card-content>
   </ion-card>
 </ion-content>

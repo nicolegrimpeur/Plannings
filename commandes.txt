@@ -16,4 +16,4 @@ ionic capacitor add ios
 
 PC
 
-ng build --configuration production
+ionic build --prod

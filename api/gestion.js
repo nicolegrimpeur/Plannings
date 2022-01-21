@@ -1,6 +1,7 @@
 // noinspection JSCheckFunctionSignatures
 
-const fs = require("fs");
+const fs = require('fs');
+const del = require('del');
 module.exports = class Gestion {
   fs = '';
 
@@ -61,6 +62,35 @@ module.exports = class Gestion {
     if (res !== undefined) res.status(200).json('ok');
   }
 
+  // supprime un planning
+  removeFile(id, residence, res) {
+    // supprime le planning correspondant
+    del([this.path + 'plannings/' + residence + '/' + id + '.json']).then();
+    del([this.path + 'historique/' + residence + '/historique_' + id + '.json']).then();
+
+    const liste = JSON.parse(fs.readFileSync(this.path + 'listPlannings.json'));
+
+    // on récupère l'indice de l'objet résidence
+    const indexRes = liste['residences'].findIndex(res => res.residence === residence);
+    if (indexRes !== -1) {
+      // on récupère l'indice de l'id
+      let indexId = liste['residences'][indexRes].liste.findIndex(res => res === id);
+      if (indexId !== -1) {
+        liste['residences'][indexRes].liste.splice(indexId, 1);
+
+        // on réécrit le fichier
+        fs.writeFileSync(this.path + 'listPlannings.json', JSON.stringify(liste, null, 2));
+
+        // si la fonction a été appelé via requête http
+        if (res !== undefined) {
+          res.status(200).json('ok');
+          res = undefined;
+        }
+      }
+    }
+    if (res !== undefined) res.status(201).json('pas trouvé');
+  }
+
   // ajoute le planning à la liste de planning
   addListe(id, residence) {
     const liste = JSON.parse(fs.readFileSync(this.path + 'listPlannings.json'));
@@ -84,6 +114,29 @@ module.exports = class Gestion {
 
     // on réécrit le fichier
     fs.writeFileSync(this.path + 'listPlannings.json', JSON.stringify(liste, null, 2));
+  }
+
+  // remplace la liste de planning d'une résidence par une nouvelle
+  modifListePlanning(residence, informations, res) {
+    const liste = JSON.parse(fs.readFileSync(this.path + 'listPlannings.json'));
+
+    // on récupère l'index de la position de la résidence dans la liste
+    let index = liste['residences'].findIndex(res => res.residence === residence);
+
+    // on remplace l'ancienne liste par la nouvelle avec le nouvelle ordre
+    liste['residences'][index].liste = informations.split('+');
+
+    // on vérifie que la modification vient bien de l'application
+    if (liste['residences'][index].liste[liste['residences'][index].liste.length - 1] === 'OkPourModifs') {
+      // on supprime la valeur du mot de passe
+      liste['residences'][index].liste.pop();
+
+      // on réécrit le fichier
+      fs.writeFileSync(this.path + 'listPlannings.json', JSON.stringify(liste, null, 2));
+
+      // on renvoi une réponse
+      if (res !== undefined) res.status(201).json('pas trouvé');
+    }
   }
 
   // ajoute un créneau
@@ -236,5 +289,71 @@ module.exports = class Gestion {
 
     // on enregistre les modifications
     fs.writeFileSync(this.path + 'historique/' + residence + '/' + 'historique_' + id + '.json', JSON.stringify(historique, null, 2));
+  }
+
+  // créer la nouvelle résidence
+  createResidence(id, name, res) {
+    try {
+      // on récupère la liste de plannings / résidences
+      const liste = JSON.parse(fs.readFileSync(this.path + 'listPlannings.json'));
+      liste.residences.push({
+        residence: id,
+        name: name,
+        liste: []
+      });
+
+      // on enregistre les modifications
+      fs.writeFileSync(this.path + 'listPlannings.json', JSON.stringify(liste, null, 2));
+
+      try {
+        fs.mkdirSync(this.path + 'historique/' + id);
+        fs.mkdirSync(this.path + 'plannings/' + id);
+        if (res !== undefined) res.status(200).send('ok');
+      } catch {
+        if (res !== undefined) res.status(200).send('ok mais la résidence existe déjà');
+      }
+    } catch {
+      if (res !== undefined) res.status(201).send('Erreur dans l\'écriture de la liste');
+    }
+  }
+
+  // créer la nouvelle résidence
+  supprResidence(id, name, res) {
+    const logSuppr = JSON.parse(fs.readFileSync(this.path + '/log/logSuppr.json'));
+    let resultat = '';
+
+    try {
+      // on récupère la liste de plannings / résidences
+      let liste = JSON.parse(fs.readFileSync(this.path + 'listPlannings.json'));
+      const indSuppr = liste.residences.findIndex(res => res.name === name);
+      liste.residences = liste.residences.slice(0, indSuppr).concat(liste.residences.slice(indSuppr + 1, liste.residences.length))
+
+      // on enregistre les modifications
+      fs.writeFileSync(this.path + 'listPlannings.json', JSON.stringify(liste, null, 2));
+
+      resultat = 'success';
+
+      try {
+        fs.rmdirSync(this.path + 'historique/' + id);
+        fs.rmdirSync(this.path + 'plannings/' + id);
+        if (res !== undefined) res.status(200).send('ok');
+      } catch {
+        if (res !== undefined) res.status(200).send('erreur dans la suppression des dossiers');
+      }
+    } catch {
+      resultat = 'fail';
+      if (res !== undefined) res.status(201).send('Erreur dans l\'écriture de la liste');
+    }
+
+    // options pour l'enregistrement de la date
+    const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+    // on ajoute au log le succès
+    logSuppr.log.push({
+      dateModif: new Date(Date()).toLocaleDateString('fr-FR', options),
+      modification: resultat
+    });
+
+    // on enregistre les modifications
+    fs.writeFileSync(this.path + '/log/logSuppr.json', JSON.stringify(logSuppr, null, 2));
   }
 }
