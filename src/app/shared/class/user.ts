@@ -6,6 +6,7 @@ import {Display} from './display';
 import {HttpService} from '../../core/http.service';
 import {ListeModel} from '../models/liste.model';
 import {lastValueFrom} from 'rxjs';
+import {StorageService} from '../../core/storage.service';
 
 @Injectable({
   providedIn: 'platform'
@@ -29,7 +30,8 @@ export class User {
     private afAuth: AngularFireAuth,
     private platform: Platform,
     private display: Display,
-    private httpService: HttpService
+    private httpService: HttpService,
+    private storageService: StorageService
   ) {
     this.connexion();
 
@@ -115,6 +117,8 @@ export class User {
   logout() {
     this.afAuth.signOut().then();
 
+    this.storageService.setLogin('').then();
+
     this.display.display({code: 'Vous êtes déconnecté', color: 'success'}).then();
 
     this.userData = {
@@ -140,43 +144,45 @@ export class User {
 
     const plannings = [];
     // on récupère les infos qui correspondent à la résidence
-    const objResidence = liste.residences.find(res => res.residence.toLowerCase() === this.userData.residence);
-    if (objResidence !== undefined) {
-      // on parcours la liste des plannings de la résidence pour ajouter chaque planning à plannings
-      for (const planning of objResidence.liste) {
-        plannings.push({nomPlanning: planning, planning: await this.recupPlanning(planning, objResidence.residence)});
-      }
+    if (liste.residences !== undefined) {
+      const objResidence = liste.residences.find(res => res.residence.toLowerCase() === this.userData.residence);
+      if (objResidence !== undefined) {
+        // on parcours la liste des plannings de la résidence pour ajouter chaque planning à plannings
+        for (const planning of objResidence.liste) {
+          plannings.push({nomPlanning: planning, planning: await this.recupPlanning(planning, objResidence.residence)});
+        }
 
-      let debutPlanning;
-      let idNb;
-      let idInscription;
-      let nbInscription;
-      // on parcours tous les plannings de la résidence
-      for (const planning of plannings) {
-        // on récupère le début du nom du plannings (exemple Machine 1 donne Machine )
-        idNb = planning.nomPlanning.search(/[0-9]/g);
-        debutPlanning = planning.nomPlanning.slice(0, idNb !== -1 ? idNb : planning.nomPlanning.length);
+        let debutPlanning;
+        let idNb;
+        let idInscription;
+        let nbInscription;
+        // on parcours tous les plannings de la résidence
+        for (const planning of plannings) {
+          // on récupère le début du nom du plannings (exemple Machine 1 donne Machine )
+          idNb = planning.nomPlanning.search(/[0-9]/g);
+          debutPlanning = planning.nomPlanning.slice(0, idNb !== -1 ? idNb : planning.nomPlanning.length);
 
-        nbInscription = 0;
-        // on parcours le planning en cours
-        for (const jour in planning.planning) {
-          // permet d'éviter de considérer le dimanche précédent comme partie courante de la semaine
-          if (jour !== 'dimanche1') {
-            for (const heure in planning.planning[jour]) {
-              // si le numéro de chambre lui correspond, alors on lui rajoute une inscription sur ce planning
-              if (planning.planning[jour][heure].chambre === this.userData.chambre) {
-                nbInscription++;
+          nbInscription = 0;
+          // on parcours le planning en cours
+          for (const jour in planning.planning) {
+            // permet d'éviter de considérer le dimanche précédent comme partie courante de la semaine
+            if (jour !== 'dimanche1') {
+              for (const heure in planning.planning[jour]) {
+                // si le numéro de chambre lui correspond, alors on lui rajoute une inscription sur ce planning
+                if (planning.planning[jour][heure].chambre === this.userData.chambre) {
+                  nbInscription++;
+                }
               }
             }
           }
-        }
 
-        // on ajoute les inscriptions obtenus au tableau d'inscriptions
-        idInscription = this.inscriptions.findIndex(res => res.name === debutPlanning);
-        if (idInscription === -1) {
-          this.inscriptions.push({name: debutPlanning, nbInscriptions: nbInscription});
-        } else {
-          this.inscriptions[idInscription].nbInscriptions += nbInscription;
+          // on ajoute les inscriptions obtenus au tableau d'inscriptions
+          idInscription = this.inscriptions.findIndex(res => res.name === debutPlanning);
+          if (idInscription === -1) {
+            this.inscriptions.push({name: debutPlanning, nbInscriptions: nbInscription});
+          } else {
+            this.inscriptions[idInscription].nbInscriptions += nbInscription;
+          }
         }
       }
     }

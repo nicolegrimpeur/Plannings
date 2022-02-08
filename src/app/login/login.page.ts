@@ -5,6 +5,7 @@ import {Display} from '../shared/class/display';
 import {HttpService} from '../core/http.service';
 import {ListeModel} from '../shared/models/liste.model';
 import {lastValueFrom} from 'rxjs';
+import {StorageService} from "../core/storage.service";
 
 @Component({
   selector: 'app-login',
@@ -33,7 +34,8 @@ export class LoginPage implements OnInit {
     public router: Router,
     public afAuth: AngularFireAuth,
     public display: Display,
-    public httpService: HttpService
+    public httpService: HttpService,
+    private storageService: StorageService
   ) {
   }
 
@@ -68,19 +70,25 @@ export class LoginPage implements OnInit {
     // si un mot de passe a été rentré, on le teste
     if (this.loginData.mdpRp !== '' && this.loginData.isRp === 'true') {
       // si le mot de passe est incorrect on bloque la connexion
-      await lastValueFrom(this.httpService.checkMdpRp(this.loginData.mdpRp)).then().catch(result => {
-        if (result.status !== 200) {
-          this.display.display('Mauvais mot de passe').then();
-          this.loginData.mdpRp = '';
-          mdpCorrect = 'false';
-        } else {
+      await lastValueFrom(this.httpService.checkMdpRp(this.loginData.mdpRp))
+        .then(() => {
           mdpCorrect = 'true';
-        }
-      });
+        })
+        .catch(err => {
+          if (err.status === 403) {
+            this.display.display('Mauvais mot de passe').then();
+            this.loginData.mdpRp = '';
+            mdpCorrect = 'false';
+          } else {
+            this.router.navigate(['/erreur']).then();
+          }
+        });
     }
 
+    this.storageService.setLogin(this.loginData.mdpRp).then();
+
     // si le mot de passe est correct ou si aucun mot de passe n'a été rentré
-    if (mdpCorrect === '' || mdpCorrect === 'true') {
+    if (mdpCorrect !== 'false') {
       this.loginData.mail =
         this.loginData.nom + '+' +
         this.loginData.prenom + '+' +
@@ -124,6 +132,10 @@ export class LoginPage implements OnInit {
           this.recupListe().then();
         });
     }
+  }
+
+  makeLogin() {
+
   }
 
   // récupère la liste des résidences pour l'afficher dans la partie résidence

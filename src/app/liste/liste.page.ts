@@ -84,12 +84,13 @@ export class ListePage implements OnInit {
           this.display.alertWithInputs('Etes vous sur de vouloir supprimer le planning ' + this.residence.liste[res] + ' ?', [])
             .then(async resultat => {
               if (resultat.role === 'ok') {
+                const tmp = this.residence.liste;
                 // on supprime le planning correspondant
                 await lastValueFrom(this.httpService.supprPlanning(this.residence.liste[res], this.user.userData.residence));
                 // on resynchronise la liste de planning
                 await this.recupListe();
 
-                this.display.display({code: 'Planning ' + this.residence.liste[res] + 'supprimé', color: 'success'}).then();
+                this.display.display({code: 'Planning ' + tmp[res] + ' supprimé', color: 'success'}).then();
               }
             })
             .catch(() => {
