@@ -170,36 +170,34 @@ export class LoginPage implements OnInit {
       }
       ]).then(result => {
       if (result.role !== 'cancel' && result.role !== 'backdrop') {
-        lastValueFrom(this.httpService.checkMdpRp(result.data.values.mdp)).then()
+        lastValueFrom(this.httpService.checkMdpRp(result.data.values.mdp))
+          .then(async () => {
+            this.display.alertWithInputs(
+              'Informations de la résidence',
+              [{
+                name: 'name',
+                type: 'text',
+                placeholder: 'Nom de la résidence (exemple Saint-Omer)'
+              }]
+            ).then(res => {
+              if (res.role !== 'cancel' && res.role !== 'backdrop') {
+                // on créé la res
+                lastValueFrom(this.httpService.createRes(this.findId(res.data.values.name), res.data.values.name)).then()
+                  .catch(error => {
+                    if (error.status === 200) {
+                      this.display.display({code: 'Résidence enregistré', color: 'success'}).then();
+                      this.ionViewWillEnter();
+                    } else if (error.status === 201) {
+                      this.display.display('Une erreur a eu lieu, vérifiez que la résidence n\'existe pas déjà');
+                    } else {
+                      this.router.navigate(['/erreur']).then();
+                    }
+                  });
+              }
+            });
+          })
           .catch(async err => {
-            // si status = 200, alors le mot de passe est correct
-            if (err.status === 200) {
-
-              this.display.alertWithInputs(
-                'Informations de la résidence',
-                [{
-                  name: 'name',
-                  type: 'text',
-                  placeholder: 'Nom de la résidence (exemple Saint-Omer)'
-                }]
-              ).then(res => {
-                if (res.role !== 'cancel' && res.role !== 'backdrop') {
-                  // on créé la res
-                  lastValueFrom(this.httpService.createRes(this.findId(res.data.values.name), res.data.values.name)).then()
-                    .catch(error => {
-                      if (error.status === 200) {
-                        this.display.display({code: 'Résidence enregistré', color: 'success'}).then();
-                        this.ionViewWillEnter();
-                      } else if (error.status === 201) {
-                        this.display.display('Une erreur a eu lieu, vérifiez que la résidence n\'existe pas déjà');
-                      } else {
-                        this.router.navigate(['/erreur']).then();
-                      }
-                    });
-                }
-              });
-
-            } else if (err.status === 201) {
+            if (err.status === 403) {
               this.display.display('Mot de passe incorrect').then();
             } else {
               this.router.navigate(['/erreur']).then();
@@ -224,34 +222,33 @@ export class LoginPage implements OnInit {
       }
       ]).then(result => {
       if (result.role !== 'cancel' && result.role !== 'backdrop') {
-        lastValueFrom(this.httpService.checkMdpAll(result.data.values.mdp)).then()
-          .catch(async err => {
-            // si status = 200, alors le mot de passe est correct
-            if (err.status === 200) {
-              // on affiche la liste de résidence
-              this.display.actionSheet(this.liste.residences, 'name', 'Choisissez la résidence à supprimer')
-                .then(res => {
-                  if (res !== 'cancel' && res !== 'backdrop') {
-                    // on demande une confirmation avant de supprimer la résidence
-                    this.display.alertWithInputs('Etes vous sur de vouloir supprimer la résidence ' + this.liste.residences[res].name + ' ?', [])
-                      .then(resultat => {
-                        if (resultat.role === 'ok') {
-                          // on supprime la résidence
-                          lastValueFrom(this.httpService.supprRes(this.liste.residences[res].residence, this.liste.residences[res].name)).then()
-                            .catch(error => {
-                              if (error.status === 200) {
-                                this.display.display({code: 'Résidence supprimé', color: 'success'});
-                                this.ionViewWillEnter();
-                              } else {
-                                this.display.display('Une erreur a eu lieu, merci de réessayer');
-                              }
-                            });
-                        }
-                      });
-                  }
-                });
-
-            } else if (err.status === 201) {
+        lastValueFrom(this.httpService.checkMdpAll(result.data.values.mdp))
+          .then(async res => {
+            // on affiche la liste de résidence
+            this.display.actionSheet(this.liste.residences, 'name', 'Choisissez la résidence à supprimer')
+              .then(res => {
+                if (res !== 'cancel' && res !== 'backdrop') {
+                  // on demande une confirmation avant de supprimer la résidence
+                  this.display.alertWithInputs('Etes vous sur de vouloir supprimer la résidence ' + this.liste.residences[res].name + ' ?', [])
+                    .then(resultat => {
+                      if (resultat.role === 'ok') {
+                        // on supprime la résidence
+                        lastValueFrom(this.httpService.supprRes(this.liste.residences[res].residence, this.liste.residences[res].name)).then()
+                          .catch(error => {
+                            if (error.status === 200) {
+                              this.display.display({code: 'Résidence supprimé', color: 'success'});
+                              this.ionViewWillEnter();
+                            } else {
+                              this.display.display('Une erreur a eu lieu, merci de réessayer');
+                            }
+                          });
+                      }
+                    });
+                }
+              });
+          })
+          .catch(err => {
+            if (err.status === 403) {
               this.display.display('Mot de passe incorrect').then();
             } else {
               this.router.navigate(['/erreur']).then();
