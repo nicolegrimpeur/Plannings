@@ -273,8 +273,8 @@ export class PlanningPage implements OnInit {
   }
 
   // ajout du créneau
-  addCreneau(jour, heure) {
-    lastValueFrom(this.httpService.addCreneau(
+  async addCreneau(jour, heure) {
+    await lastValueFrom(this.httpService.addCreneau(
       this.user.userData.currentPage,
       this.user.userData.residence,
       jour,
@@ -284,11 +284,14 @@ export class PlanningPage implements OnInit {
       this.user.userData.chambre
     ))
       .then(results => {
-        this.ionViewDidEnter();
+        this.display.display({code: results.message, color: 'success'}).then();
       })
       .catch(err => {
-        this.catchCreneau(err);
+        this.display.display(err.message).then();
       });
+
+    // on refresh la page
+    this.ionViewDidEnter();
 
     // permet d'éviter de considérer le dimanche précédent comme partie courante de la semaine
     if (jour !== 'dimanche1') {
@@ -297,8 +300,8 @@ export class PlanningPage implements OnInit {
   }
 
   // supprime un créneau
-  removeCreneau(jour, heure) {
-    lastValueFrom(this.httpService.removeCreneau(
+  async removeCreneau(jour, heure) {
+    await lastValueFrom(this.httpService.removeCreneau(
       this.user.userData.currentPage,
       this.user.userData.residence,
       jour,
@@ -306,32 +309,21 @@ export class PlanningPage implements OnInit {
       this.user.userData.nom,
       this.user.userData.prenom,
       this.user.userData.chambre
-    )).then(results => {
-      this.ionViewDidEnter();
-    })
+    ))
+      .then(results => {
+        this.display.display({code: results.message, color: 'success'}).then();
+      })
       .catch(err => {
-        this.catchCreneau(err);
+        this.display.display(err.message).then();
       });
+
+    // on refresh la page
+    this.ionViewDidEnter();
 
     // permet d'éviter de considérer le dimanche précédent comme partie courante de la semaine
     if (jour !== 'dimanche1') {
       this.user.removeInscription(this.user.userData.currentPage);
     }
-  }
-
-  catchCreneau(err) {
-    // le serveur renvoi une erreur 200 pour confirmer l'inscription
-    if (err.status === 200) {
-      this.display.display({code: err.error.text, color: 'success'}).then();
-    } else { // sinon c'est qu'il y a eu une erreur
-      if (err.error.text !== undefined) {
-        this.display.display(err.error.text).then();
-      } else {
-        this.display.display(err.statusText).then();
-      }
-    }
-    // on refresh la page
-    this.ionViewDidEnter();
   }
 
   // événement pour rafraichir la page
@@ -355,7 +347,7 @@ export class PlanningPage implements OnInit {
       .duration(1000)
       .iterations(2)
       .fromTo('transform', 'rotate(0deg)', 'rotate(360deg)');
-      // .fromTo('transform', 'translateX(0px)', 'translateX(-100px)');
+    // .fromTo('transform', 'translateX(0px)', 'translateX(-100px)');
 
     animation.play().then();
   }
