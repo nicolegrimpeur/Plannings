@@ -63,13 +63,13 @@ export class HttpService {
   }
 
   checkMdpRp(mdp): Observable<any> {
-    const url = this.base + 'mdpRp/' + mdp;
-    return this.http.get<any>(url);
+    const url = this.base + 'mdpRp';
+    return this.http.post<any>(url, {mdp});
   }
 
   checkMdpAll(mdp): Observable<any> {
-    const url = this.base + 'mdpRp/all/' + mdp;
-    return this.http.get<any>(url);
+    const url = this.base + 'mdpRp/all';
+    return this.http.post<any>(url, {mdp});
   }
 
   createRes(id, name): Observable<any> {
