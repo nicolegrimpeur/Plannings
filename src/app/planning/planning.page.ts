@@ -285,6 +285,11 @@ export class PlanningPage implements OnInit {
     ))
       .then(results => {
         this.display.display({code: results.message, color: 'success'}).then();
+
+        // permet d'éviter de considérer le dimanche précédent comme partie courante de la semaine
+        if (jour !== 'dimanche1') {
+          this.user.addInscription(this.user.userData.currentPage);
+        }
       })
       .catch(err => {
         this.display.display(err.message).then();
@@ -292,11 +297,6 @@ export class PlanningPage implements OnInit {
 
     // on refresh la page
     this.ionViewDidEnter();
-
-    // permet d'éviter de considérer le dimanche précédent comme partie courante de la semaine
-    if (jour !== 'dimanche1') {
-      this.user.addInscription(this.user.userData.currentPage);
-    }
   }
 
   // supprime un créneau
@@ -312,6 +312,11 @@ export class PlanningPage implements OnInit {
     ))
       .then(results => {
         this.display.display({code: results.message, color: 'success'}).then();
+
+        // permet d'éviter de considérer le dimanche précédent comme partie courante de la semaine
+        if (jour !== 'dimanche1') {
+          this.user.removeInscription(this.user.userData.currentPage);
+        }
       })
       .catch(err => {
         this.display.display(err.message).then();
@@ -319,11 +324,6 @@ export class PlanningPage implements OnInit {
 
     // on refresh la page
     this.ionViewDidEnter();
-
-    // permet d'éviter de considérer le dimanche précédent comme partie courante de la semaine
-    if (jour !== 'dimanche1') {
-      this.user.removeInscription(this.user.userData.currentPage);
-    }
   }
 
   // événement pour rafraichir la page

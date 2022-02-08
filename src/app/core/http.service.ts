@@ -9,8 +9,8 @@ import {HistoriqueModel} from '../shared/models/historique.model';
   providedIn: 'root'
 })
 export class HttpService {
-  // private base = 'https://nicob.ovh/';
-  private base = 'http://localhost:1080/';
+  private base = 'https://nicob.ovh/';
+  // private base = 'http://localhost:1080/';
   private baseLink = this.base + 'plannings/';
 
   constructor(private readonly http: HttpClient) {
@@ -32,13 +32,19 @@ export class HttpService {
   }
 
   addCreneau(id, residence, jour, heure, nom, prenom, chambre): Observable<any> {
-    const url = this.baseLink + 'add/' + id + '+' + residence + '+' + jour + '+' + heure + '+' + nom + '+' + prenom + '+' + chambre;
-    return this.http.get<any>(url);
+    const url = this.baseLink + 'add';
+    const data = {
+      id, residence, jour, heure, nom, prenom, chambre
+    }
+    return this.http.post<any>(url, data, {headers: {'Content-Type': 'application/json'}});
   }
 
   removeCreneau(id, residence, jour, heure, nom, prenom, chambre): Observable<any> {
-    const url = this.baseLink + 'remove/' + id + '+' + residence + '+' + jour + '+' + heure + '+' + nom + '+' + prenom + '+' + chambre;
-    return this.http.get<any>(url);
+    const url = this.baseLink + 'remove';
+    const data = {
+      id, residence, jour, heure, nom, prenom, chambre
+    }
+    return this.http.post<any>(url, data, {headers: {'Content-Type': 'application/json'}});
   }
 
   initPlanning(id, residence) {
