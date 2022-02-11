@@ -4,14 +4,13 @@ import {Observable} from 'rxjs';
 import {ListeModel} from '../shared/models/liste.model';
 import {PlanningModel} from '../shared/models/planning.model';
 import {HistoriqueModel} from '../shared/models/historique.model';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpService {
-  private base = 'https://nicob.ovh/';
-  // private base = 'http://localhost:1080/';
-  private baseLink = this.base + 'plannings/';
+  private baseLink = environment.base + 'plannings/';
 
   constructor(private readonly http: HttpClient) {
   }
@@ -63,12 +62,12 @@ export class HttpService {
   }
 
   checkMdpRp(mdp): Observable<any> {
-    const url = this.base + 'mdpRp';
+    const url = environment.base + 'mdpRp';
     return this.http.post<any>(url, {mdp});
   }
 
   checkMdpAll(mdp): Observable<any> {
-    const url = this.base + 'mdpRp/all';
+    const url = environment.base + 'mdpRp/all';
     return this.http.post<any>(url, {mdp});
   }
 
