@@ -98,6 +98,7 @@ export class User {
           this.userData.displayName = auth.displayName;
           this.initInfos();
           this.initInscription().then();
+          this.isResUndefined();
         }
       }
     });
@@ -114,8 +115,12 @@ export class User {
   }
 
   // déconnecte l'utilisateur
-  logout() {
-    this.afAuth.signOut().then();
+  logout(deleteAccount = false) {
+    if (deleteAccount) {
+      this.currentUser.delete();
+    } else {
+      this.afAuth.signOut().then();
+    }
 
     this.storageService.setLogin('').then();
 
@@ -185,6 +190,12 @@ export class User {
           }
         }
       }
+    }
+  }
+
+  isResUndefined() {
+    if (this.userData.residence === undefined || this.userData.residence === 'undefined') {
+      this.logout(true);
     }
   }
 
