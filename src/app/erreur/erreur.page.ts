@@ -49,6 +49,7 @@ export class ErreurPage implements OnInit {
         clearInterval(this.interval);
       })
       .catch(err => {
+        console.log(err);
       });
   }
 

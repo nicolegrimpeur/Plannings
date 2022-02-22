@@ -4,14 +4,13 @@ import {Observable} from 'rxjs';
 import {ListeModel} from '../shared/models/liste.model';
 import {PlanningModel} from '../shared/models/planning.model';
 import {HistoriqueModel} from '../shared/models/historique.model';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpService {
-  private base = 'https://nicob.ovh/';
-  // private base = 'http://localhost:1080/';
-  private baseLink = this.base + 'plannings/';
+  private baseLink = environment.base + 'plannings/';
 
   constructor(private readonly http: HttpClient) {
   }
@@ -32,13 +31,19 @@ export class HttpService {
   }
 
   addCreneau(id, residence, jour, heure, nom, prenom, chambre): Observable<any> {
-    const url = this.baseLink + 'add/' + id + '+' + residence + '+' + jour + '+' + heure + '+' + nom + '+' + prenom + '+' + chambre;
-    return this.http.get<any>(url);
+    const url = this.baseLink + 'add';
+    const data = {
+      id, residence, jour, heure, nom, prenom, chambre
+    }
+    return this.http.post<any>(url, data, {headers: {'Content-Type': 'application/json'}});
   }
 
   removeCreneau(id, residence, jour, heure, nom, prenom, chambre): Observable<any> {
-    const url = this.baseLink + 'remove/' + id + '+' + residence + '+' + jour + '+' + heure + '+' + nom + '+' + prenom + '+' + chambre;
-    return this.http.get<any>(url);
+    const url = this.baseLink + 'remove';
+    const data = {
+      id, residence, jour, heure, nom, prenom, chambre
+    }
+    return this.http.post<any>(url, data, {headers: {'Content-Type': 'application/json'}});
   }
 
   initPlanning(id, residence) {
@@ -57,13 +62,13 @@ export class HttpService {
   }
 
   checkMdpRp(mdp): Observable<any> {
-    const url = this.base + 'mdpRp/' + mdp;
-    return this.http.get<any>(url);
+    const url = environment.base + 'mdpRp';
+    return this.http.post<any>(url, {mdp});
   }
 
   checkMdpAll(mdp): Observable<any> {
-    const url = this.base + 'mdpRp/all/' + mdp;
-    return this.http.get<any>(url);
+    const url = environment.base + 'mdpRp/all';
+    return this.http.post<any>(url, {mdp});
   }
 
   createRes(id, name): Observable<any> {

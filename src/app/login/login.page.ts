@@ -5,6 +5,7 @@ import {Display} from '../shared/class/display';
 import {HttpService} from '../core/http.service';
 import {ListeModel} from '../shared/models/liste.model';
 import {lastValueFrom} from 'rxjs';
+import {StorageService} from "../core/storage.service";
 
 @Component({
   selector: 'app-login',
@@ -33,7 +34,8 @@ export class LoginPage implements OnInit {
     public router: Router,
     public afAuth: AngularFireAuth,
     public display: Display,
-    public httpService: HttpService
+    public httpService: HttpService,
+    private storageService: StorageService
   ) {
   }
 
@@ -65,64 +67,75 @@ export class LoginPage implements OnInit {
   async login() {
     let mdpCorrect = '';
 
-    // si un mot de passe a été rentré, on le teste
-    if (this.loginData.mdpRp !== '' && this.loginData.isRp === 'true') {
-      // si le mot de passe est incorrect on bloque la connexion
-      await lastValueFrom(this.httpService.checkMdpRp(this.loginData.mdpRp)).then().catch(result => {
-        if (result.status !== 200) {
-          this.display.display('Mauvais mot de passe').then();
-          this.loginData.mdpRp = '';
-          mdpCorrect = 'false';
-        } else {
-          mdpCorrect = 'true';
-        }
-      });
-    }
+    if (this.loginData.residence === undefined || this.loginData.residence === 'undefined') {
+      this.display.display("Une erreur a eu lieu, merci de sélectionner une résidence").then();
+      this.loginData.residence = '';
+    } else {
+      // si un mot de passe a été rentré, on le teste
+      if (this.loginData.mdpRp !== '' && this.loginData.isRp === 'true') {
+        // si le mot de passe est incorrect on bloque la connexion
+        await lastValueFrom(this.httpService.checkMdpRp(this.loginData.mdpRp))
+          .then(() => {
+            mdpCorrect = 'true';
+          })
+          .catch(err => {
+            if (err.status === 403) {
+              this.display.display('Mauvais mot de passe').then();
+              this.loginData.mdpRp = '';
+              mdpCorrect = 'false';
+            } else {
+              this.router.navigate(['/erreur']).then();
+            }
+          });
+      }
 
-    // si le mot de passe est correct ou si aucun mot de passe n'a été rentré
-    if (mdpCorrect === '' || mdpCorrect === 'true') {
-      this.loginData.mail =
-        this.loginData.nom + '+' +
-        this.loginData.prenom + '+' +
-        this.loginData.residence + '+' +
-        this.loginData.chambre + '+' +
-        ((mdpCorrect === '') ? 'false' : mdpCorrect) +
-        '+planning@all.fr';
+      this.storageService.setLogin(this.loginData.mdpRp).then();
 
-      // pour corriger le mail (remplacement espace par tiret)
-      this.checkMail();
+      // si le mot de passe est correct ou si aucun mot de passe n'a été rentré
+      if (mdpCorrect !== 'false') {
+        this.loginData.mail =
+          this.loginData.nom + '+' +
+          this.loginData.prenom + '+' +
+          this.loginData.residence + '+' +
+          this.loginData.chambre + '+' +
+          ((mdpCorrect === '') ? 'false' : mdpCorrect) +
+          '+planning@all.fr';
 
-      const password = 'f355bcd8af0541b815c00eda1360a30024c2ae8bfc53ead1073bf29b7589cc64';
+        // pour corriger le mail (remplacement espace par tiret)
+        this.checkMail();
 
-      // on regarde si un compte existe déjà avec cette email
-      this.afAuth.fetchSignInMethodsForEmail(this.loginData.mail)
-        .then(res => {
-          // si oui on connecte l'utilisateur
-          if (res.length === 1) {
-            this.afAuth.signInWithEmailAndPassword(this.loginData.mail, password)
-              .then(auth => {
-                // on redirige l'utilisateur sur la page d'accueil
-                this.router.navigateByUrl('/').then();
-              })
-              .catch(err => {
-                // sinon on affiche une erreur
-                this.display.display(err).then();
-              });
-          } else { // sinon on créé un compte
-            this.afAuth.createUserWithEmailAndPassword(this.loginData.mail, password)
-              .then(auth => {
-                // on redirige l'utilisateur sur la page d'accueil
-                this.router.navigateByUrl('/').then();
-              })
-              .catch(err => {
-                // sinon on affiche une erreur
-                this.display.display(err).then();
-              });
-          }
-        })
-        .catch(err => {
-          this.recupListe().then();
-        });
+        const password = 'f355bcd8af0541b815c00eda1360a30024c2ae8bfc53ead1073bf29b7589cc64';
+
+        // on regarde si un compte existe déjà avec cette email
+        this.afAuth.fetchSignInMethodsForEmail(this.loginData.mail)
+          .then(res => {
+            // si oui on connecte l'utilisateur
+            if (res.length === 1) {
+              this.afAuth.signInWithEmailAndPassword(this.loginData.mail, password)
+                .then(auth => {
+                  // on redirige l'utilisateur sur la page d'accueil
+                  this.router.navigateByUrl('/').then();
+                })
+                .catch(err => {
+                  // sinon on affiche une erreur
+                  this.display.display(err).then();
+                });
+            } else { // sinon on créé un compte
+              this.afAuth.createUserWithEmailAndPassword(this.loginData.mail, password)
+                .then(auth => {
+                  // on redirige l'utilisateur sur la page d'accueil
+                  this.router.navigateByUrl('/').then();
+                })
+                .catch(err => {
+                  // sinon on affiche une erreur
+                  this.display.display(err).then();
+                });
+            }
+          })
+          .catch(err => {
+            this.recupListe().then();
+          });
+      }
     }
   }
 
@@ -158,36 +171,34 @@ export class LoginPage implements OnInit {
       }
       ]).then(result => {
       if (result.role !== 'cancel' && result.role !== 'backdrop') {
-        lastValueFrom(this.httpService.checkMdpRp(result.data.values.mdp)).then()
+        lastValueFrom(this.httpService.checkMdpRp(result.data.values.mdp))
+          .then(async () => {
+            this.display.alertWithInputs(
+              'Informations de la résidence',
+              [{
+                name: 'name',
+                type: 'text',
+                placeholder: 'Nom de la résidence (exemple Saint-Omer)'
+              }]
+            ).then(res => {
+              if (res.role !== 'cancel' && res.role !== 'backdrop') {
+                // on créé la res
+                lastValueFrom(this.httpService.createRes(this.findId(res.data.values.name), res.data.values.name)).then()
+                  .catch(error => {
+                    if (error.status === 200) {
+                      this.display.display({code: 'Résidence enregistré', color: 'success'}).then();
+                      this.ionViewWillEnter();
+                    } else if (error.status === 201) {
+                      this.display.display('Une erreur a eu lieu, vérifiez que la résidence n\'existe pas déjà');
+                    } else {
+                      this.router.navigate(['/erreur']).then();
+                    }
+                  });
+              }
+            });
+          })
           .catch(async err => {
-            // si status = 200, alors le mot de passe est correct
-            if (err.status === 200) {
-
-              this.display.alertWithInputs(
-                'Informations de la résidence',
-                [{
-                  name: 'name',
-                  type: 'text',
-                  placeholder: 'Nom de la résidence (exemple Saint-Omer)'
-                }]
-              ).then(res => {
-                if (res.role !== 'cancel' && res.role !== 'backdrop') {
-                  // on créé la res
-                  lastValueFrom(this.httpService.createRes(this.findId(res.data.values.name), res.data.values.name)).then()
-                    .catch(error => {
-                      if (error.status === 200) {
-                        this.display.display({code: 'Résidence enregistré', color: 'success'}).then();
-                        this.ionViewWillEnter();
-                      } else if (error.status === 201) {
-                        this.display.display('Une erreur a eu lieu, vérifiez que la résidence n\'existe pas déjà');
-                      } else {
-                        this.router.navigate(['/erreur']).then();
-                      }
-                    });
-                }
-              });
-
-            } else if (err.status === 201) {
+            if (err.status === 403) {
               this.display.display('Mot de passe incorrect').then();
             } else {
               this.router.navigate(['/erreur']).then();
@@ -212,34 +223,33 @@ export class LoginPage implements OnInit {
       }
       ]).then(result => {
       if (result.role !== 'cancel' && result.role !== 'backdrop') {
-        lastValueFrom(this.httpService.checkMdpAll(result.data.values.mdp)).then()
-          .catch(async err => {
-            // si status = 200, alors le mot de passe est correct
-            if (err.status === 200) {
-              // on affiche la liste de résidence
-              this.display.actionSheet(this.liste.residences, 'name', 'Choisissez la résidence à supprimer')
-                .then(res => {
-                  if (res !== 'cancel' && res !== 'backdrop') {
-                    // on demande une confirmation avant de supprimer la résidence
-                    this.display.alertWithInputs('Etes vous sur de vouloir supprimer la résidence ' + this.liste.residences[res].name + ' ?', [])
-                      .then(resultat => {
-                        if (resultat.role === 'ok') {
-                          // on supprime la résidence
-                          lastValueFrom(this.httpService.supprRes(this.liste.residences[res].residence, this.liste.residences[res].name)).then()
-                            .catch(error => {
-                              if (error.status === 200) {
-                                this.display.display({code: 'Résidence supprimé', color: 'success'});
-                                this.ionViewWillEnter();
-                              } else {
-                                this.display.display('Une erreur a eu lieu, merci de réessayer');
-                              }
-                            });
-                        }
-                      });
-                  }
-                });
-
-            } else if (err.status === 201) {
+        lastValueFrom(this.httpService.checkMdpAll(result.data.values.mdp))
+          .then(async res => {
+            // on affiche la liste de résidence
+            this.display.actionSheet(this.liste.residences, 'name', 'Choisissez la résidence à supprimer')
+              .then(res => {
+                if (res !== 'cancel' && res !== 'backdrop') {
+                  // on demande une confirmation avant de supprimer la résidence
+                  this.display.alertWithInputs('Etes vous sur de vouloir supprimer la résidence ' + this.liste.residences[res].name + ' ?', [])
+                    .then(resultat => {
+                      if (resultat.role === 'ok') {
+                        // on supprime la résidence
+                        lastValueFrom(this.httpService.supprRes(this.liste.residences[res].residence, this.liste.residences[res].name)).then()
+                          .catch(error => {
+                            if (error.status === 200) {
+                              this.display.display({code: 'Résidence supprimé', color: 'success'});
+                              this.ionViewWillEnter();
+                            } else {
+                              this.display.display('Une erreur a eu lieu, merci de réessayer');
+                            }
+                          });
+                      }
+                    });
+                }
+              });
+          })
+          .catch(err => {
+            if (err.status === 403) {
               this.display.display('Mot de passe incorrect').then();
             } else {
               this.router.navigate(['/erreur']).then();

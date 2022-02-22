@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {User} from '../shared/class/user';
 import {HttpService} from '../core/http.service';
 import {Display} from '../shared/class/display';
@@ -7,6 +7,7 @@ import {Platform} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {lastValueFrom} from 'rxjs';
 import {ScreenOrientation} from '@awesome-cordova-plugins/screen-orientation/ngx';
+import {Animation, AnimationController} from '@ionic/angular';
 
 @Component({
   selector: 'app-planning',
@@ -14,6 +15,8 @@ import {ScreenOrientation} from '@awesome-cordova-plugins/screen-orientation/ngx
   styleUrls: ['./planning.page.scss']
 })
 export class PlanningPage implements OnInit {
+  @ViewChild("refresh") refreshElement;
+
   public planning = new PlanningModel(); // variable qui stockera le planning
   public jours = ['']; // stocke les différents jours de la semaine
   public heures = []; // stocke les horaires de la semaine
@@ -24,7 +27,6 @@ export class PlanningPage implements OnInit {
     jour: '',
     heure: ''
   };
-  private readonly interval; // variable d'actualisation du planning
   public orientationObj; // stocke l'orientation de la page
 
   constructor(
@@ -33,17 +35,13 @@ export class PlanningPage implements OnInit {
     public display: Display,
     private platform: Platform,
     private router: Router,
-    private screenOrientation: ScreenOrientation
+    private screenOrientation: ScreenOrientation,
+    private animationCtrl: AnimationController
   ) {
-    // on vérifie si l'on peut de nouveau accéder au serveur toutes les 5 secondes
-    this.interval = setInterval(() => {
-      this.getPlanning().then();
-    }, 5000);
-
     // on initialise l'orientation, ainsi que l'event qui modifie l'orientation quand l'utilisateur change l'orientation
     this.orientationObj = this.screenOrientation.type === 'landscape-primary';
     this.changeOrientation();
-    this.screenOrientation.onChange().subscribe( () => {
+    this.screenOrientation.onChange().subscribe(() => {
       this.orientationObj = this.screenOrientation.type === 'landscape-primary';
       this.changeOrientation();
     });
@@ -66,8 +64,6 @@ export class PlanningPage implements OnInit {
       jour: '',
       heure: ''
     };
-    // on supprime l'interval
-    clearInterval(this.interval);
   }
 
   // enregistre la nouvelle orientation, modifie la liste d'heure si besoin, et réinitialise la liste de jours
@@ -277,8 +273,8 @@ export class PlanningPage implements OnInit {
   }
 
   // ajout du créneau
-  addCreneau(jour, heure) {
-    lastValueFrom(this.httpService.addCreneau(
+  async addCreneau(jour, heure) {
+    await lastValueFrom(this.httpService.addCreneau(
       this.user.userData.currentPage,
       this.user.userData.residence,
       jour,
@@ -288,21 +284,24 @@ export class PlanningPage implements OnInit {
       this.user.userData.chambre
     ))
       .then(results => {
-        this.ionViewDidEnter();
+        this.display.display({code: results.message, color: 'success'}).then();
+
+        // permet d'éviter de considérer le dimanche précédent comme partie courante de la semaine
+        if (jour !== 'dimanche1') {
+          this.user.addInscription(this.user.userData.currentPage);
+        }
       })
       .catch(err => {
-        this.catchCreneau(err);
+        this.display.display(err.message).then();
       });
 
-    // permet d'éviter de considérer le dimanche précédent comme partie courante de la semaine
-    if (jour !== 'dimanche1') {
-      this.user.addInscription(this.user.userData.currentPage);
-    }
+    // on refresh la page
+    this.ionViewDidEnter();
   }
 
   // supprime un créneau
-  removeCreneau(jour, heure) {
-    lastValueFrom(this.httpService.removeCreneau(
+  async removeCreneau(jour, heure) {
+    await lastValueFrom(this.httpService.removeCreneau(
       this.user.userData.currentPage,
       this.user.userData.residence,
       jour,
@@ -310,30 +309,19 @@ export class PlanningPage implements OnInit {
       this.user.userData.nom,
       this.user.userData.prenom,
       this.user.userData.chambre
-    )).then(results => {
-      this.ionViewDidEnter();
-    })
+    ))
+      .then(results => {
+        this.display.display({code: results.message, color: 'success'}).then();
+
+        // permet d'éviter de considérer le dimanche précédent comme partie courante de la semaine
+        if (jour !== 'dimanche1') {
+          this.user.removeInscription(this.user.userData.currentPage);
+        }
+      })
       .catch(err => {
-        this.catchCreneau(err);
+        this.display.display(err.message).then();
       });
 
-    // permet d'éviter de considérer le dimanche précédent comme partie courante de la semaine
-    if (jour !== 'dimanche1') {
-      this.user.removeInscription(this.user.userData.currentPage);
-    }
-  }
-
-  catchCreneau(err) {
-    // le serveur renvoi une erreur 200 pour confirmer l'inscription
-    if (err.status === 200) {
-      this.display.display({code: err.error.text, color: 'success'}).then();
-    } else { // sinon c'est qu'il y a eu une erreur
-      if (err.error.text !== undefined) {
-        this.display.display(err.error.text).then();
-      } else {
-        this.display.display(err.statusText).then();
-      }
-    }
     // on refresh la page
     this.ionViewDidEnter();
   }
@@ -346,5 +334,21 @@ export class PlanningPage implements OnInit {
       // rafraichi le json
       this.ionViewDidEnter();
     }, 1000);
+  }
+
+  boutonRefresh() {
+    this.lanceAnimation();
+    this.ionViewDidEnter();
+  }
+
+  lanceAnimation() {
+    const animation: Animation = this.animationCtrl.create()
+      .addElement(this.refreshElement.el)
+      .duration(1000)
+      .iterations(2)
+      .fromTo('transform', 'rotate(0deg)', 'rotate(360deg)');
+    // .fromTo('transform', 'translateX(0px)', 'translateX(-100px)');
+
+    animation.play().then();
   }
 }
