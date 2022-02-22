@@ -14,4 +14,4 @@ Créé et hébergé en ligne par Nicolas Barrat
 
 Site web : [nicob.ovh/plannings](nicob.ovh/plannings)
 
-Application mobile : 
+Application mobile android : [Lien vers le Google Play Store](https://play.google.com/store/apps/details?id=plannings.ionic.all)
