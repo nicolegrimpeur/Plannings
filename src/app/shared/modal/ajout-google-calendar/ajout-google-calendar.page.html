@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- bouton de retour en arrière -->
+    <ion-buttons slot="start" style="margin-left: 1vw">
+          <ion-icon name="arrow-back-circle-outline" slot="start" (click)="modalController.dismiss()"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle style="text-align: center">
+        Quel créneau voulez-vous ajouter à Google Calendar ?
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+  <ion-button *ngFor="let inscription of tableauInscriptions" expand="block" color="medium" target="_blank"
+              [href]="'https://calendar.google.com/calendar/render?action=TEMPLATE&' +
+                      'text=Créneau ' + inscription.nomPlanning + '&' +
+                      'dates=' +
+                      inscription.jourIcs + 'T' + inscription.heureDebutIcs + '/' +
+                      inscription.jourIcs + 'T' + inscription.heureFinIcs">
+    {{inscription.nomPlanning}}, {{inscription.jourFormate}}, {{inscription.heureDebutFormate}}
+    à {{inscription.heureFinFormate}}
+  </ion-button>
+</ion-content>
