@@ -23,6 +23,7 @@ export class User {
     currentPage: ''
   };
   public inscriptions;
+  public listInscriptions;
   private currentUser: any;
 
   constructor(
@@ -143,6 +144,7 @@ export class User {
   // initialise le tableau d'inscriptions
   async initInscription() {
     this.inscriptions = [];
+    this.listInscriptions = [];
 
     // on récupère la liste des plannings pour cette résidence
     const liste = await this.recupListe().then(result => result);
@@ -176,6 +178,7 @@ export class User {
                 // si le numéro de chambre lui correspond, alors on lui rajoute une inscription sur ce planning
                 if (planning.planning[jour][heure].chambre === this.userData.chambre) {
                   nbInscription++;
+                  this.listInscriptions.push({planning: planning.nomPlanning, jour, heure});
                 }
               }
             }

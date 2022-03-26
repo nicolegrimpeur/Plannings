@@ -13,6 +13,10 @@ const routes: Routes = [
     path: 'infos-modal',
     loadChildren: () => import('./shared/modal/infos-modal/infos-modal.module').then( m => m.InfosModalPageModule)
   },
+  {
+    path: 'ajout-google-calendar',
+    loadChildren: () => import('./shared/modal/ajout-google-calendar/ajout-google-calendar.module').then( m => m.AjoutGoogleCalendarPageModule)
+  },
 
 ];
 
