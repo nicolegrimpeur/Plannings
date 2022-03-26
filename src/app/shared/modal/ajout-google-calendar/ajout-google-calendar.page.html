@@ -1,9 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <!-- bouton de retour en arrière -->
-    <ion-buttons slot="start" style="margin-left: 1vw">
-          <ion-icon name="arrow-back-circle-outline" slot="start" (click)="modalController.dismiss()"></ion-icon>
-    </ion-buttons>
+    <ion-back-button slot="start" defaultHref="" (click)="modalController.dismiss()"></ion-back-button>
   </ion-toolbar>
 </ion-header>
 
@@ -21,7 +19,7 @@
                       'dates=' +
                       inscription.jourIcs + 'T' + inscription.heureDebutIcs + '/' +
                       inscription.jourIcs + 'T' + inscription.heureFinIcs">
-    {{inscription.nomPlanning}}, {{inscription.jourFormate}}, {{inscription.heureDebutFormate}}
-    à {{inscription.heureFinFormate}}
+    {{inscription.nomPlanning}}, le {{inscription.jourFormate}}, <br>
+    de {{inscription.heureDebutFormate}} à {{inscription.heureFinFormate}}
   </ion-button>
 </ion-content>

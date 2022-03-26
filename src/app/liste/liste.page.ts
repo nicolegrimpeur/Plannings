@@ -214,6 +214,7 @@ export class ListePage implements OnInit {
             'Cette fonctionnalité n\'est pas encore disponible via l\'application mobile, merci de passer par le site web pour y accéder').then();
         } else {
           window.open("data:text/calendar;charset=utf8," + encodeURI(icsMSG));
+          this.display.display({code: 'Téléchargement lancé', color: 'success'}).then();
         }
       }
 
