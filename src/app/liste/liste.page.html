@@ -85,44 +85,18 @@
     </ion-card-content>
   </ion-card>
 
-  <br *ngIf="user.userData.isRp === 'true'">
-
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <!-- bouton pour ajouter un nouveau planning -->
-        <ion-button expand="block" color="medium"
-                    *ngIf="user.userData.isRp === 'true'" (click)="alert()">
-          <ion-icon slot="start" name="add-circle-outline"></ion-icon>
-          Ajouter un planning
-        </ion-button>
-      </ion-col>
-      <ion-col>
-        <!-- bouton pour déplacer un planning -->
-        <ion-button expand="block" color="medium"
-                    *ngIf="user.userData.isRp === 'true'" (click)="movePlanning()">
-          <ion-icon slot="start" name="move-outline"></ion-icon>
-          Déplacer un planning
-        </ion-button>
-      </ion-col>
-      <ion-col>
-        <!-- bouton pour supprimer un planning -->
-        <ion-button expand="block" color="medium"
-                    *ngIf="user.userData.isRp === 'true'" (click)="supprPlanning()">
-          <ion-icon slot="start" name="remove-circle-outline"></ion-icon>
-          Supprimer un planning
-        </ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <br>
 
   <ion-card>
+    <ion-card-header>
+      <ion-card-title>Ajouter mes créneaux à mon agenda :</ion-card-title>
+    </ion-card-header>
     <ion-card-content>
       <ion-grid>
         <ion-row>
-          <ion-col style="margin: auto; text-align: center">
-            Ajouter mes créneaux à mon agenda :
-          </ion-col>
+          <!--          <ion-col style="margin: auto; text-align: center">-->
+          <!--            Ajouter mes créneaux à mon agenda :-->
+          <!--          </ion-col>-->
           <ion-col>
             <ion-button color="medium" (click)="addToGoogle()" expand="block">
               <ion-icon slot="start" name="logo-google"></ion-icon>
@@ -144,6 +118,39 @@
         </ion-row>
       </ion-grid>
     </ion-card-content>
+  </ion-card>
+
+  <br *ngIf="user.userData.isRp === 'true'">
+
+  <ion-card *ngIf="user.userData.isRp === 'true'">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <!-- bouton pour ajouter un nouveau planning -->
+          <ion-button expand="block" color="medium"
+                      *ngIf="user.userData.isRp === 'true'" (click)="alert()">
+            <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+            Ajouter un planning
+          </ion-button>
+        </ion-col>
+        <ion-col>
+          <!-- bouton pour déplacer un planning -->
+          <ion-button expand="block" color="medium"
+                      *ngIf="user.userData.isRp === 'true'" (click)="movePlanning()">
+            <ion-icon slot="start" name="move-outline"></ion-icon>
+            Déplacer un planning
+          </ion-button>
+        </ion-col>
+        <ion-col>
+          <!-- bouton pour supprimer un planning -->
+          <ion-button expand="block" color="medium"
+                      *ngIf="user.userData.isRp === 'true'" (click)="supprPlanning()">
+            <ion-icon slot="start" name="remove-circle-outline"></ion-icon>
+            Supprimer un planning
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-card>
 
 
