@@ -13,7 +13,10 @@ import {AngularFireAuthModule} from '@angular/fire/compat/auth';
 import {HttpClientModule} from '@angular/common/http';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {environment} from '../environments/environment';
-import {ScreenOrientation} from "@awesome-cordova-plugins/screen-orientation/ngx";
+import {ScreenOrientation} from '@awesome-cordova-plugins/screen-orientation/ngx';
+
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
+import { NgxMatomoRouterModule } from '@ngx-matomo/router';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyCRGxxUH7bdcRhdlvtOlp7mSRlyhzUtBwI',
@@ -36,6 +39,8 @@ export const firebaseConfig = {
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
+    NgxMatomoTrackerModule.forRoot({ trackerUrl: 'https://nicob.ovh:7085/', siteId: '1' }),
+    NgxMatomoRouterModule,
   ],
   providers: [ScreenOrientation, {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}],
   bootstrap: [AppComponent]
