@@ -3,6 +3,7 @@ import {Platform} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {App} from '@capacitor/app';
 import {User} from '../shared/class/user';
+import {Display} from "../shared/class/display";
 
 @Component({
   selector: 'app-home',
@@ -12,9 +13,10 @@ import {User} from '../shared/class/user';
 export class HomePage {
 
   constructor(
-    private platform: Platform,
+    public platform: Platform,
     private route: Router,
-    private user: User
+    private user: User,
+    public display: Display
   ) {
     // gestion de la touche mobile back
     this.platform.backButton.subscribeWithPriority(-1, () => {

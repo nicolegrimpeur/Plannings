@@ -39,7 +39,7 @@ export const firebaseConfig = {
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
-    NgxMatomoTrackerModule.forRoot({ trackerUrl: 'https://nicob.ovh:7085/', siteId: '1' }),
+    NgxMatomoTrackerModule.forRoot({ trackerUrl: 'https://nicob.ovh/matomo/', siteId: '1' }),
     NgxMatomoRouterModule,
   ],
   providers: [ScreenOrientation, {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}],
