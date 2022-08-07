@@ -29,21 +29,20 @@ export const firebaseConfig = {
 };
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
-  imports: [BrowserModule, HttpClientModule, IonicModule.forRoot(), AppRoutingModule,
-    AngularFireModule.initializeApp(firebaseConfig), AngularFireAuthModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-      // Register the ServiceWorker as soon as the app is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
-    }),
-    NgxMatomoTrackerModule.forRoot({ trackerUrl: 'https://nicob.ovh:7085/', siteId: '1' }),
-    NgxMatomoRouterModule,
-  ],
-  providers: [ScreenOrientation, {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}],
-  bootstrap: [AppComponent]
+    declarations: [AppComponent],
+    imports: [BrowserModule, HttpClientModule, IonicModule.forRoot(), AppRoutingModule,
+        AngularFireModule.initializeApp(firebaseConfig), AngularFireAuthModule,
+        ServiceWorkerModule.register('ngsw-worker.js', {
+            enabled: environment.production,
+            // Register the ServiceWorker as soon as the app is stable
+            // or after 30 seconds (whichever comes first).
+            registrationStrategy: 'registerWhenStable:30000'
+        }),
+        NgxMatomoTrackerModule.forRoot({ trackerUrl: 'https://nicob.ovh/matomo/', siteId: '1' }),
+        NgxMatomoRouterModule,
+    ],
+    providers: [ScreenOrientation, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }

@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  // base: 'https://nicob.ovh/'
   base: 'http://localhost:1080/'
 };
 

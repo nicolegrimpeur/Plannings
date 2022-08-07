@@ -3,6 +3,11 @@
     <ion-title>
       Règles
     </ion-title>
+    <ion-buttons slot="primary" *ngIf="platform.is('android') && platform.is('mobileweb')">
+      <ion-button href="https://play.google.com/store/apps/details?id=plannings.ionic.all" target="_blank">
+        <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
