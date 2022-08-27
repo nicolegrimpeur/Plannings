@@ -24,7 +24,7 @@
                    placeholder="Entrez votre prénom"></ion-input>
       </ion-item>
 
-      <ion-item>
+      <ion-item *ngIf="isResidenceActivate">
         <ion-label><b>Résidence</b></ion-label>
         <ion-select [(ngModel)]="loginData.residence" required="true">
           <ion-select-option *ngFor="let residence of liste.residences" value="{{residence.residence}}">{{residence.name}}</ion-select-option>
@@ -63,7 +63,7 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card>
+  <ion-card *ngIf="isResidenceActivate">
     <ion-card-header>
       <ion-card-title>
         Votre résidence n'apparait pas ?

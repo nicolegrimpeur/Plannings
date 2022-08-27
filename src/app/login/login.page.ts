@@ -5,7 +5,8 @@ import {Display} from '../shared/class/display';
 import {HttpService} from '../core/http.service';
 import {ListeModel} from '../shared/models/liste.model';
 import {lastValueFrom} from 'rxjs';
-import {StorageService} from "../core/storage.service";
+import {StorageService} from '../core/storage.service';
+import {isResidenceActivate} from '../shared/activateResidences';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,8 @@ import {StorageService} from "../core/storage.service";
 export class LoginPage implements OnInit {
   @ViewChild('inputMdp') inputMdp;
   @ViewChild('iconMdp') iconMdp;
+
+  public isResidenceActivate = isResidenceActivate;
 
   // data utilisés pour la connexion
   public loginData = {
@@ -46,14 +49,15 @@ export class LoginPage implements OnInit {
     this.loginData = {
       nom: '',
       prenom: '',
-      residence: '',
+      residence: isResidenceActivate ? '' : 'sto',
       chambre: '',
       isRp: 'false',
       mdpRp: '',
       mail: ''
     };
 
-    this.recupListe().then();
+    if (isResidenceActivate)
+      this.recupListe().then();
   }
 
   // corrige le mail si besoin
@@ -100,7 +104,7 @@ export class LoginPage implements OnInit {
           this.loginData.chambre + '+' +
           ((mdpCorrect === '') ? 'false' : mdpCorrect) +
           '+planning@all.fr';
-
+        console.log(this.loginData.mail);
         // pour corriger le mail (remplacement espace par tiret)
         this.checkMail();
 
