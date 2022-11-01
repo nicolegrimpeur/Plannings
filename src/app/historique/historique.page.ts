@@ -66,7 +66,7 @@ export class HistoriquePage implements OnInit {
     } else {
       let tmp = '';
       this.noSearch = true;
-      // on parcours tout l'historique pour n'afficher que les éléments qui contiennent la valeur recherché
+      // on parcourt tout l'historique pour n'afficher que les éléments qui contiennent la valeur recherché
       for (const modif of this.historique.historique) {
         tmp = modif.show + modif.modification + modif.nom + modif.prenom + modif.chambre + modif.heure + modif.jour;
         modif.show = tmp.toLowerCase().indexOf(event.target.value.toLowerCase()) > -1;
