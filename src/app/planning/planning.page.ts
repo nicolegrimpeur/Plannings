@@ -126,7 +126,7 @@ export class PlanningPage implements OnInit {
 
   // récupère les plannings
   async getPlanning() {
-    // on vérifie que la page c'est bien lancé pour éviter toute erreur lors de l'appel du planning
+    // on vérifie que la page s'est bien lancé pour éviter toute erreur lors de l'appel du planning
     if (this.user.userData.currentPage !== '') {
       // on appelle la fonction getPlanning
       await lastValueFrom(this.httpService.getPlanning(
