@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {App} from '@capacitor/app';
 import {User} from '../shared/class/user';
 import {Display} from "../shared/class/display";
+import {AdMobPlus, BannerAd} from '@admob-plus/capacitor';
 
 @Component({
   selector: 'app-home',
@@ -16,26 +17,39 @@ export class HomePage {
     public platform: Platform,
     private route: Router,
     private user: User,
-    public display: Display
+    public display: Display,
   ) {
     // gestion de la touche mobile back
     this.platform.backButton.subscribeWithPriority(-1, () => {
-      // si l'on est sur la page principale on quitte l'application
+      // si l'on est sur la page principale, on quitte l'application
       if (this.route.url === '/home') {
-        App.exitApp();
-      } else if (this.route.url === '/liste') {  // si on est sur la page de liste on va sur la page principale
+        App.exitApp().then();
+      } else if (this.route.url === '/liste') {  // si on est sur la page de liste, on va sur la page principale
         this.route.navigate(['/home']).then();
-      } else if (this.route.url === '/planning') {  // si on est sur la page de liste on va sur la page principale
+      } else if (this.route.url === '/planning') {  // si on est sur la page de liste, on va sur la page principale
         this.route.navigate(['/liste']).then();
-      } else if (this.route.url === '/historique') {  // si on est sur la page de liste on va sur la page principale
+      } else if (this.route.url === '/historique') {  // si on est sur la page de liste, on va sur la page principale
         this.route.navigate(['/liste']).then();
-      } else {  // sinon c'est que l'on est sur la page de login donc on peut quitte l'appli
-        App.exitApp();
+      } else {  // sinon c'est que l'on est sur la page de login donc on peut quitter l'appli
+        App.exitApp().then();
       }
     });
   }
 
   ionViewDidEnter() {
     this.user.redirection('home');
+
+    this.launchBanner().then();
+  }
+
+  async launchBanner() {
+    const banner = new BannerAd({
+      adUnitId: 'ca-app-pub-3596210352555744/4465108632',
+    });
+    await banner.show();
+
+    AdMobPlus.addListener('banner.impression', async () => {
+      await banner.hide();
+    })
   }
 }
