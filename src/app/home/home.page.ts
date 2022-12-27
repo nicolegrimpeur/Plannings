@@ -12,12 +12,15 @@ import {AdMobPlus, BannerAd} from '@admob-plus/capacitor';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  private banner = new BannerAd({
+    adUnitId: 'ca-app-pub-3596210352555744/4465108632',
+  });
 
   constructor(
     public platform: Platform,
     private route: Router,
     private user: User,
-    public display: Display,
+    public display: Display
   ) {
     // gestion de la touche mobile back
     this.platform.backButton.subscribeWithPriority(-1, () => {
@@ -34,22 +37,11 @@ export class HomePage {
         App.exitApp().then();
       }
     });
+
+    this.banner.show().then();
   }
 
   ionViewDidEnter() {
     this.user.redirection('home');
-
-    this.launchBanner().then();
-  }
-
-  async launchBanner() {
-    const banner = new BannerAd({
-      adUnitId: 'ca-app-pub-3596210352555744/4465108632',
-    });
-    await banner.show();
-
-    AdMobPlus.addListener('banner.impression', async () => {
-      await banner.hide();
-    })
   }
 }

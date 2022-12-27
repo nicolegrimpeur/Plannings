@@ -104,7 +104,7 @@ export class LoginPage implements OnInit {
           this.loginData.chambre + '+' +
           ((mdpCorrect === '') ? 'false' : mdpCorrect) +
           '+planning@all.fr';
-        console.log(this.loginData.mail);
+
         // pour corriger le mail (remplacement espace par tiret)
         this.checkMail();
 
