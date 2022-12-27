@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+  <!-- Permissions -->
+
+  <uses-permission android:name="android.permission.INTERNET" />
+
+  <!-- For apps targeting Android 13 or higher & GMA SDK version 20.3.0 or lower -->
+  <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+
   <application
     android:allowBackup="true"
     android:icon="@mipmap/ic_launcher"
@@ -31,11 +38,16 @@
       android:grantUriPermissions="true">
       <meta-data
         android:name="android.support.FILE_PROVIDER_PATHS"
-        android:resource="@xml/file_paths"></meta-data>
+        android:resource="@xml/file_paths" />
     </provider>
+
+    <meta-data
+      android:name="com.google.android.gms.ads.APPLICATION_ID"
+      android:value="ca-app-pub-3596210352555744~4731620373" />
+
+    <meta-data
+      android:name="com.google.android.gms.ads.DELAY_APP_MEASUREMENT_INIT"
+      android:value="true" />
+
   </application>
-
-  <!-- Permissions -->
-
-  <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
