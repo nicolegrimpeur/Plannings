@@ -15,8 +15,8 @@ import {ServiceWorkerModule} from '@angular/service-worker';
 import {environment} from '../environments/environment';
 import {ScreenOrientation} from '@awesome-cordova-plugins/screen-orientation/ngx';
 
-import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
-import { NgxMatomoRouterModule } from '@ngx-matomo/router';
+import {NgxMatomoTrackerModule} from '@ngx-matomo/tracker';
+import {NgxMatomoRouterModule} from '@ngx-matomo/router';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyCRGxxUH7bdcRhdlvtOlp7mSRlyhzUtBwI',

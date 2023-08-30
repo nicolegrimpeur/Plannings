@@ -4,7 +4,6 @@ import {Router} from '@angular/router';
 import {App} from '@capacitor/app';
 import {User} from '../shared/class/user';
 import {Display} from "../shared/class/display";
-import {AdMobPlus, BannerAd} from '@admob-plus/capacitor';
 
 @Component({
   selector: 'app-home',
@@ -12,10 +11,6 @@ import {AdMobPlus, BannerAd} from '@admob-plus/capacitor';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  private banner = new BannerAd({
-    adUnitId: 'ca-app-pub-3596210352555744/4465108632',
-  });
-
   constructor(
     public platform: Platform,
     private route: Router,
@@ -37,8 +32,6 @@ export class HomePage {
         App.exitApp().then();
       }
     });
-
-    this.banner.show().then();
   }
 
   ionViewDidEnter() {
