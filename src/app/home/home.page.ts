@@ -11,9 +11,6 @@ import {Display} from '../shared/class/display';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  public isMailDisplay = false;
-  public mailToDisplay = 'nicolas.barrat@nicob.ovh';
-
   constructor(
     public platform: Platform,
     private route: Router,
@@ -39,14 +36,5 @@ export class HomePage {
 
   ionViewDidEnter() {
     this.user.redirection('home');
-  }
-
-  displayMail(event) {
-    if (!this.isMailDisplay) {
-      event.target.textContent = this.mailToDisplay;
-      this.isMailDisplay = true;
-    } else {
-      window.open('mailto:' + this.mailToDisplay, '_system');
-    }
   }
 }

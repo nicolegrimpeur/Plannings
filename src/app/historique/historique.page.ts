@@ -43,6 +43,7 @@ export class HistoriquePage implements OnInit {
       ))
         .then(results => {
           this.historique = results;
+          this.historique.historique.reverse();
           // on affiche chaque partie de l'historique
           for (const modif of this.historique.historique) {
             modif.show = true;

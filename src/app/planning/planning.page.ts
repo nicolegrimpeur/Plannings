@@ -15,7 +15,7 @@ import {Animation, AnimationController} from '@ionic/angular';
   styleUrls: ['./planning.page.scss']
 })
 export class PlanningPage implements OnInit {
-  @ViewChild("refresh") refreshElement;
+  @ViewChild('refresh') refreshElement;
 
   public planning = new PlanningModel(); // variable qui stockera le planning
   public jours = ['']; // stocke les différents jours de la semaine
@@ -82,16 +82,16 @@ export class PlanningPage implements OnInit {
     } else {
       this.heures = [ // stocke les horaires de la semaine
         '',
-        '7H -> 8H30',
-        '8H30 -> 10H',
-        '10H -> 11H30',
-        '11H30 -> 13H',
-        '13H -> 14H30',
-        '14H30 -> 16H',
-        '16H -> 17H30',
-        '17H30 -> 19H',
-        '19H -> 20H30',
-        '20H30 -> 22H',
+        '7H ➜ 8H30',
+        '8H30 ➜ 10H',
+        '10H ➜ 11H30',
+        '11H30 ➜ 13H',
+        '13H ➜ 14H30',
+        '14H30 ➜ 16H',
+        '16H ➜ 17H30',
+        '17H30 ➜ 19H',
+        '19H ➜ 20H30',
+        '20H30 ➜ 22H',
       ];
     }
   }
