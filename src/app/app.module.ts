@@ -15,8 +15,9 @@ import {ServiceWorkerModule} from '@angular/service-worker';
 import {environment} from '../environments/environment';
 import {ScreenOrientation} from '@awesome-cordova-plugins/screen-orientation/ngx';
 
-import {NgxMatomoTrackerModule} from '@ngx-matomo/tracker';
-import {NgxMatomoRouterModule} from '@ngx-matomo/router';
+// import {NgxMatomoTrackerModule} from '@ngx-matomo/tracker';
+// import {NgxMatomoRouterModule} from '@ngx-matomo/router';
+import {provideMatomo} from 'ngx-matomo-client';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyCRGxxUH7bdcRhdlvtOlp7mSRlyhzUtBwI',
@@ -29,20 +30,21 @@ export const firebaseConfig = {
 };
 
 @NgModule({
-    declarations: [AppComponent],
-    imports: [BrowserModule, HttpClientModule, IonicModule.forRoot(), AppRoutingModule,
-        AngularFireModule.initializeApp(firebaseConfig), AngularFireAuthModule,
-        ServiceWorkerModule.register('ngsw-worker.js', {
-            enabled: environment.production,
-            // Register the ServiceWorker as soon as the app is stable
-            // or after 30 seconds (whichever comes first).
-            registrationStrategy: 'registerWhenStable:30000'
-        }),
-        NgxMatomoTrackerModule.forRoot({ trackerUrl: 'https://nicob.ovh/matomo/', siteId: '1' }),
-        NgxMatomoRouterModule,
-    ],
-    providers: [ScreenOrientation, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
-    bootstrap: [AppComponent]
+  declarations: [AppComponent],
+  imports: [BrowserModule, HttpClientModule, IonicModule.forRoot(), AppRoutingModule,
+    AngularFireModule.initializeApp(firebaseConfig), AngularFireAuthModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
+    // NgxMatomoModule.forRoot({ trackerUrl: 'https://nicob.ovh/matomo/', siteId: '1' }),
+
+  ],
+  providers: [ScreenOrientation, {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
+    provideMatomo({trackerUrl: 'https://nicob.ovh/matomo/', siteId: '1'})],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }
