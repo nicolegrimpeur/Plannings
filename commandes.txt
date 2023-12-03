@@ -1,19 +1,10 @@
 Android
 
-npm run build
-
-ionic capacitor build android --prod --release
+npm run mobile
 
 Modifier dans android/app/build.gradle le code de version en nb + 1
 
 
-Ios
-
-ionic capacitor build ios --prod --release
-
-ionic capacitor add ios
-
-
 PC
 
-ionic build --prod
+npm run build
