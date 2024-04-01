@@ -94,9 +94,6 @@
     <ion-card-content>
       <ion-grid>
         <ion-row>
-          <!--          <ion-col style="margin: auto; text-align: center">-->
-          <!--            Ajouter mes créneaux à mon agenda :-->
-          <!--          </ion-col>-->
           <ion-col>
             <ion-button color="medium" (click)="addToGoogle()" expand="block">
               <ion-icon slot="start" name="logo-google"></ion-icon>
@@ -111,7 +108,7 @@
           </ion-col>
           <ion-col style="margin: auto; text-align: center"
                    (click)="display.alert('Comment ça marche ?',
-                                          'En cliquant sur ajouter à Google Calendar, vous pourrez ajouter vos créneaux un par un.' +
+                                          'En cliquant sur ajouter à Google Calendar, vous pourrez ajouter vos créneaux un par un. ' +
                                                'Pour les autres calendriers, vous devez télécharger vos créneaux, puis importer le fichier obtenu dans votre calendrier.')">
             <ion-button color="medium" expand="block" fill="clear">Comment ça marche ?</ion-button>
           </ion-col>

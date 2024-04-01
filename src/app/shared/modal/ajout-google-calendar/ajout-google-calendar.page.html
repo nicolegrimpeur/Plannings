@@ -8,9 +8,14 @@
 <ion-content>
   <ion-card>
     <ion-card-header>
-      <ion-card-subtitle style="text-align: center">
+      <ion-card-subtitle style="text-align: center" *ngIf="tableauInscriptions.length > 0; else noInscriptions">
         Quel créneau voulez-vous ajouter à Google Calendar ?
       </ion-card-subtitle>
+      <ng-template #noInscriptions>
+        <ion-card-subtitle style="text-align: center">
+          Vous n'avez pas de créneaux à ajouter à Google Calendar.
+        </ion-card-subtitle>
+      </ng-template>
     </ion-card-header>
   </ion-card>
   <ion-button *ngFor="let inscription of tableauInscriptions" expand="block" color="medium" target="_blank"

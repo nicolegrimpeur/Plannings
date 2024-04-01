@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {User} from '../shared/class/user';
 import {HttpService} from '../core/http.service';
 import {Infos, ListeModel} from '../shared/models/liste.model';
@@ -16,7 +16,7 @@ import {InformationsInscriptionModel} from "../shared/models/informations-inscri
   styleUrls: ['./liste.page.scss'],
   providers: [HttpService,]
 })
-export class ListePage implements OnInit {
+export class ListePage {
   public liste = new ListeModel(); // stocke les infos des résidences
   public residence = new Infos(); // stocke les infos d'une seule résidence
   public mobile = this.platform.platforms();
@@ -30,9 +30,6 @@ export class ListePage implements OnInit {
     public display: Display,
     private platform: Platform
   ) {
-  }
-
-  ngOnInit() {
   }
 
   ionViewWillEnter() {

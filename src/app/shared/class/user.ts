@@ -49,9 +49,9 @@ export class User {
     if (this.userData.mail !== '' && this.userData.mail !== null) {
       [this.userData.nom, this.userData.prenom, this.userData.residence, this.userData.chambre, this.userData.isRp] =
         this.userData.mail.split('+');
-      this.userData.nom = this.userData.nom.substr(0, 1).toLocaleUpperCase() + this.userData.nom.substr(1);
-      this.userData.prenom = this.userData.prenom.substr(0, 1).toLocaleUpperCase() + this.userData.prenom.substr(1);
-      this.userData.chambre = this.userData.chambre.substr(0, 1).toLocaleUpperCase() + this.userData.chambre.substr(1);
+      this.userData.nom = this.userData.nom.substring(0, 1).toLocaleUpperCase() + this.userData.nom.substring(1);
+      this.userData.prenom = this.userData.prenom.substring(0, 1).toLocaleUpperCase() + this.userData.prenom.substring(1);
+      this.userData.chambre = this.userData.chambre.substring(0, 1).toLocaleUpperCase() + this.userData.chambre.substring(1);
     }
   }
 
@@ -154,7 +154,7 @@ export class User {
     if (liste.residences !== undefined) {
       const objResidence = liste.residences.find(res => res.residence.toLowerCase() === this.userData.residence);
       if (objResidence !== undefined) {
-        // on parcours la liste des plannings de la résidence pour ajouter chaque planning à plannings
+        // on parcourt la liste des plannings de la résidence pour ajouter chaque planning à plannings
         for (const planning of objResidence.liste) {
           plannings.push({nomPlanning: planning, planning: await this.recupPlanning(planning, objResidence.residence)});
         }
@@ -163,14 +163,14 @@ export class User {
         let idNb;
         let idInscription;
         let nbInscription;
-        // on parcours tous les plannings de la résidence
+        // on parcourt tous les plannings de la résidence
         for (const planning of plannings) {
           // on récupère le début du nom du plannings (exemple Machine 1 donne Machine )
           idNb = planning.nomPlanning.search(/[0-9]/g);
           debutPlanning = planning.nomPlanning.slice(0, idNb !== -1 ? idNb : planning.nomPlanning.length);
 
           nbInscription = 0;
-          // on parcours le planning en cours
+          // on parcourt le planning en cours
           for (const jour in planning.planning) {
             // permet d'éviter de considérer le dimanche précédent comme partie courante de la semaine
             if (jour !== 'dimanche1') {

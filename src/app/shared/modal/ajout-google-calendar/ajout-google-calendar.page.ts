@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {ModalController, NavParams} from "@ionic/angular";
 import {InformationsInscriptionModel} from "../../models/informations-inscription-model";
 
@@ -7,7 +7,7 @@ import {InformationsInscriptionModel} from "../../models/informations-inscriptio
   templateUrl: './ajout-google-calendar.page.html',
   styleUrls: ['./ajout-google-calendar.page.scss'],
 })
-export class AjoutGoogleCalendarPage implements OnInit {
+export class AjoutGoogleCalendarPage {
   public tableauInscriptions: Array<InformationsInscriptionModel> = [];
 
   constructor(
@@ -16,8 +16,4 @@ export class AjoutGoogleCalendarPage implements OnInit {
   ) {
     this.tableauInscriptions = navParams.get('tableauInformationsInscriptions');
   }
-
-  ngOnInit() {
-  }
-
 }
