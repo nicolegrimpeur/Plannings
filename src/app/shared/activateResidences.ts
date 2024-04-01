@@ -1,1 +1,0 @@
-export let isResidenceActivate = false;

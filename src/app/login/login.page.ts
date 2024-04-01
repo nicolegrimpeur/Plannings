@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/compat/auth';
 import {Router} from '@angular/router';
 import {Display} from '../shared/class/display';
@@ -6,18 +6,18 @@ import {HttpService} from '../core/http.service';
 import {ListeModel} from '../shared/models/liste.model';
 import {lastValueFrom} from 'rxjs';
 import {StorageService} from '../core/storage.service';
-import {isResidenceActivate} from '../shared/activateResidences';
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class LoginPage {
   @ViewChild('inputMdp') inputMdp;
   @ViewChild('iconMdp') iconMdp;
 
-  public isResidenceActivate = isResidenceActivate;
+  public isResidenceActivate = environment.global.isResidenceActivate;
 
   // data utilisés pour la connexion
   public loginData = {
@@ -42,21 +42,18 @@ export class LoginPage implements OnInit {
   ) {
   }
 
-  ngOnInit() {
-  }
-
   ionViewWillEnter() {
     this.loginData = {
       nom: '',
       prenom: '',
-      residence: isResidenceActivate ? '' : 'sto',
+      residence: this.isResidenceActivate ? '' : 'sto',
       chambre: '',
       isRp: 'false',
       mdpRp: '',
       mail: ''
     };
 
-    if (isResidenceActivate)
+    if (this.isResidenceActivate)
       this.recupListe().then();
   }
 
@@ -108,7 +105,7 @@ export class LoginPage implements OnInit {
         // pour corriger le mail (remplacement espace par tiret)
         this.checkMail();
 
-        const password = 'f355bcd8af0541b815c00eda1360a30024c2ae8bfc53ead1073bf29b7589cc64';
+        const password = environment.global.firebaseAccountPassword;
 
         // on regarde si un compte existe déjà avec cette email
         this.afAuth.fetchSignInMethodsForEmail(this.loginData.mail)

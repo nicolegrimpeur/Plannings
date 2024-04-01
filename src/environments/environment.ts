@@ -2,7 +2,10 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import {global} from "./environment.global";
+
 export const environment = {
+  global,
   production: false,
   base: 'https://nicob.ovh/'
   // base: 'http://localhost:7000/'
