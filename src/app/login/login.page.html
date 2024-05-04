@@ -53,7 +53,7 @@
         <!-- on active le bouton que si tous les éléments nécessaires sont remplis -->
         <ion-button
           disabled="{{!(loginData.nom !== '' && loginData.prenom !== '' && loginData.residence !== '' && loginData.chambre !== '' && ((loginData.isRp === 'true' && loginData.mdpRp !== '') || loginData.isRp === 'false'))}}"
-          type="submit" (click)="login()" expand="block" color="light">
+          type="submit" (click)="login()" expand="block" color="medium">
           OK
         </ion-button>
       </div>

@@ -43,8 +43,8 @@
       <!-- liste des plannings -->
       <ion-grid>
         <ion-row>
-          <ion-col *ngFor="let planning of residence.liste">
-            <ion-button expand="block" color="light" [routerLink]="['/planning']"
+          <ion-col *ngFor="let planning of residence.liste" size="6" sizeMd="3">
+            <ion-button expand="block" color="medium" [routerLink]="['/planning']"
                         (click)="user.addCurrentPage(planning)">{{planning}}</ion-button>
           </ion-col>
         </ion-row>
@@ -71,8 +71,8 @@
       <!-- liste des historiques -->
       <ion-grid>
         <ion-row>
-          <ion-col *ngFor="let planning of residence.liste">
-            <ion-button expand="block" color="light" [routerLink]="['/historique']"
+          <ion-col *ngFor="let planning of residence.liste" size="6" sizeMd="3">
+            <ion-button expand="block" color="medium" [routerLink]="['/historique']"
                         (click)="user.addCurrentPage(planning)">{{planning}}</ion-button>
           </ion-col>
         </ion-row>
@@ -95,13 +95,13 @@
       <ion-grid>
         <ion-row>
           <ion-col>
-            <ion-button color="light" (click)="addToGoogle()" expand="block">
+            <ion-button color="medium" (click)="addToGoogle()" expand="block">
               <ion-icon slot="start" name="logo-google"></ion-icon>
               Ajouter à Google Calendar
             </ion-button>
           </ion-col>
           <ion-col>
-            <ion-button color="light" (click)="downloadIcs()" expand="block">
+            <ion-button color="medium" (click)="downloadIcs()" expand="block">
               <ion-icon slot="start" name="calendar-outline"></ion-icon>
               Télécharger mes créneaux
             </ion-button>
@@ -110,7 +110,7 @@
                    (click)="display.alert('Comment ça marche ?',
                                           'En cliquant sur ajouter à Google Calendar, vous pourrez ajouter vos créneaux un par un. ' +
                                                'Pour les autres calendriers, vous devez télécharger vos créneaux, puis importer le fichier obtenu dans votre calendrier.')">
-            <ion-button color="light" expand="block" fill="clear">Comment ça marche ?</ion-button>
+            <ion-button color="medium" expand="block" fill="clear">Comment ça marche ?</ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
