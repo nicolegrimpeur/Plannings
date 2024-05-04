@@ -10,66 +10,50 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-card>
+  <ion-card [id]="platform.is('desktop') ? 'loginCard' : ''">
     <ion-card-content>
       <ion-item>
-        <ion-input label="Nom"
-                   [(ngModel)]="loginData.nom"
-                   type="text"
-                   autocomplete="family-name"
-                   required="true"
-                   placeholder="Entrez votre nom"></ion-input>
+        <ion-input label="Nom" [(ngModel)]="loginData.nom" type="text" autocomplete="family-name" required="true"
+          placeholder="Entrez votre nom"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-input label="Prénom"
-                   [(ngModel)]="loginData.prenom"
-                   type="text"
-                   autocomplete="given-name"
-                   required="true"
-                   placeholder="Entrez votre prénom"></ion-input>
+        <ion-input label="Prénom" [(ngModel)]="loginData.prenom" type="text" autocomplete="given-name" required="true"
+          placeholder="Entrez votre prénom"></ion-input>
       </ion-item>
 
       <ion-item *ngIf="isResidenceActivate">
-        <ion-select label="Résidence"
-                    [(ngModel)]="loginData.residence"
-                    required="true">
+        <ion-select label="Résidence" [(ngModel)]="loginData.residence" required="true">
           <ion-select-option *ngFor="let residence of liste.residences"
-                             value="{{residence.residence}}">{{residence.name}}</ion-select-option>
+            value="{{residence.residence}}">{{residence.name}}</ion-select-option>
         </ion-select>
       </ion-item>
 
       <ion-item>
-        <ion-label><b>Chambre</b></ion-label>
-        <ion-input label="Chambre"
-                   [(ngModel)]="loginData.chambre"
-                   type="text"
-                   required="true"
-                   placeholder="Entrez votre numéro de chambre (n'oubliez pas la lettre en fonction des résidences)"></ion-input>
+        <ion-input label="Chambre" [(ngModel)]="loginData.chambre" type="text" required="true"
+          placeholder="Entrez votre numéro de chambre (n'oubliez pas la lettre en fonction des résidences)"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-select label="Es-tu un responsable ?"
-                    interface="popover"
-                    [(ngModel)]="loginData.isRp">
+        <ion-select label="Es-tu un responsable ?" interface="popover" [(ngModel)]="loginData.isRp" color="medium" [interfaceOptions]="customPopoverOptions">
           <ion-select-option value="true">Oui</ion-select-option>
           <ion-select-option value="false">Non</ion-select-option>
         </ion-select>
       </ion-item>
 
       <ion-item *ngIf="loginData.isRp === 'true'">
-        <ion-input label="Mot de passe RP"
-                   #inputMdp [(ngModel)]="loginData.mdpRp" type="password" autocomplete="current-password"
-                   required="true" minlength="6" maxlength="22"
-                   placeholder="Mot de passe"></ion-input>
-        <ion-icon #iconMdp (click)="toggleMdp()" name="eye-off-outline"></ion-icon>
+        <ion-input label="Mot de passe RP" #inputMdp [(ngModel)]="loginData.mdpRp" type="password" color="light"
+          autocomplete="current-password" required="true" minlength="6" maxlength="22" placeholder="Mot de passe">
+          <ion-input-password-toggle slot="end" hideIcon="eye-outline" color="dark"
+            showIcon="eye-off-outline"></ion-input-password-toggle>
+        </ion-input>
       </ion-item>
 
       <div class="ion-padding">
         <!-- on active le bouton que si tous les éléments nécessaires sont remplis -->
         <ion-button
           disabled="{{!(loginData.nom !== '' && loginData.prenom !== '' && loginData.residence !== '' && loginData.chambre !== '' && ((loginData.isRp === 'true' && loginData.mdpRp !== '') || loginData.isRp === 'false'))}}"
-          type="submit" (click)="login()" expand="block" color="tertiary">
+          type="submit" (click)="login()" expand="block" color="light">
           OK
         </ion-button>
       </div>

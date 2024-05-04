@@ -7,6 +7,7 @@ import {ListeModel} from '../shared/models/liste.model';
 import {lastValueFrom} from 'rxjs';
 import {StorageService} from '../core/storage.service';
 import {environment} from "../../environments/environment";
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -14,10 +15,10 @@ import {environment} from "../../environments/environment";
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage {
-  @ViewChild('inputMdp') inputMdp;
-  @ViewChild('iconMdp') iconMdp;
-
   public isResidenceActivate = environment.global.isResidenceActivate;
+  public customPopoverOptions : any = {
+    cssClass: 'popover-wide',
+  }
 
   // data utilisés pour la connexion
   public loginData = {
@@ -38,7 +39,8 @@ export class LoginPage {
     public afAuth: AngularFireAuth,
     public display: Display,
     public httpService: HttpService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    public platform: Platform
   ) {
   }
 
@@ -149,17 +151,6 @@ export class LoginPage {
       .catch(err => {
         this.router.navigate(['/erreur']).then();
       });
-  }
-
-  // permet d'afficher le mot de passe pour le mdp rp
-  toggleMdp() {
-    if (this.iconMdp.name === 'eye-outline') {
-      this.iconMdp.name = 'eye-off-outline';
-      this.inputMdp.type = 'password';
-    } else {
-      this.iconMdp.name = 'eye-outline';
-      this.inputMdp.type = 'text';
-    }
   }
 
   createRes() {

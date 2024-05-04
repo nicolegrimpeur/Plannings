@@ -47,7 +47,13 @@ body {
   justify-content: center;
 }
 
-// css alert dans display
-.alert {
-  //--max-width: inherit;
+.popover-wide {
+  ion-radio {
+    --color-checked: var(--ion-color-dark) !important;
+  }
+  .item-radio-checked.sc-ion-select-popover-md {
+    --background: rgba(var(--ion-color-medium-rgb, 0, 84, 233), 0.08) !important;
+    --background-hover: var(--ion-color-medium) !important;
+    --background-focused: none !important;
+  }
 }

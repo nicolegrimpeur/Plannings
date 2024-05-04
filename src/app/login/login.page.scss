@@ -1,3 +1,8 @@
 ion-select::part(icon) {
-  color: var(--ion-color-medium) !important;
+  color: var(--ion-color-dark) !important;
+}
+
+#loginCard {
+  margin: 5vh auto 0 auto;
+  width: 60vw;
 }
