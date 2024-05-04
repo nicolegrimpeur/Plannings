@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
 
   namespace 'plannings.ionic.all'
-  compileSdkVersion rootProject.ext.compileSdkVersion
+  compileSdk rootProject.ext.compileSdkVersion
   defaultConfig {
     applicationId "plannings.ionic.all"
     minSdkVersion rootProject.ext.minSdkVersion

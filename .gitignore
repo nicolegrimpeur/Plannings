@@ -33,3 +33,4 @@ npm-debug.log*
 
 android/.idea/
 src/environments/environment.global.ts
+/.nx
