@@ -7,7 +7,7 @@ import {ListeModel} from '../shared/models/liste.model';
 import {lastValueFrom} from 'rxjs';
 import {StorageService} from '../core/storage.service';
 import {environment} from "../../environments/environment";
-import { Platform } from '@ionic/angular';
+import {IonInput, Platform} from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -15,8 +15,12 @@ import { Platform } from '@ionic/angular';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage {
+  @ViewChild('nom') nom: IonInput;
+  @ViewChild('prenom') prenom: IonInput;
+  @ViewChild('chambre') chambre: IonInput;
+
   public isResidenceActivate = environment.global.isResidenceActivate;
-  public customPopoverOptions : any = {
+  public customPopoverOptions: any = {
     cssClass: 'popover-wide',
   }
 
@@ -57,6 +61,23 @@ export class LoginPage {
 
     if (this.isResidenceActivate)
       this.recupListe().then();
+
+    console.log(this.prenom);
+  }
+
+  newPartForm(event: any, champ: 'nom' | 'prenom' | 'chambre' | 'mdpRp') {
+    if (event.key !== 'Enter')
+      return
+
+    if ((champ === 'chambre' || champ === 'mdpRp') &&
+      (this.loginData.nom !== '' && this.loginData.prenom !== '' && this.loginData.residence !== '' && this.loginData.chambre !== '' &&
+        ((this.loginData.isRp === 'true' && this.loginData.mdpRp !== '') || this.loginData.isRp === 'false')))
+      this.login().then();
+    else if (champ === 'nom')
+      this.prenom.setFocus().then();
+    else if (champ === 'prenom')
+      this.chambre.setFocus().then();
+
   }
 
   // corrige le mail si besoin
