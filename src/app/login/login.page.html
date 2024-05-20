@@ -33,7 +33,7 @@
 
       <ion-item>
         <ion-input #chambre label="Chambre" [(ngModel)]="loginData.chambre" type="text" required="true"
-                   placeholder="Entrez votre numéro de chambre (n'oubliez pas la lettre en fonction des résidences)"
+                   placeholder="Entrez votre numéro de chambre (n'oubliez pas la lettre)"
                    (keydown)="newPartForm($event, 'chambre')"></ion-input>
       </ion-item>
 
@@ -46,7 +46,7 @@
       </ion-item>
 
       <ion-item *ngIf="loginData.isRp === 'true'">
-        <ion-input label="Mot de passe RP" #inputMdp [(ngModel)]="loginData.mdpRp" type="password" color="light"
+        <ion-input label="Mot de passe RP" [(ngModel)]="loginData.mdpRp" type="password" color="light"
                    autocomplete="current-password" required="true" minlength="6" maxlength="22"
                    placeholder="Mot de passe" (keydown)="newPartForm($event, 'chambre')">
           <ion-input-password-toggle slot="end" hideIcon="eye-outline" color="dark"
