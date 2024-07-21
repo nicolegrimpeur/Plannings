@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {ListeModel} from '../shared/models/liste.model';
 import {PlanningModel} from '../shared/models/planning.model';
