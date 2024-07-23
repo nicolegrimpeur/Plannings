@@ -12,6 +12,16 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-card *ngIf="news !== undefined && news !== ''">
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-icon name="information-circle-outline" slot="start"></ion-icon>
+        <ion-label class="ion-text-wrap">
+          {{ news }}
+        </ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
   <ion-card>
     <ion-card-header>
       <ion-card-title>📝 Règles des plannings</ion-card-title>

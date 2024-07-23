@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {App} from '@capacitor/app';
 import {User} from '../shared/class/user';
 import {Display} from '../shared/class/display';
+import {HttpService} from "../core/http.service";
 
 @Component({
   selector: 'app-home',
@@ -11,11 +12,14 @@ import {Display} from '../shared/class/display';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  public news: string;
+
   constructor(
     public platform: Platform,
     private route: Router,
     private user: User,
-    public display: Display
+    public display: Display,
+    private httpService: HttpService
   ) {
     // gestion de la touche mobile back
     this.platform.backButton.subscribeWithPriority(-1, () => {
@@ -30,6 +34,12 @@ export class HomePage {
         this.route.navigate(['/liste']).then();
       } else {  // sinon c'est que l'on est sur la page de login donc on peut quitter l'appli
         App.exitApp().then();
+      }
+    });
+
+    this.httpService.getNews().subscribe(res => {
+      if (res.status === 200) {
+        this.news = res.msg;
       }
     });
   }

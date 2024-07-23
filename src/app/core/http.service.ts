@@ -15,6 +15,11 @@ export class HttpService {
   constructor(private readonly http: HttpClient) {
   }
 
+  getNews(): Observable<{ msg: string, status: number }> {
+    const url = this.baseLink + 'getNews';
+    return this.http.get<{ msg: string, status: number }>(url);
+  }
+
   getListe(): Observable<ListeModel> {
     const url = this.baseLink + 'getListPlannings';
     return this.http.get<ListeModel>(url);
